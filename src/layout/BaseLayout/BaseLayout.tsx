@@ -12,7 +12,7 @@ export const BaseLayout: React.FC<Props> = ({
     return (
         <>
             <header className={styles.header}>
-                <h1>Movie Card</h1>
+                <h1>Todo List</h1>
             </header>
             <main className={styles.main}>
                 {children}
