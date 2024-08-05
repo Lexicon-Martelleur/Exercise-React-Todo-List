@@ -11,7 +11,7 @@ export const TodoList = (): ReactElement => {
         <section className={styles.todoList}>
             <div>
                 <h1>Todo List</h1>
-                <h3>Stay organized and productive</h3>
+                <h4>Stay organized and productive</h4>
             </div>
             {todos.map(entity => <TodoItem
                 key={entity.id}

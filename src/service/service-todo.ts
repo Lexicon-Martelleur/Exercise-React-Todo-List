@@ -19,7 +19,7 @@ export function getTodos (): ITodoEntity[] {
         {
             id: "3",
             todo: {
-                title: "Call frien",
+                title: "Call friend",
                 description: "Ask what plan is next saturday"
             }
         }

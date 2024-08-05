@@ -7,11 +7,11 @@
     --BUTTON_COLOR_OK: #005F8F;
     --BORDER_COLOR_MEDIUM: #005F8F;
 
-    --FONT_PRIMARY: "Space Grotesk", sans-serif
+    --FONT_PRIMARY: "Courier Prime", monospace;;
 }
 
 * {
-    font-family: var(--PRIMARY_FONT);
+    font-family: var(--FONT_PRIMARY);
     color: var(--FONT_COLOR_LIGHT);
     box-sizing: border-box;
     padding: 0;

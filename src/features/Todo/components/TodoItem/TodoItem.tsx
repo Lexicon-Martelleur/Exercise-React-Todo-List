@@ -12,7 +12,7 @@ export const TodoItem: React.FC<Props> = ({
 }) => {
     return (
         <article className={styles.todoItem}>
-            <h3>Title: {todo.title}</h3>
+            <h4>Title: {todo.title}</h4>
             <p>Description: {todo.description}</p>
         </article>
     )
