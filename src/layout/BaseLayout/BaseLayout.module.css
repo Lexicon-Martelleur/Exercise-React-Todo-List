@@ -1,0 +1,27 @@
+.header, footer {
+    width: 100%;
+    background-color: black;
+    text-align: center;
+    padding: 1rem; 
+}
+
+.main {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--BG_DARK_X);
+}
+
+@media (min-width: 500px) {
+    .main {
+        padding-inline: 2rem;
+    }
+}
+
+@media (min-width: 900px) {
+    .main {
+        padding-inline: 8rem;
+    }
+}

@@ -1,0 +1,26 @@
+:root {
+    --BG_DARK_X: #000F1F;
+    --BG_DARK: #001F3D;
+    --BG_MEDIUM: #005F8F;
+    --BG_LIGHT: #265973; 
+    --FONT_COLOR_LIGHT: #CCFFFF;
+    --BUTTON_COLOR_OK: #005F8F;
+    --BORDER_COLOR_MEDIUM: #005F8F;
+
+    --FONT_PRIMARY: "Space Grotesk", sans-serif
+}
+
+* {
+    font-family: var(--PRIMARY_FONT);
+    color: var(--FONT_COLOR_LIGHT);
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+#root, body {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}

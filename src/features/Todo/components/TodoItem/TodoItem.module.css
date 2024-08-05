@@ -1,0 +1,5 @@
+.todo-item {
+    background-color: var(--BG_LIGHT);
+    padding: 1rem;
+    border: 1px solid var(--BORDER_COLOR_MEDIUM);
+}
