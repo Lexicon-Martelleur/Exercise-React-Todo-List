@@ -25,3 +25,7 @@ export function getInitialTodos (): ITodoEntity[] {
         }
     ];
 }
+
+export function getEmptyDodo () {
+    return { title: "", description: "" };
+}

@@ -1,6 +1,7 @@
 import React from "react";
 
 import { ITodo } from "../../../../service/types";
+
 import styles from "./TodoItem.module.css";
 
 interface Props {

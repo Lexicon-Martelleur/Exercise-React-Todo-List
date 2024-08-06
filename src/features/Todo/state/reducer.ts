@@ -1,13 +1,10 @@
-import { getInitialTodos } from "../../../service";
+import { getInitialTodos, getEmptyDodo } from "../../../service";
 import { TodoActionType as Type} from "./constants";
 import { ITodoState, ITodoAction } from "./types";
 import { v4 as uuid } from "uuid";
 
 export const todoInitData: ITodoState = {
-    newTodo: {
-        title: "",
-        description: ""
-    },
+    newTodo: getEmptyDodo(),
     todoList: getInitialTodos()
 } as const;
 

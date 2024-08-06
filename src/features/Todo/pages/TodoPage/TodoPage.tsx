@@ -11,5 +11,5 @@ export const TodoPage = (): ReactElement => {
                 <Todo />
             </TodoProvider>
         </BaseLayout> 
-    )
+    );
 }

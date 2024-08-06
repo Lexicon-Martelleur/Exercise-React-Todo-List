@@ -1,16 +1,21 @@
-import { ReactElement } from "react";
+import React, { ReactElement } from "react";
 
-import { useTodoContext } from "../../context";
 import { TodoItem } from "../TodoItem";
+import { ITodoEntity } from "../../../../service";
 
 import styles from "./TodoList.module.css";
 
-export const TodoList = (): ReactElement => {
-    const [_, todoState] = useTodoContext();
+interface Props {
+    todoList: ITodoEntity[]
+}
+
+export const TodoList: React.FC<Props> = ({
+    todoList
+}): ReactElement => {
 
     return (
         <section className={styles.todoList}>
-            {todoState.todoList.map(entity => <TodoItem
+            {todoList.map(entity => <TodoItem
                 key={entity.id}
                 todo={entity.todo}/>
             )}

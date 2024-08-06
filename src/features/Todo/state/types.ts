@@ -3,7 +3,7 @@ import { TodoActionType } from "./constants";
 
 export type ITodoState = Readonly<{
     newTodo: ITodo
-    todoList: ITodoEntity[]
+    todoList: Readonly<Readonly<ITodoEntity>>[]
 }>;
 
 export interface UpdateNewTodoAction {

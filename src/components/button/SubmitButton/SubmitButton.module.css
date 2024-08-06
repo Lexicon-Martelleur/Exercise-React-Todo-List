@@ -4,3 +4,7 @@
     color: var(--FONT_COLOR_LIGHT);
     border: none;
 }
+
+.submit-button:hover {
+    cursor: pointer;
+}

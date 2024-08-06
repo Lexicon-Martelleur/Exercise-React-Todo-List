@@ -6,8 +6,11 @@ interface Props {
     minLength: number;
     maxLength: number;
     labelTitle: string;
+    value: string;
+    placeholder: string;
     className?: string;
-    type?: "input" | "textarea"
+    type?: "input" | "textarea";
+    onChange?: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
 }
 
 export const RequiredInput: React.FC<Props> = ({
@@ -15,8 +18,11 @@ export const RequiredInput: React.FC<Props> = ({
     minLength,
     maxLength,
     labelTitle,
+    value,
+    placeholder,
     type,
-    className
+    className,
+    onChange = () => {}
 }): ReactElement => {
     return (
         <div className={className ? className : ""}>
@@ -25,18 +31,22 @@ export const RequiredInput: React.FC<Props> = ({
             ? <textarea
                 name={fieldName}
                 id={fieldName}
-                placeholder="Enter a task title"
+                placeholder={placeholder}
                 required
+                value={value}
                 minLength={minLength}
                 maxLength={maxLength}
-                rows={5}/>
+                rows={5}
+                onChange={onChange} />
             : <input
                 name={fieldName}
                 id={fieldName}
-                placeholder="Enter a task title"
+                placeholder={placeholder}
                 required
+                value={value}
                 minLength={minLength}
-                maxLength={maxLength}/>
+                maxLength={maxLength}
+                onChange={onChange}  />
             }
         </div>
     )
