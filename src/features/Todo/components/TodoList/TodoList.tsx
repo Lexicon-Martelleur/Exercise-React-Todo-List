@@ -6,19 +6,23 @@ import { ITodoEntity } from "../../../../service";
 import styles from "./TodoList.module.css";
 
 interface Props {
-    todoList: ITodoEntity[]
+    todoList: ITodoEntity[];
+    toggleDone: (id: string) => void;
 }
 
 export const TodoList: React.FC<Props> = ({
-    todoList
+    todoList,
+    toggleDone
 }): ReactElement => {
 
     return (
         <section className={styles.todoList}>
-            {todoList.map(entity => <TodoItem
-                key={entity.id}
-                todo={entity.todo}/>
-            )}
+            {todoList.map(entity => (
+                <TodoItem
+                    key={entity.id}
+                    todoEntity={entity}
+                    toggleDone={toggleDone}/>
+            ))}
         </section>
     );
 }

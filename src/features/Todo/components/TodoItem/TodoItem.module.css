@@ -1,8 +1,50 @@
 .todo-item {
     display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
     background-color: var(--BG_LIGHT);
     padding: 1rem;
     border: var(--BORDER_MEDIUM);
+    width: 100%;
+    height: 100px;
+}
+
+.todo-item-body {
+    max-height: 100%;
+    flex-grow: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    word-wrap: break-word;
+}
+
+.check-box-ctr,
+.trash-ctr {
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.check-box-ctr {
+    background-color: var(--BG_LIGHT_X);
+    border: var(--BORDER_MEDIUM_FAT);
+}
+
+.check-box-ctr:hover {
+    border: var(--BORDER_DARK_FAT);
+}
+
+.trash-ctr {
+    padding: 0.5rem;
+}
+
+.trash-ctr:hover {
+    background-color: var(--BG_DARK);
+}
+
+.hide {
+    visibility: hidden;
 }

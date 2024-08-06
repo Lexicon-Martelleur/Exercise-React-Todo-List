@@ -1,4 +1,3 @@
-import React from "react";
 import { ReactElement } from "react";
 
 interface Props {
@@ -10,7 +9,7 @@ interface Props {
     placeholder: string;
     className?: string;
     type?: "input" | "textarea";
-    onChange?: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
+    onChange?: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
 }
 
 export const RequiredInput: React.FC<Props> = ({
@@ -49,5 +48,5 @@ export const RequiredInput: React.FC<Props> = ({
                 onChange={onChange}  />
             }
         </div>
-    )
+    );
 }

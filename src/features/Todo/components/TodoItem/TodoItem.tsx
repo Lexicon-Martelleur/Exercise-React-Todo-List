@@ -1,20 +1,36 @@
 import React from "react";
 
-import { ITodo } from "../../../../service/types";
+import { ITodoEntity } from "../../../../service/types";
+import { Icon } from "../../../../components";
+import { Icons } from "../../../../assets";
 
 import styles from "./TodoItem.module.css";
+import { selectDescription, selectDone, selectID, selectTitle } from "../../state";
 
 interface Props {
-    todo: ITodo;
+    todoEntity: ITodoEntity;
+    toggleDone: (id: string) => void;
 }
 
 export const TodoItem: React.FC<Props> = ({
-    todo
+    todoEntity,
+    toggleDone
 }) => {
     return (
         <article className={styles.todoItem}>
-            <h4>Title: {todo.title}</h4>
-            <p>Description: {todo.description}</p>
+            <div className={styles.checkBoxCtr}
+                onClick={_ => { toggleDone(selectID(todoEntity)) }}>
+                <Icon icon={Icons.check}
+                    className={selectDone(todoEntity) ? "" : styles.hide} />
+            </div>
+            <div className={styles.todoItemBody}>
+                <h4>Title: {selectTitle(todoEntity)}</h4>
+                <p>Description: {selectDescription(todoEntity)}</p>
+            </div>
+            <div className={styles.trashCtr}>
+               <Icon icon={Icons.trash}/>
+            </div> 
         </article>
     );
 }
+

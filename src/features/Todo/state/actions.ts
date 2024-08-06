@@ -1,6 +1,10 @@
 import { ITodo } from "../../../service";
 import { TodoActionType as Type} from "./constants";
-import { AddTodoAction, UpdateNewTodoAction } from "./types";
+import {
+    AddTodoAction,
+    ToggleTodoDoneAction,
+    UpdateNewTodoAction
+} from "./types";
 
 export function updateNewTodoAction (todo: ITodo): UpdateNewTodoAction {
     return {
@@ -13,5 +17,12 @@ export function addTodoAction (todo: ITodo): AddTodoAction {
     return {
         type: Type.addTodo,
         payload: todo
+    };
+}
+
+export function toggleTodoDoneAction (id: string): ToggleTodoDoneAction {
+    return {
+        type: Type.toggleTodoDone,
+        payload: id
     };
 }

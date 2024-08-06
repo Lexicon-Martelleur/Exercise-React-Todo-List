@@ -3,12 +3,16 @@
     --BG_DARK: #001F3D;
     --BG_MEDIUM: #005F8F;
     --BG_LIGHT: #265973; 
+    --BG_LIGHT_X: #CCFFFF; 
     --FONT_COLOR_LIGHT: #CCFFFF;
     --BUTTON_COLOR_OK: #005F8F;
     --BORDER_COLOR_MEDIUM: #005F8F;
+    --BORDER_COLOR_DARK: #001F3D;
 
     --FONT_PRIMARY: "Courier Prime", monospace;
     --BORDER_MEDIUM: 1px solid var(--BORDER_COLOR_MEDIUM);
+    --BORDER_MEDIUM_FAT: 3px solid var(--BORDER_COLOR_MEDIUM);
+    --BORDER_DARK_FAT: 3px solid var(--BORDER_COLOR_DARK);
 }
 
 * {
