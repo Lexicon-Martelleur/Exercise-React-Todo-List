@@ -1,0 +1,7 @@
+.todo-section {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 1.5rem;;
+    background-color: var(--BG_DARK);
+}

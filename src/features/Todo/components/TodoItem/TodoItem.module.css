@@ -4,5 +4,5 @@
     gap: 0.5rem;
     background-color: var(--BG_LIGHT);
     padding: 1rem;
-    border: 2px solid var(--BORDER_COLOR_MEDIUM);
+    border: var(--BORDER_MEDIUM);
 }

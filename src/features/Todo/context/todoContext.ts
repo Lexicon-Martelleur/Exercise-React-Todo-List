@@ -1,8 +1,11 @@
 import React, { useContext } from "react";
 
-import { ITodoEntity } from "../../../service/types";
+import {ITodoState, ITodoAction } from "../state";
 
-export const TodoContext = React.createContext<Readonly<ITodoEntity[]> | null>(null);
+export const TodoContext = React.createContext<[
+    React.Dispatch<ITodoAction>,
+    ITodoState
+] | null>(null);
 
 export const useTodoContext = () => {
     const contextValue = useContext(TodoContext);

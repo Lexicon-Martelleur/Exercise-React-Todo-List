@@ -1,0 +1,6 @@
+.submit-button {
+    background-color: var(--BG_MEDIUM);
+    padding: 1rem;
+    color: var(--FONT_COLOR_LIGHT);
+    border: none;
+}

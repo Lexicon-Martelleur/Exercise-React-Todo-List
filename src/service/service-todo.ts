@@ -1,6 +1,6 @@
 import { ITodoEntity } from "./types";
 
-export function getTodos (): ITodoEntity[] {
+export function getInitialTodos (): ITodoEntity[] {
     return [
         {
             id: "1",

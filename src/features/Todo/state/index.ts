@@ -1,3 +1,3 @@
-import { getTodos } from "../../../service/service-todo";
-
-export const todos = getTodos();
+export * from "./reducer";
+export * from "./actions";
+export * from "./types";

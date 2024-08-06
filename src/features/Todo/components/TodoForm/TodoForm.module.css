@@ -1,0 +1,24 @@
+.todo-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.input-ctr {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-ctr > input,
+.input-ctr > textarea {
+    padding: 1rem;
+    color: var(--FONT_COLOR_LIGHT);
+    background-color: var(--BG_DARK_X);
+    border: var(--BORDER_MEDIUM);
+    
+}
+
+.input-ctr > input::placeholder,
+.input-ctr > textarea::placeholder {
+    color: var(--FONT_COLOR_LIGHT);
+}

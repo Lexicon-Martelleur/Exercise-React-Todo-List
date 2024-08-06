@@ -4,7 +4,7 @@ import { ITodo } from "../../../../service/types";
 import styles from "./TodoItem.module.css";
 
 interface Props {
-    todo: ITodo
+    todo: ITodo;
 }
 
 export const TodoItem: React.FC<Props> = ({
@@ -15,5 +15,5 @@ export const TodoItem: React.FC<Props> = ({
             <h4>Title: {todo.title}</h4>
             <p>Description: {todo.description}</p>
         </article>
-    )
+    );
 }

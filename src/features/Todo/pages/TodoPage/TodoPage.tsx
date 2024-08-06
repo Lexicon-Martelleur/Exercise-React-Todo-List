@@ -1,14 +1,14 @@
 import { ReactElement } from "react";
 
 import { BaseLayout } from "../../../../layout";
-import { TodoList } from "../../components";
+import { Todo } from "../../containers";
 import { TodoProvider } from "../../providers";
 
 export const TodoPage = (): ReactElement => {
     return (
         <BaseLayout>
             <TodoProvider>
-                <TodoList />
+                <Todo />
             </TodoProvider>
         </BaseLayout> 
     )

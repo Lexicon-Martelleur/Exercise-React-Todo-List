@@ -1,19 +1,24 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, useReducer } from "react";
 
 import { TodoContext } from "../context";
-import { todos } from "../state";
+import { todoInitData, todoReducer } from "../state";
 
 interface Props {
-  children?: React.ReactNode;
+    children?: React.ReactNode;
 }
 
 export const TodoProvider: React.FC<Props> = ({
-    children
+	children
 }): ReactElement => {
 
+  const [
+	  todoState,
+	  dispatchTodoAction
+  ] = useReducer(todoReducer, todoInitData);
+
   return (
-    <TodoContext.Provider value={todos}>
-      {children}
-    </TodoContext.Provider>
+	  <TodoContext.Provider value={[dispatchTodoAction, todoState]}>
+	  	  {children}
+	  </TodoContext.Provider>
   );
 }
