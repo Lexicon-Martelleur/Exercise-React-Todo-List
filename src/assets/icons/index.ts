@@ -3,6 +3,7 @@ import trash from "./delete.svg";
 import home from "./home.svg";
 import edit from "./edit.svg";
 import close from "./close-edit.svg";
+import sort from "./sort.svg";
 
 export const Icons = {
     check: {
@@ -29,5 +30,10 @@ export const Icons = {
         src: close,
         alt: "Close edit",
         title: "Close edit"
+    },
+    sort: {
+        src: sort,
+        alt: "Sort",
+        title: "Sort"
     }
 };

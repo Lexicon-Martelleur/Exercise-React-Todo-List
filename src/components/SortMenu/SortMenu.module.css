@@ -1,0 +1,40 @@
+.sort-menu-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--BG_LIGHT);
+    padding: 1rem;
+}
+
+.sort-menu-select-ctr {
+    display: flex;
+    flex-direction: row;
+    gap: 0;
+}
+
+.sort-menu-select,
+.sort-menu-select-icon {
+    background-color: var(--BG_LIGHT_X);
+    outline: none;
+    border: none;
+    color: #000F1F;
+    padding: 0.5rem;
+}
+
+.sort-menu-select {
+    border-radius: 0 0.5rem 0.5rem 0;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.sort-menu-select-icon {
+    border-radius: 0.5rem 0rem 0rem 0.5rem;
+}
+
+.sort-menu-select > option {
+    position: relative;
+    right: 20px;
+    color: #000F1F;
+    font-size: 1rem;
+}

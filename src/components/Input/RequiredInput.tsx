@@ -28,7 +28,8 @@ export const RequiredInput: React.FC<Props> = ({
     const derivedClassNames = [
         styles.requiredInput,
         className ? className : ""
-    ].join(" "); 
+    ].join(" ");
+ 
     return (
         <div className={derivedClassNames}>
             <label htmlFor={fieldName}>{labelTitle}</label>

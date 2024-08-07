@@ -1,3 +1,4 @@
 export * from "./Input";
-export * from "./button";
+export * from "./Button";
 export * from "./Icon";
+export *from "./SortMenu";

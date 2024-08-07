@@ -4,10 +4,10 @@ export function getInitialTodos (): ITodoEntity[] {
     return [
         {
             id: "1",
-            timestamp: Date.now(),
+            timestamp: Date.now() + 5000000,
             todo: {
                 title: "By food",
-                author: "Joel",
+                author: "Lars",
                 description: "coffe, apples, milk",
                 done: false
             }
@@ -17,17 +17,17 @@ export function getInitialTodos (): ITodoEntity[] {
             timestamp: Date.now(),
             todo: {
                 title: "Read 3 books",
-                author: "Joel",
+                author: "Mr. Nice",
                 description: "Bittersweet, ...",
                 done: false
             }
         },
         {
             id: "3",
-            timestamp: Date.now(),
+            timestamp: Date.now() + 2000000,
             todo: {
                 title: "Call friend",
-                author: "Joel",
+                author: "Carl",
                 description: "Ask what plan is next saturday",
                 done: false
             }
@@ -37,4 +37,26 @@ export function getInitialTodos (): ITodoEntity[] {
 
 export function getEmptyDodo (): ITodo {
     return { title: "", author: "", description: "", done: false };
+}
+
+export function sortByAuthor (todoList: ITodoEntity[]): ITodoEntity[] {
+    return todoList.slice().sort((a, b) => {
+        const authorA = a.todo.author.toLowerCase();
+        const authorB = b.todo.author.toLowerCase();
+    
+        if (authorA < authorB) { return -1 }
+        else if (authorA > authorB) { return 1 }
+        else { return 0; }
+    });
+}
+
+export function sortByDate (todoList: ITodoEntity[]): ITodoEntity[] {
+    return todoList.slice().sort((a, b) => {
+        const dateA = a.timestamp;
+        const dateB = b.timestamp;
+    
+        if (dateA < dateB) { return -1 }
+        else if (dateA > dateB) { return 1 }
+        else { return 0; }
+    });
 }
