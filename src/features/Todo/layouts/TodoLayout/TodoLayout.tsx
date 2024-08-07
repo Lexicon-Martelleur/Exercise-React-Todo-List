@@ -1,6 +1,4 @@
-import { Children, ReactElement, ReactNode } from "react";
-
-import { TodoList, TodoForm } from "../../components";
+import { ReactElement, ReactNode } from "react";
 
 import styles from "./TodoLayout.module.css";
 
@@ -18,8 +16,6 @@ export const TodoLayout: React.FC<Props> = ({
                 <p>Stay organized and productive.</p>
             </div>
             {children}
-            {/* <TodoForm />
-            <TodoList /> */}
         </section>
     );
 }

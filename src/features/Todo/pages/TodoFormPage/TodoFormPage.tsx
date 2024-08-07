@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 
-import { TodoLayout } from "../../containers";
+import { TodoLayout } from "../../layouts";
 import { TodoProvider } from "../../providers";
 import { TodoForm } from "../../components";
 

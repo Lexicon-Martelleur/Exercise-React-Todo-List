@@ -5,7 +5,7 @@ import { NavLink } from "react-router-dom";
 import { Path } from "../../constants";
 
 interface Props {
-    children?: ReactNode 
+    children?: ReactNode;
 }
 
 export const BaseLayout: React.FC<Props> = ({
