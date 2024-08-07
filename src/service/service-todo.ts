@@ -4,6 +4,7 @@ export function getInitialTodos (): ITodoEntity[] {
     return [
         {
             id: "1",
+            timestamp: Date.now(),
             todo: {
                 title: "By food",
                 description: "coffe, apples, milk",
@@ -12,6 +13,7 @@ export function getInitialTodos (): ITodoEntity[] {
         },
         {
             id: "2",
+            timestamp: Date.now(),
             todo: {
                 title: "Read 3 books",
                 description: "Bittersweet, ...",
@@ -20,6 +22,7 @@ export function getInitialTodos (): ITodoEntity[] {
         },
         {
             id: "3",
+            timestamp: Date.now(),
             todo: {
                 title: "Call friend",
                 description: "Ask what plan is next saturday",

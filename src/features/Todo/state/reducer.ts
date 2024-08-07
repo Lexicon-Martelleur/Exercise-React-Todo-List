@@ -35,9 +35,10 @@ function handleAddTodo (
     action: AddTodoAction,
     state: ITodoState
 ): ITodoState {
-    const newTodoEntity = {
+    const newTodoEntity: ITodoEntity = {
         id: uuid(),
-        todo: action.payload
+        todo: action.payload,
+        timestamp: Date.now()
     };
     return {
         ...state,

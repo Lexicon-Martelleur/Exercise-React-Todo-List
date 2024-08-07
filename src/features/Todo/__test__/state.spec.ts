@@ -22,10 +22,11 @@ describe("Todo State", () => {
     };
     const mockInitTodoEntity: ITodoEntity = {
         id: "1",
+        timestamp: Date.now(),
         todo: {
             title: "first title",
             description: "first description",
-            done: false 
+            done: false
         }
     } 
     const mockTodoState: ITodoState = {

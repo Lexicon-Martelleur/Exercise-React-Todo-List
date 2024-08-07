@@ -6,5 +6,6 @@ export type ITodo = Readonly<{
 
 export interface ITodoEntity {
     id: string;
+    timestamp: number;
     todo: ITodo;
 }

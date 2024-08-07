@@ -15,3 +15,8 @@ export function selectTitle (todoEntity: ITodoEntity): string {
 export function selectDone (todoEntity: ITodoEntity): boolean {
     return todoEntity.todo.done;
 }
+
+export function selectDate (todoEntity: ITodoEntity): string {
+    const date = new Date(todoEntity.timestamp)
+    return date.toLocaleString();
+}

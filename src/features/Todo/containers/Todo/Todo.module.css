@@ -4,5 +4,5 @@
     gap: 2rem;
     padding: 1.5rem;;
     background-color: var(--BG_DARK);
-    max-width: 100%;
+    width: 100%;
 }
