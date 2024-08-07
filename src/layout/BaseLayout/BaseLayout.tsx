@@ -13,6 +13,11 @@ interface Props {
 export const BaseLayout: React.FC<Props> = ({
     children
 }): ReactElement => {
+    const navLinks = [
+        { to: Path.INDEX, label: "Todos" },
+        { to: Path.ADD_TODO, label: "Add" },
+        { to: Path.ABOUT, label: "About" }
+    ]
     return (
         <>
             <header className={styles.header}>
@@ -20,18 +25,16 @@ export const BaseLayout: React.FC<Props> = ({
                     <Icon size={"large"} icon={Icons.home}/>
                 </Link></h1>
                 <nav className={styles.nav}>
-                    <NavLink to={Path.ADD_TODO}
-                        className={({isActive}) => (
-                            isActive ? styles.activeLink : styles.link
-                        )}>
-                        Add
-                    </NavLink>
-                    <NavLink    to={Path.INDEX}
-                        className={({isActive}) => (
-                            isActive ? styles.activeLink : styles.link
-                        )}>
-                        Todos
-                    </NavLink>
+                    {navLinks.map((link) => (
+                        <NavLink
+                            key={link.to}
+                            to={link.to}
+                            className={({isActive}) => (
+                                isActive ? styles.activeLink : styles.link
+                            )}>
+                            {link.label}
+                        </NavLink>
+                    ))}
                 </nav>
             </header>
             <main className={styles.main}>
