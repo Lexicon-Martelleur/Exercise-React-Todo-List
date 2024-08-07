@@ -1,30 +1,33 @@
-import React, { ReactElement } from "react";
+import { ReactElement } from "react";
 
+import { useTodoContext } from "../../context";
+import {
+    removeTodoAction,
+    toggleTodoDoneAction
+} from "../../state";
 import { TodoItem } from "../TodoItem";
-import { ITodoEntity } from "../../../../service";
 
 import styles from "./TodoList.module.css";
 
-interface Props {
-    todoList: ITodoEntity[];
-    toggleDone: (id: string) => void;
-    removeTodoItem: (id: string) => void;
-}
+export const TodoList = (): ReactElement => {
+    const [dispatchTodoAction, todoState] = useTodoContext();
 
-export const TodoList: React.FC<Props> = ({
-    todoList,
-    toggleDone,
-    removeTodoItem
-}): ReactElement => {
+    const handleToggleDone = (id: string) => {
+        dispatchTodoAction(toggleTodoDoneAction(id));
+    }
+
+    const handleRemoveTodo = (id: string) => {
+        dispatchTodoAction(removeTodoAction(id));
+    }
 
     return (
         <section className={styles.todoList}>
-            {todoList.map(entity => (
+            {todoState.todoList.map(entity => (
                 <TodoItem
                     key={entity.id}
                     todoEntity={entity}
-                    onToggleDone={toggleDone}
-                    onRemoveTodoItem={removeTodoItem} />
+                    onToggleDone={handleToggleDone}
+                    onRemoveTodoItem={handleRemoveTodo} />
             ))}
         </section>
     );

@@ -32,11 +32,16 @@ export const TodoItem: React.FC<Props> = ({
         todoText.current.classList.toggle(styles.none)
     } 
 
+    const handleToggleDone: React.MouseEventHandler<HTMLButtonElement> = (event) => {
+        event.stopPropagation();
+        onToggleDone(todoEntity.id);
+    }
+
     return (
         <article className={styles.todoItem}
             onClick={_ => { toggleDisplayText() }}>
             <button className={styles.checkBoxBtn}
-                onClick={_ => { onToggleDone(selectID(todoEntity)) }}>
+                onClick={handleToggleDone}>
                 <Icon icon={Icons.check}
                     className={selectDone(todoEntity) ? "" : styles.hide} />
             </button>

@@ -1,8 +1,29 @@
-.header, footer {
+.header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
     width: 100%;
     background-color: black;
-    text-align: center;
     padding: 1rem; 
+}
+
+.nav {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+
+.link {
+    color: var(--FONT_COLOR_LIGHT);
+}
+
+.link:hover {
+    color: var(--FONT_COLOR_MEDIUM);
+}
+
+.active-link {
+    color: var(--FONT_COLOR_MEDIUM);
 }
 
 .main {
@@ -12,6 +33,13 @@
     align-items: center;
     justify-content: center;
     background-color: var(--BG_DARK_X);
+}
+
+footer {
+    width: 100%;
+    background-color: black;
+    text-align: center;
+    padding: 1rem; 
 }
 
 @media (min-width: 500px) {

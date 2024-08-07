@@ -1,7 +1,13 @@
 import React, { ReactElement, useEffect, useState } from "react";
 
 import { RequiredInput, SubmitButton } from "../../../../components";
-import { ITodo, todoConstants } from "../../../../service";
+import { getEmptyDodo, todoConstants } from "../../../../service";
+import { useTodoContext } from "../../context";
+import {
+    addTodoAction,
+    updateNewTodoAction
+} from "../../state";
+
 
 import styles from "./TodoForm.module.css";
 
@@ -10,28 +16,22 @@ const inputFieldName = {
     description: "description"
 } as const;
 
-interface Props {
-    newTodo: ITodo;
-    addNewTodo: (todo: ITodo) => void;
-}
-
-export const TodoForm: React.FC<Props> = ({
-    newTodo,
-    addNewTodo
-}): ReactElement => {
-    const [author, setAuthor] = useState(newTodo.author); 
-    const [title, setTitle] = useState(newTodo.title);
-    const [description, setDescription] = useState(newTodo.description);
+export const TodoForm = (): ReactElement => {
+    const [dispatchTodoAction, todoState] = useTodoContext();
+    const [author, setAuthor] = useState(todoState.newTodo.author); 
+    const [title, setTitle] = useState(todoState.newTodo.title);
+    const [description, setDescription] = useState(todoState.newTodo.description);
 
     useEffect(() => {
-        setAuthor(newTodo.author);
-        setTitle(newTodo.title);
-        setDescription(newTodo.description);
-    }, [newTodo]);
+        setAuthor(todoState.newTodo.author);
+        setTitle(todoState.newTodo.title);
+        setDescription(todoState.newTodo.description);
+    }, [todoState]);
 
     const handleSubmit: React.FormEventHandler<HTMLFormElement> = (event) => {
         event.preventDefault();
-        addNewTodo({ author, title, description, done: false });
+        dispatchTodoAction(updateNewTodoAction(getEmptyDodo()));
+        dispatchTodoAction(addTodoAction({ author, title, description, done: false }));
     }
 
     return (
