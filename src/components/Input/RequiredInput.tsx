@@ -1,5 +1,7 @@
 import { ReactElement } from "react";
 
+import styles from "./RequiredInput.module.css";
+
 interface Props {
     fieldName: string;
     minLength: number;
@@ -23,8 +25,12 @@ export const RequiredInput: React.FC<Props> = ({
     className,
     onChange = () => {}
 }): ReactElement => {
+    const derivedClassNames = [
+        styles.requiredInput,
+        className ? className : ""
+    ].join(" "); 
     return (
-        <div className={className ? className : ""}>
+        <div className={derivedClassNames}>
             <label htmlFor={fieldName}>{labelTitle}</label>
             {type && type=="textarea"
             ? <textarea

@@ -12,7 +12,7 @@ import { TodoForm } from "../TodoForm";
 export const AddTodo = (): ReactElement => {
     const [dispatchTodoAction, todoState] = useTodoContext();
  
-    const handleSubmit = (todo: ITodo) => {
+    const handleSubmitAddTodo = (todo: ITodo) => {
         const emptyTodo = getEmptyDodo();
         dispatchTodoAction(updateNewTodoAction(emptyTodo));
         dispatchTodoAction(addTodoAction(todo));
@@ -26,7 +26,7 @@ export const AddTodo = (): ReactElement => {
         <TodoForm
             todo={todoState.newTodo}
             submitLabel="Add Task"
-            onSubmit={handleSubmit}
+            onSubmit={handleSubmitAddTodo}
             onValueChange={handleValueChange}/>
     )
 }

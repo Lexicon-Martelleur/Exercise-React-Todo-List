@@ -1,6 +1,7 @@
 import { ReactElement } from "react";
 
 import { useTodoContext } from "../../context";
+import { ITodo } from "../../../../service";
 import {
     editTodoAction,
     removeTodoAction,
@@ -9,7 +10,7 @@ import {
 import { TodoItem } from "../TodoItem";
 
 import styles from "./TodoList.module.css";
-import { ITodo } from "../../../../service";
+
 
 export const TodoList = (): ReactElement => {
     const [dispatchTodoAction, todoState] = useTodoContext();

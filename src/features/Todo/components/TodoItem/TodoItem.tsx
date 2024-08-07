@@ -1,19 +1,11 @@
-import React, { useRef, useState } from "react";
+import { ReactElement, useRef, useState } from "react";
 
 import { ITodo, ITodoEntity } from "../../../../service";
-import { Icon } from "../../../../components";
-import { Icons } from "../../../../assets";
-import {
-    selectAuthor,
-    selectDate,
-    selectDescription,
-    selectDone,
-    selectID,
-    selectTitle
-} from "../../state";
+import { TodoItemViewMode } from "./TodoItemViewMode";
+import { TodoItemEditMode } from "./TodoItemEditMode";
 
 import styles from "./TodoItem.module.css";
-import { TodoForm } from "../TodoForm";
+import { selectTitle } from "../../state";
 
 interface Props {
     todoEntity: ITodoEntity;
@@ -27,69 +19,41 @@ export const TodoItem: React.FC<Props> = ({
     onToggleDone,
     onRemoveTodoItem,
     onEditTodoItem
-}) => {
-    const todoText = useRef<HTMLParagraphElement>(null);
+}): ReactElement => {
+    const todoDescriptionRef = useRef<HTMLParagraphElement>(null);
     const [editMode, setEditMode] = useState(false);
 
-    const toggleDisplayText = () => {
-        if (todoText.current == null) { return; }
-        todoText.current.classList.toggle(styles.none)
-    } 
+    const handleToggleViewDescription = () => {
+        if (todoDescriptionRef.current == null) { return; }
+        todoDescriptionRef.current.classList.toggle(styles.none);
+    }
+
+    const handleToggleEditMode = () => {
+        setEditMode(prevValue => !prevValue);
+    }
 
     const handleToggleDone: React.MouseEventHandler<HTMLButtonElement> = (event) => {
         event.stopPropagation();
         onToggleDone(todoEntity.id);
     }
 
-    const handleSubmit = (todo: ITodo) => {
+    const handleSubmitEditTodo = (todo: ITodo) => {
         onEditTodoItem(todoEntity.id, todo);
         setEditMode(false);
     }
 
     return (
-        <article className={styles.todoItem}
-            onClick={_ => { toggleDisplayText() }}>
-            {!editMode && <button className={styles.checkBoxBtn}
-                onClick={handleToggleDone}>
-                <Icon icon={Icons.check}
-                    className={selectDone(todoEntity) ? "" : styles.hide} />
-            </button>}
-            <div className={styles.todoItemBody}>
-                {!editMode
-                ? (<>
-                    <h3>{selectTitle(todoEntity)}</h3>
-                    <span>Author: {selectAuthor(todoEntity)}</span>
-                    <time dateTime={selectDate(todoEntity)}>
-                        Date: {selectDate(todoEntity)}
-                    </time>
-                    <p ref={todoText}
-                        className={styles.none}>
-                        {selectDescription(todoEntity)}
-                    </p>
-                </>)
-                : (
-                <TodoForm
-                    todo={todoEntity.todo}
-                    submitLabel="Edit Task"
-                    onSubmit={handleSubmit}/>
-                )}
-            </div>
-            <div className={styles.updateTodoCtr}>
-                {!editMode && <button className={styles.selectIconBtn}
-                    onClick={_ => { onRemoveTodoItem(selectID(todoEntity)) }}>
-                    <Icon icon={Icons.trash}/>
-               </button>}
-               {!editMode
-               ? <button className={styles.selectIconBtn}
-                    onClick={_ => { setEditMode(prevValue => !prevValue) }}>
-                   <Icon icon={Icons.edit}/>
-               </button>
-               : <button className={styles.selectIconBtn}
-                    onClick={_ => { setEditMode(prevValue => !prevValue) }}>
-                   <Icon icon={Icons.close}/>
-               </button>}
-            </div> 
-        </article>
+        <article title={`Select to view '${selectTitle(todoEntity)}' details`}>
+        {!editMode
+            ? <TodoItemViewMode todoEntity={todoEntity}
+                todoDescriptionRef={todoDescriptionRef}
+                onToggleViewDescription={handleToggleViewDescription}
+                onToggleEditMode={handleToggleEditMode}
+                onToggleDone={handleToggleDone}
+                onRemoveTodoItem={onRemoveTodoItem}/>
+            : <TodoItemEditMode todoEntity={todoEntity}
+                onSubmitEditTodo={handleSubmitEditTodo}
+                onToggleEditMode={handleToggleEditMode} />
+        }</article>
     );
 }
-

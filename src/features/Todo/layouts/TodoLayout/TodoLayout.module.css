@@ -5,4 +5,5 @@
     padding: 1.5rem;;
     background-color: var(--BG_DARK);
     width: 100%;
+    min-height: 100%;
 }

@@ -1,0 +1,5 @@
+.required-input > input,
+.required-input  > textarea {
+    padding: 1rem;
+    font-size: 1rem;
+}
