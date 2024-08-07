@@ -36,7 +36,7 @@ export const TodoForm: React.FC<Props> = ({
         setDescription(emptyTodo.description);
         onSubmit({
             author, title, description, done: todo.done
-        })
+        });
     }
 
     const handleValueChange = (stateAction: (value: string) => void, value: string) => {

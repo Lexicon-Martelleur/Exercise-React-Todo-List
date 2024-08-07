@@ -16,7 +16,7 @@ const sortMode = {
     author: "Author",
     date: "Date",
     none: "None"
-} as const
+} as const;
 
 type SortModeType = typeof sortMode[
     keyof typeof sortMode
@@ -26,7 +26,7 @@ export const TodoList = (): ReactElement => {
     const [
         selectedSortMode,
         setSelectedSortMode
-    ] = useState<SortModeType>(sortMode.none)
+    ] = useState<SortModeType>(sortMode.none);
     const [dispatchTodoAction, todoState] = useTodoContext();
 
     const handleToggleDone = (id: string) => {

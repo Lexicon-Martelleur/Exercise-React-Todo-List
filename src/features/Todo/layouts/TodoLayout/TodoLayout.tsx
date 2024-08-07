@@ -3,7 +3,7 @@ import { ReactElement, ReactNode } from "react";
 import styles from "./TodoLayout.module.css";
 
 interface Props {
-    children?: ReactNode
+    children?: ReactNode;
 }
 
 export const TodoLayout: React.FC<Props> = ({

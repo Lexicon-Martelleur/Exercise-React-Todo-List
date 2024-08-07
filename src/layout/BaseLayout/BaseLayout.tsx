@@ -44,5 +44,5 @@ export const BaseLayout: React.FC<Props> = ({
                 <p>joel.martelleur@gmail.com</p>
             </footer>
         </>
-    )
+    );
 }

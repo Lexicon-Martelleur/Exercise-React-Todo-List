@@ -28,5 +28,5 @@ export const AddTodo = (): ReactElement => {
             submitLabel="Add Task"
             onSubmit={handleSubmitAddTodo}
             onValueChange={handleValueChange}/>
-    )
+    );
 }

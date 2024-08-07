@@ -7,9 +7,9 @@ import { Icons } from "../../assets";
 interface Props {
     title: string;
     listToBeSorted: unknown[];
-    selectedSortMode: string
-    sortMode: object
-    onSelectSortMode: React.ChangeEventHandler<HTMLSelectElement>
+    selectedSortMode: string;
+    sortMode: object;
+    onSelectSortMode: React.ChangeEventHandler<HTMLSelectElement>;
 }
 
 export const SortMenu: React.FC<Props> = ({
@@ -37,5 +37,5 @@ export const SortMenu: React.FC<Props> = ({
                 </select>
             </div>
         </div>
-    )
+    );
 }

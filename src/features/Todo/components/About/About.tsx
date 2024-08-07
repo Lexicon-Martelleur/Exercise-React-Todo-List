@@ -8,7 +8,7 @@ export const About = (): ReactElement => {
     const [_, todoState] = useTodoContext();
     
     const getNrOfTodosNotDone = () => {
-        return todoState.todoList.filter(item => item.todo.done === true).length
+        return todoState.todoList.filter(item => item.todo.done === true).length;
     } 
     
     return (
@@ -18,5 +18,5 @@ export const About = (): ReactElement => {
                 <li>Nr of todos done: {getNrOfTodosNotDone()}</li>
             </ul>
         </section>
-    )
+    );
 }
