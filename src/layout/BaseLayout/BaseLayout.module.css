@@ -4,7 +4,7 @@
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    background-color: black;
+    background-color: var(--BG_DARK_X);
     padding-block: 1rem;
     padding-inline: 2rem; 
 }
@@ -33,12 +33,14 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: var(--BG_DARK_X);
+    background-color: var(--BG_DARK);
+    width: 100%;
+    max-width: 1000px;
 }
 
 footer {
     width: 100%;
-    background-color: black;
+    background-color: var(--BG_DARK_X);
     text-align: center;
     padding: 1rem; 
 }

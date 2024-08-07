@@ -1,3 +1,3 @@
 export * from "./TodoList";
-export * from "./TodoForm";
+export * from "./AddTodo";
 export * from "./About";

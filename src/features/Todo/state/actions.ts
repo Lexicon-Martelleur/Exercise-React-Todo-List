@@ -2,6 +2,7 @@ import { ITodo } from "../../../service";
 import { TodoActionType as Type} from "./constants";
 import {
     AddTodoAction,
+    EditTodoAction,
     RemoveTodoAction,
     ToggleTodoDoneAction,
     UpdateNewTodoAction
@@ -32,5 +33,12 @@ export function removeTodoAction (id: string): RemoveTodoAction {
     return {
         type: Type.removeTodo,
         payload: id
+    };
+}
+
+export function editTodoAction (id: string, editedTodo: ITodo): EditTodoAction {
+    return {
+        type: Type.editTodo,
+        payload: { id, editedTodo }
     };
 }

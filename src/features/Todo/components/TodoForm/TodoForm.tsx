@@ -1,49 +1,51 @@
-import React, { ReactElement, useEffect, useState } from "react";
+import { ReactElement, useState } from "react";
 
 import { RequiredInput, SubmitButton } from "../../../../components";
-import { getEmptyDodo, todoConstants } from "../../../../service";
-import { useTodoContext } from "../../context";
-import {
-    addTodoAction,
-    updateNewTodoAction
-} from "../../state";
-
+import { getEmptyDodo, ITodo, todoConstants } from "../../../../service";
 
 import styles from "./TodoForm.module.css";
 
 const inputFieldName = {
     title: "title", 
-    description: "description"
+    description: "description",
+    author: "author"
 } as const;
 
-export const TodoForm = (): ReactElement => {
-    const [dispatchTodoAction, todoState] = useTodoContext();
-    const [author, setAuthor] = useState(todoState.newTodo.author); 
-    const [title, setTitle] = useState(todoState.newTodo.title);
-    const [description, setDescription] = useState(todoState.newTodo.description);
+interface Props {
+    todo: ITodo;
+    submitLabel: string;
+    onSubmit: (newTodo: ITodo) => void;
+    onValueChange?: (newTodo: ITodo) => void;
+}
 
-    // useEffect(() => {
-    //     setAuthor(todoState.newTodo.author);
-    //     setTitle(todoState.newTodo.title);
-    //     setDescription(todoState.newTodo.description);
-    // }, [todoState]);
+export const TodoForm: React.FC<Props> = ({
+    todo,
+    submitLabel,
+    onSubmit,
+    onValueChange
+}): ReactElement => {
+    const [author, setAuthor] = useState(todo.author); 
+    const [title, setTitle] = useState(todo.title);
+    const [description, setDescription] = useState(todo.description);
 
     const handleSubmit: React.FormEventHandler<HTMLFormElement> = (event) => {
         event.preventDefault();
-        const emptyTodo = getEmptyDodo()
-        dispatchTodoAction(updateNewTodoAction(emptyTodo));
-        dispatchTodoAction(addTodoAction({ author, title, description, done: false }));
-        setAuthor(todoState.newTodo.author);
+        const emptyTodo = getEmptyDodo();
         setAuthor(emptyTodo.author);
         setTitle(emptyTodo.title);
         setDescription(emptyTodo.description);
+        onSubmit({
+            author, title, description, done: todo.done
+        })
     }
 
-    const handleChange = (stateAction: (value: string) => void, value: string) => {
+    const handleValueChange = (stateAction: (value: string) => void, value: string) => {
         stateAction(value);
-        dispatchTodoAction(updateNewTodoAction({ author, title, description, done: false }));
+        onValueChange != null && onValueChange({
+            author, title, description, done: todo.done
+        });
     }
-
+    
     return (
         <form className={styles.todoForm} onSubmit={handleSubmit}> 
             <RequiredInput fieldName={inputFieldName.title}
@@ -53,15 +55,15 @@ export const TodoForm = (): ReactElement => {
                 value={title}
                 placeholder="Enter a task title..."
                 className={styles.inputCtr}
-                onChange={e => handleChange(setTitle, e.target.value)} />
-            <RequiredInput fieldName={inputFieldName.title}
+                onChange={e => handleValueChange(setTitle, e.target.value)} />
+            <RequiredInput fieldName={inputFieldName.author}
                 minLength={todoConstants.MIN_LENGTH_AUTHOR}
                 maxLength={todoConstants.MAX_LENGTH_AUTHOR}
                 labelTitle="Author"
                 value={author}
                 placeholder="Enter author name..."
                 className={styles.inputCtr}
-                onChange={e => handleChange(setAuthor, e.target.value)} />
+                onChange={e => handleValueChange(setAuthor, e.target.value)} />
             <RequiredInput fieldName={inputFieldName.description}
                 minLength={todoConstants.MIN_LENGTH_DESCRIPTION}
                 maxLength={todoConstants.MAX_LENGTH_DESCRIPTION}
@@ -70,8 +72,8 @@ export const TodoForm = (): ReactElement => {
                 placeholder="Enter a task description..."
                 className={styles.inputCtr}
                 type="textarea"
-                onChange={e => handleChange(setDescription, e.target.value)} />
-            <SubmitButton>Add Task</SubmitButton>
+                onChange={e => handleValueChange(setDescription, e.target.value)} />
+            <SubmitButton>{submitLabel}</SubmitButton>
         </form>
     );
 }

@@ -1,6 +1,7 @@
 import { ITodo, ITodoEntity } from "../../../service"
 import {
     addTodoAction,
+    editTodoAction,
     removeTodoAction,
     toggleTodoDoneAction,
     updateNewTodoAction
@@ -72,6 +73,22 @@ describe("Todo State", () => {
             const nextState = todoReducer(mockTodoState, action);
             expect(nextState.todoList).not.toContain(mockInitTodoEntity);
         });
+
+        it("return state with edited specified todo", () => {
+            const indexTodo = 0;
+            const editedTodo: ITodo = {
+                title: "edited title",
+                author: "edited author",
+                description: "edited description",
+                done: false
+            };
+            const action = editTodoAction(
+                mockTodoState.todoList[indexTodo].id,
+                editedTodo);
+            expect(mockTodoState.todoList).toContain(mockInitTodoEntity);
+            const nextState = todoReducer(mockTodoState, action);
+            expect(nextState.todoList[indexTodo].todo).toStrictEqual(editedTodo);
+        });
     });
 
     describe("addTodoAction", () => {
@@ -109,6 +126,22 @@ describe("Todo State", () => {
             const action = removeTodoAction(inPara);
             expect(action.type).toBe(TodoActionType.removeTodo);
             expect(action.payload).toBe(inPara);
+        });
+    });
+
+    describe("editTodoAction", () => {
+        it(`return an action of type edit todo
+            with payload value same as input parameter`, () => {
+            const id = "2";
+            const editedTodo: ITodo = {
+                title: "edited title",
+                author: "edited author",
+                description: "edited description",
+                done: false
+            };
+            const action = editTodoAction(id, editedTodo);
+            expect(action.type).toBe(TodoActionType.editTodo);
+            expect(action.payload).toStrictEqual({id, editedTodo});
         });
     });
 });

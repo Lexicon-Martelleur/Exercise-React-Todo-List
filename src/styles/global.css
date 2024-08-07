@@ -5,13 +5,15 @@
     --BG_LIGHT: #265973; 
     --BG_LIGHT_X: #CCFFFF; 
     --FONT_COLOR_LIGHT: #CCFFFF;
-    --FONT_COLOR_MEDIUM: #005F8F;
-    --BUTTON_COLOR_OK: #005F8F;
-    --BORDER_COLOR_MEDIUM: #005F8F;
-    --BORDER_COLOR_DARK: #001F3D;
+    --FONT_COLOR_MEDIUM: #0079b6;
+    --BUTTON_COLOR_OK: #003c5a;
+    --BORDER_COLOR_LIGHT: #CCFFFF;
+    --BORDER_COLOR_MEDIUM: #003c5a;
+    --BORDER_COLOR_DARK: #000;
 
     --FONT_PRIMARY: "Courier Prime", monospace;
     --BORDER_MEDIUM: 1px solid var(--BORDER_COLOR_MEDIUM);
+    --BORDER_LIGHT_FAT: 3px solid var(--BORDER_COLOR_LIGHT);
     --BORDER_MEDIUM_FAT: 3px solid var(--BORDER_COLOR_MEDIUM);
     --BORDER_DARK_FAT: 3px solid var(--BORDER_COLOR_DARK);
 }
@@ -28,5 +30,8 @@
     width: 100%;
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
     min-height: 100vh;
+    background-color: var(--BG_DARK);
 }

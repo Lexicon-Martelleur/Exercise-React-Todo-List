@@ -26,9 +26,15 @@ export interface RemoveTodoAction {
     payload: string;
 }
 
+export interface EditTodoAction {
+    type: typeof TodoActionType.editTodo;
+    payload: { id: string, editedTodo: ITodo };
+}
+
 export type ITodoAction = (
     UpdateNewTodoAction |
     AddTodoAction |
     ToggleTodoDoneAction |
-    RemoveTodoAction
+    RemoveTodoAction |
+    EditTodoAction
 );

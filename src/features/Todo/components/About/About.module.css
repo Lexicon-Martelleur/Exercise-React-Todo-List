@@ -1,3 +1,9 @@
+.aboutSection {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .about-status-list {
     margin-left: 2rem;
     color: black;

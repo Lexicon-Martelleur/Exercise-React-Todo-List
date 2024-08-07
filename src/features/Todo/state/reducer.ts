@@ -1,7 +1,16 @@
+import { v4 as uuid } from "uuid";
+
 import { getInitialTodos, getEmptyDodo, ITodoEntity } from "../../../service";
 import { TodoActionType as Type} from "./constants";
-import { ITodoState, ITodoAction, UpdateNewTodoAction, AddTodoAction, ToggleTodoDoneAction, RemoveTodoAction } from "./types";
-import { v4 as uuid } from "uuid";
+import {
+    ITodoState,
+    ITodoAction,
+    UpdateNewTodoAction,
+    AddTodoAction,
+    ToggleTodoDoneAction,
+    RemoveTodoAction,
+    EditTodoAction
+} from "./types";
 
 export const todoInitData: ITodoState = {
     newTodo: getEmptyDodo(),
@@ -16,6 +25,7 @@ export function todoReducer (
         case Type.updateNewTodo: return handleNewTodoAction(action, state);
         case Type.addTodo: return handleAddTodo(action, state);
         case Type.removeTodo: return handleRemoveTodo(action, state);
+        case Type.editTodo: return handleEditTodo(action, state);
         case Type.toggleTodoDone: return handleToggleTodoDone(action, state);
         default: return state;
     }
@@ -55,6 +65,25 @@ function handleRemoveTodo (
 ): ITodoState {
     const newList: ITodoEntity[] = state.todoList.filter(entity => (
         entity.id !== action.payload
+    ));
+
+    return {
+        ...state,
+        todoList: newList
+    };
+}
+
+function handleEditTodo (
+    action: EditTodoAction,
+    state: ITodoState
+): ITodoState {
+    const newList: ITodoEntity[] = state.todoList.map(entity => (
+        entity.id === action.payload.id
+        ? {
+            ...entity,
+            todo: { ...action.payload.editedTodo }
+        }
+        : entity
     ));
 
     return {

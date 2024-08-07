@@ -2,12 +2,14 @@ import { ReactElement } from "react";
 
 import { useTodoContext } from "../../context";
 import {
+    editTodoAction,
     removeTodoAction,
     toggleTodoDoneAction
 } from "../../state";
 import { TodoItem } from "../TodoItem";
 
 import styles from "./TodoList.module.css";
+import { ITodo } from "../../../../service";
 
 export const TodoList = (): ReactElement => {
     const [dispatchTodoAction, todoState] = useTodoContext();
@@ -20,6 +22,10 @@ export const TodoList = (): ReactElement => {
         dispatchTodoAction(removeTodoAction(id));
     }
 
+    const handleEditTodo = (id: string, editedTodo: ITodo) => {
+        dispatchTodoAction(editTodoAction(id, editedTodo));
+    }
+
     return (
         <section className={styles.todoList}>
             {todoState.todoList.map(entity => (
@@ -27,7 +33,8 @@ export const TodoList = (): ReactElement => {
                     key={entity.id}
                     todoEntity={entity}
                     onToggleDone={handleToggleDone}
-                    onRemoveTodoItem={handleRemoveTodo} />
+                    onRemoveTodoItem={handleRemoveTodo}
+                    onEditTodoItem={handleEditTodo} />
             ))}
         </section>
     );

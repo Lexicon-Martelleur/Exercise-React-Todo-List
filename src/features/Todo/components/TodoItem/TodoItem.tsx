@@ -1,10 +1,8 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 
-import { ITodoEntity } from "../../../../service/types";
+import { ITodo, ITodoEntity } from "../../../../service";
 import { Icon } from "../../../../components";
 import { Icons } from "../../../../assets";
-
-import styles from "./TodoItem.module.css";
 import {
     selectAuthor,
     selectDate,
@@ -14,18 +12,24 @@ import {
     selectTitle
 } from "../../state";
 
+import styles from "./TodoItem.module.css";
+import { TodoForm } from "../TodoForm";
+
 interface Props {
     todoEntity: ITodoEntity;
     onToggleDone: (id: string) => void;
     onRemoveTodoItem: (id: string) => void;
+    onEditTodoItem: (id: string, newTodo: ITodo) => void;
 }
 
 export const TodoItem: React.FC<Props> = ({
     todoEntity,
     onToggleDone,
-    onRemoveTodoItem
+    onRemoveTodoItem,
+    onEditTodoItem
 }) => {
     const todoText = useRef<HTMLParagraphElement>(null);
+    const [editMode, setEditMode] = useState(false);
 
     const toggleDisplayText = () => {
         if (todoText.current == null) { return; }
@@ -37,32 +41,53 @@ export const TodoItem: React.FC<Props> = ({
         onToggleDone(todoEntity.id);
     }
 
+    const handleSubmit = (todo: ITodo) => {
+        onEditTodoItem(todoEntity.id, todo);
+        setEditMode(false);
+    }
+
     return (
         <article className={styles.todoItem}
             onClick={_ => { toggleDisplayText() }}>
-            <button className={styles.checkBoxBtn}
+            {!editMode && <button className={styles.checkBoxBtn}
                 onClick={handleToggleDone}>
                 <Icon icon={Icons.check}
                     className={selectDone(todoEntity) ? "" : styles.hide} />
-            </button>
+            </button>}
             <div className={styles.todoItemBody}>
-                <h3>{selectTitle(todoEntity)}</h3>
-                <span>Author: {selectAuthor(todoEntity)}</span>
-                <time dateTime={selectDate(todoEntity)}>
-                    Date: {selectDate(todoEntity)}
-                </time>
-                <p ref={todoText}
-                    className={styles.none}>
-                    {selectDescription(todoEntity)}
-                </p>
+                {!editMode
+                ? (<>
+                    <h3>{selectTitle(todoEntity)}</h3>
+                    <span>Author: {selectAuthor(todoEntity)}</span>
+                    <time dateTime={selectDate(todoEntity)}>
+                        Date: {selectDate(todoEntity)}
+                    </time>
+                    <p ref={todoText}
+                        className={styles.none}>
+                        {selectDescription(todoEntity)}
+                    </p>
+                </>)
+                : (
+                <TodoForm
+                    todo={todoEntity.todo}
+                    submitLabel="Edit Task"
+                    onSubmit={handleSubmit}/>
+                )}
             </div>
             <div className={styles.updateTodoCtr}>
-                <button className={styles.selectIconBtn}
+                {!editMode && <button className={styles.selectIconBtn}
                     onClick={_ => { onRemoveTodoItem(selectID(todoEntity)) }}>
                     <Icon icon={Icons.trash}/>
+               </button>}
+               {!editMode
+               ? <button className={styles.selectIconBtn}
+                    onClick={_ => { setEditMode(prevValue => !prevValue) }}>
+                   <Icon icon={Icons.edit}/>
                </button>
-               <button className={styles.selectIconBtn}>
-               </button>
+               : <button className={styles.selectIconBtn}
+                    onClick={_ => { setEditMode(prevValue => !prevValue) }}>
+                   <Icon icon={Icons.close}/>
+               </button>}
             </div> 
         </article>
     );
