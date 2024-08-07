@@ -22,28 +22,30 @@ export const TodoForm = (): ReactElement => {
     const [title, setTitle] = useState(todoState.newTodo.title);
     const [description, setDescription] = useState(todoState.newTodo.description);
 
-    useEffect(() => {
-        setAuthor(todoState.newTodo.author);
-        setTitle(todoState.newTodo.title);
-        setDescription(todoState.newTodo.description);
-    }, [todoState]);
+    // useEffect(() => {
+    //     setAuthor(todoState.newTodo.author);
+    //     setTitle(todoState.newTodo.title);
+    //     setDescription(todoState.newTodo.description);
+    // }, [todoState]);
 
     const handleSubmit: React.FormEventHandler<HTMLFormElement> = (event) => {
         event.preventDefault();
-        dispatchTodoAction(updateNewTodoAction(getEmptyDodo()));
+        const emptyTodo = getEmptyDodo()
+        dispatchTodoAction(updateNewTodoAction(emptyTodo));
         dispatchTodoAction(addTodoAction({ author, title, description, done: false }));
+        setAuthor(todoState.newTodo.author);
+        setAuthor(emptyTodo.author);
+        setTitle(emptyTodo.title);
+        setDescription(emptyTodo.description);
+    }
+
+    const handleChange = (stateAction: (value: string) => void, value: string) => {
+        stateAction(value);
+        dispatchTodoAction(updateNewTodoAction({ author, title, description, done: false }));
     }
 
     return (
         <form className={styles.todoForm} onSubmit={handleSubmit}> 
-            <RequiredInput fieldName={inputFieldName.title}
-                minLength={todoConstants.MIN_LENGTH_AUTHOR}
-                maxLength={todoConstants.MAX_LENGTH_AUTHOR}
-                labelTitle="Author"
-                value={author}
-                placeholder="Enter author name..."
-                className={styles.inputCtr}
-                onChange={e => setAuthor(e.target.value)} />
             <RequiredInput fieldName={inputFieldName.title}
                 minLength={todoConstants.MIN_LENGTH_TITLE}
                 maxLength={todoConstants.MAX_LENGTH_TITLE}
@@ -51,7 +53,15 @@ export const TodoForm = (): ReactElement => {
                 value={title}
                 placeholder="Enter a task title..."
                 className={styles.inputCtr}
-                onChange={e => setTitle(e.target.value)} />
+                onChange={e => handleChange(setTitle, e.target.value)} />
+            <RequiredInput fieldName={inputFieldName.title}
+                minLength={todoConstants.MIN_LENGTH_AUTHOR}
+                maxLength={todoConstants.MAX_LENGTH_AUTHOR}
+                labelTitle="Author"
+                value={author}
+                placeholder="Enter author name..."
+                className={styles.inputCtr}
+                onChange={e => handleChange(setAuthor, e.target.value)} />
             <RequiredInput fieldName={inputFieldName.description}
                 minLength={todoConstants.MIN_LENGTH_DESCRIPTION}
                 maxLength={todoConstants.MAX_LENGTH_DESCRIPTION}
@@ -60,7 +70,7 @@ export const TodoForm = (): ReactElement => {
                 placeholder="Enter a task description..."
                 className={styles.inputCtr}
                 type="textarea"
-                onChange={e => setDescription(e.target.value)} />
+                onChange={e => handleChange(setDescription, e.target.value)} />
             <SubmitButton>Add Task</SubmitButton>
         </form>
     );

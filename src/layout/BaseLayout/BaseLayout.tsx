@@ -1,8 +1,10 @@
 import React, { ReactElement, ReactNode } from "react";
 
 import styles from "./BaseLayout.module.css";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { Path } from "../../constants";
+import { Icon } from "../../components";
+import { Icons } from "../../assets";
 
 interface Props {
     children?: ReactNode;
@@ -14,7 +16,9 @@ export const BaseLayout: React.FC<Props> = ({
     return (
         <>
             <header className={styles.header}>
-                <h1>Todo List</h1>
+                <h1><Link to={Path.INDEX}>
+                    <Icon size={"large"} icon={Icons.home}/>
+                </Link></h1>
                 <nav className={styles.nav}>
                     <NavLink to={Path.ADD_TODO}
                         className={({isActive}) => (

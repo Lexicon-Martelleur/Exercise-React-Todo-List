@@ -1,7 +1,12 @@
-import { createBrowserRouter, createRoutesFromElements, Route, useNavigate } from "react-router-dom";
+import {
+	createBrowserRouter,
+	createRoutesFromElements,
+	Route,
+	useNavigate 
+} from "react-router-dom";
 
 import { App } from "./App";
-import { TodoFormPage, TodoListPage } from "../features";
+import { TodoFormPage, TodoListPage } from "../pages";
 import { ReactElement, useEffect } from "react";
 import { Path } from "../constants";
 
