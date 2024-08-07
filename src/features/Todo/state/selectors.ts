@@ -12,6 +12,10 @@ export function selectTitle (todoEntity: ITodoEntity): string {
     return todoEntity.todo.title;
 }
 
+export function selectAuthor (todoEntity: ITodoEntity): string {
+    return todoEntity.todo.author;
+}
+
 export function selectDone (todoEntity: ITodoEntity): boolean {
     return todoEntity.todo.done;
 }

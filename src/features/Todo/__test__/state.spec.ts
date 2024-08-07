@@ -12,23 +12,29 @@ import { ITodoState } from "../state/types";
 describe("Todo State", () => {
     const mockPrevTodo: ITodo = {
         title: "prev title",
+        author: "mock author",
         description: "prev description",
         done: false
     };
+
     const mockNextTodo: ITodo = {
         title: "next title",
+        author: "mock author",
         description: "next description",
         done: false
     };
+    
     const mockInitTodoEntity: ITodoEntity = {
         id: "1",
         timestamp: Date.now(),
         todo: {
             title: "first title",
+            author: "mock author",
             description: "first description",
             done: false
         }
     } 
+    
     const mockTodoState: ITodoState = {
         newTodo: mockPrevTodo,
         todoList: [ mockInitTodoEntity ]

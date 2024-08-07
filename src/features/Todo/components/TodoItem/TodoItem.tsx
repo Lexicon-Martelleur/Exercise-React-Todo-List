@@ -6,6 +6,7 @@ import { Icons } from "../../../../assets";
 
 import styles from "./TodoItem.module.css";
 import {
+    selectAuthor,
     selectDate,
     selectDescription,
     selectDone,
@@ -40,8 +41,11 @@ export const TodoItem: React.FC<Props> = ({
                     className={selectDone(todoEntity) ? "" : styles.hide} />
             </button>
             <div className={styles.todoItemBody}>
-                <h4>{selectTitle(todoEntity)}</h4>
-                <time dateTime={selectDate(todoEntity)}>{selectDate(todoEntity)}</time>
+                <h3>{selectTitle(todoEntity)}</h3>
+                <span>Author: {selectAuthor(todoEntity)}</span>
+                <time dateTime={selectDate(todoEntity)}>
+                    Date: {selectDate(todoEntity)}
+                </time>
                 <p ref={todoText}
                     className={styles.none}>
                     {selectDescription(todoEntity)}

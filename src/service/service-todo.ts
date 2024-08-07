@@ -7,6 +7,7 @@ export function getInitialTodos (): ITodoEntity[] {
             timestamp: Date.now(),
             todo: {
                 title: "By food",
+                author: "Joel",
                 description: "coffe, apples, milk",
                 done: false
             }
@@ -16,6 +17,7 @@ export function getInitialTodos (): ITodoEntity[] {
             timestamp: Date.now(),
             todo: {
                 title: "Read 3 books",
+                author: "Joel",
                 description: "Bittersweet, ...",
                 done: false
             }
@@ -25,6 +27,7 @@ export function getInitialTodos (): ITodoEntity[] {
             timestamp: Date.now(),
             todo: {
                 title: "Call friend",
+                author: "Joel",
                 description: "Ask what plan is next saturday",
                 done: false
             }
@@ -33,5 +36,5 @@ export function getInitialTodos (): ITodoEntity[] {
 }
 
 export function getEmptyDodo (): ITodo {
-    return { title: "", description: "", done: false };
+    return { title: "", author: "", description: "", done: false };
 }

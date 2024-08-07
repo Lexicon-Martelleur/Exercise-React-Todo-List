@@ -1,5 +1,6 @@
 export type ITodo = Readonly<{
     title: string;
+    author: string;
     description: string;
     done: boolean
 }>

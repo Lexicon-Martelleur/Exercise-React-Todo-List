@@ -25,10 +25,6 @@
     word-wrap: break-word;
 }
 
-.todo-item-body > time {
-    font-size: 0.8rem;
-}
-
 .check-box-btn {
     border-radius: 50%;
     display: flex;

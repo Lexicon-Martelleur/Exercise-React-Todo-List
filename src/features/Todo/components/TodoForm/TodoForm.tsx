@@ -19,21 +19,31 @@ export const TodoForm: React.FC<Props> = ({
     newTodo,
     addNewTodo
 }): ReactElement => {
+    const [author, setAuthor] = useState(newTodo.author); 
     const [title, setTitle] = useState(newTodo.title);
     const [description, setDescription] = useState(newTodo.description);
 
     useEffect(() => {
+        setAuthor(newTodo.author);
         setTitle(newTodo.title);
         setDescription(newTodo.description);
     }, [newTodo]);
 
     const handleSubmit: React.FormEventHandler<HTMLFormElement> = (event) => {
         event.preventDefault();
-        addNewTodo({ title, description, done: false });
+        addNewTodo({ author, title, description, done: false });
     }
 
     return (
         <form className={styles.todoForm} onSubmit={handleSubmit}> 
+            <RequiredInput fieldName={inputFieldName.title}
+                minLength={todoConstants.MIN_LENGTH_AUTHOR}
+                maxLength={todoConstants.MAX_LENGTH_AUTHOR}
+                labelTitle="Author"
+                value={author}
+                placeholder="Enter author name..."
+                className={styles.inputCtr}
+                onChange={e => setAuthor(e.target.value)} />
             <RequiredInput fieldName={inputFieldName.title}
                 minLength={todoConstants.MIN_LENGTH_TITLE}
                 maxLength={todoConstants.MAX_LENGTH_TITLE}
