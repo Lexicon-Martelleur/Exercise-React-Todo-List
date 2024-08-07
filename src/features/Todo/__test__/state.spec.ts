@@ -1,6 +1,7 @@
-import { ITodo } from "../../../service"
+import { ITodo, ITodoEntity } from "../../../service"
 import {
     addTodoAction,
+    removeTodoAction,
     toggleTodoDoneAction,
     updateNewTodoAction
 } from "../state/actions";
@@ -19,9 +20,17 @@ describe("Todo State", () => {
         description: "next description",
         done: false
     };
+    const mockInitTodoEntity: ITodoEntity = {
+        id: "1",
+        todo: {
+            title: "first title",
+            description: "first description",
+            done: false 
+        }
+    } 
     const mockTodoState: ITodoState = {
         newTodo: mockPrevTodo,
-        todoList: []
+        todoList: [ mockInitTodoEntity ]
     };
 
     describe("todoReducer", () => {
@@ -40,50 +49,59 @@ describe("Todo State", () => {
             ))).toContain(mockNextTodo);
         });
 
-        it("return state with toggled todo done for specified todo entity", () => {
-            const startDoneValue = mockNextTodo.done
-            const actionAddTodo = addTodoAction(mockNextTodo);
-            const nextState = todoReducer(mockTodoState, actionAddTodo);
-            const actionToggleTodoDone = toggleTodoDoneAction(nextState.todoList[0].id);
-            const nextNextState = todoReducer(nextState, actionToggleTodoDone);
-            expect(nextNextState.todoList[0].todo.done).toBe(!startDoneValue);
+        it(`return state with toggled todo done value
+            for specified todo entity`, () => {
+            const indexTodo = 0;
+            const startDoneValue = mockTodoState.todoList[indexTodo].todo.done
+            const action = toggleTodoDoneAction(mockTodoState.todoList[indexTodo].id);
+            const nextState = todoReducer(mockTodoState, action);
+            expect(nextState.todoList[indexTodo].todo.done).toBe(!startDoneValue);
+        });
+
+        it("return state with removed specified todo", () => {
+            const indexTodo = 0;
+            const action = removeTodoAction(mockTodoState.todoList[indexTodo].id);
+            expect(mockTodoState.todoList).toContain(mockInitTodoEntity);
+            const nextState = todoReducer(mockTodoState, action);
+            expect(nextState.todoList).not.toContain(mockInitTodoEntity);
         });
     });
 
     describe("addTodoAction", () => {
-        it("return an action of type add new action", () => {
+        it(`return an action of type add new todo
+            with payload value same as input parameter`, () => {
             const action = addTodoAction(mockNextTodo);
             expect(action.type).toBe(TodoActionType.addTodo);
-        });
-
-        it("return an action with payload as same as inparameter", () => {
-            const action = addTodoAction(mockNextTodo);
             expect(action.payload).toBe(mockNextTodo);
         });
-    })
+    });
 
     describe("updateNewTodoAction", () => {
-        it("return an action of type add new action", () => {
+        it(`return an action of type add new todo
+            with payload value same as input parameter`, () => {
             const action = updateNewTodoAction(mockNextTodo);
             expect(action.type).toBe(TodoActionType.updateNewTodo);
-        });
-
-        it("return an action with payload as same as inparameter", () => {
-            const action = updateNewTodoAction(mockNextTodo);
             expect(action.payload).toBe(mockNextTodo);
         });
-    })
+    });
 
     describe("toggleTodoDoneAction", () => {
-        it("return an action of type toggle todo done action", () => {
-            const action = toggleTodoDoneAction("2");
-            expect(action.type).toBe(TodoActionType.toggleTodoDone);
-        });
-
-        it("return an action with payload as same as inparameter", () => {
-            const inPara = "2";
+        it(`return an action of type toggle todo done
+            with payload value same as input parameter`, () => {
+            const inPara = "2"
             const action = toggleTodoDoneAction(inPara);
+            expect(action.type).toBe(TodoActionType.toggleTodoDone);
             expect(action.payload).toBe(inPara);
         });
-    })
+    });
+
+    describe("removeTodoAction", () => {
+        it(`return an action of type remove todo
+            with payload value same as input parameter`, () => {
+            const inPara = "2"
+            const action = removeTodoAction(inPara);
+            expect(action.type).toBe(TodoActionType.removeTodo);
+            expect(action.payload).toBe(inPara);
+        });
+    });
 });

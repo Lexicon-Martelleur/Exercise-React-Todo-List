@@ -21,8 +21,14 @@ export interface ToggleTodoDoneAction {
     payload: string;
 }
 
+export interface RemoveTodoAction {
+    type: typeof TodoActionType.removeTodo;
+    payload: string;
+}
+
 export type ITodoAction = (
     UpdateNewTodoAction |
     AddTodoAction |
-    ToggleTodoDoneAction
+    ToggleTodoDoneAction |
+    RemoveTodoAction
 );

@@ -4,6 +4,10 @@
     gap: 1rem;
 }
 
+.todo-form:invalid > button {
+    cursor: not-allowed;
+}
+
 .input-ctr {
     display: flex;
     flex-direction: column;

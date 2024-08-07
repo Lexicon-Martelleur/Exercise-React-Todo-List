@@ -8,11 +8,13 @@ import styles from "./TodoList.module.css";
 interface Props {
     todoList: ITodoEntity[];
     toggleDone: (id: string) => void;
+    removeTodoItem: (id: string) => void;
 }
 
 export const TodoList: React.FC<Props> = ({
     todoList,
-    toggleDone
+    toggleDone,
+    removeTodoItem
 }): ReactElement => {
 
     return (
@@ -21,7 +23,8 @@ export const TodoList: React.FC<Props> = ({
                 <TodoItem
                     key={entity.id}
                     todoEntity={entity}
-                    toggleDone={toggleDone}/>
+                    onToggleDone={toggleDone}
+                    onRemoveTodoItem={removeTodoItem} />
             ))}
         </section>
     );

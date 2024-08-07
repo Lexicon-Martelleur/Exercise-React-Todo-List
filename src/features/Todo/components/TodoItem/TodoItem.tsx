@@ -9,26 +9,33 @@ import { selectDescription, selectDone, selectID, selectTitle } from "../../stat
 
 interface Props {
     todoEntity: ITodoEntity;
-    toggleDone: (id: string) => void;
+    onToggleDone: (id: string) => void;
+    onRemoveTodoItem: (id: string) => void;
 }
 
 export const TodoItem: React.FC<Props> = ({
     todoEntity,
-    toggleDone
+    onToggleDone,
+    onRemoveTodoItem
 }) => {
     return (
-        <article className={styles.todoItem}>
-            <div className={styles.checkBoxCtr}
-                onClick={_ => { toggleDone(selectID(todoEntity)) }}>
+        <article draggable className={styles.todoItem}>
+            <button className={styles.checkBoxBtn}
+                onClick={_ => { onToggleDone(selectID(todoEntity)) }}>
                 <Icon icon={Icons.check}
                     className={selectDone(todoEntity) ? "" : styles.hide} />
-            </div>
+            </button>
             <div className={styles.todoItemBody}>
                 <h4>Title: {selectTitle(todoEntity)}</h4>
                 <p>Description: {selectDescription(todoEntity)}</p>
             </div>
-            <div className={styles.trashCtr}>
-               <Icon icon={Icons.trash}/>
+            <div className={styles.updateTodoCtr}>
+                <button className={styles.selectIconBtn}
+                    onClick={_ => { onRemoveTodoItem(selectID(todoEntity)) }}>
+                    <Icon icon={Icons.trash}/>
+               </button>
+               <button className={styles.selectIconBtn}>
+               </button>
             </div> 
         </article>
     );

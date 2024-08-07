@@ -1,7 +1,7 @@
 import React, { ReactElement, useEffect, useState } from "react";
 
 import { RequiredInput, SubmitButton } from "../../../../components";
-import { ITodo } from "../../../../service";
+import { ITodo, todoConstants } from "../../../../service";
 
 import styles from "./TodoForm.module.css";
 
@@ -11,8 +11,8 @@ const inputFieldName = {
 } as const;
 
 interface Props {
-    newTodo: ITodo
-    addNewTodo: (todo: ITodo) => void
+    newTodo: ITodo;
+    addNewTodo: (todo: ITodo) => void;
 }
 
 export const TodoForm: React.FC<Props> = ({
@@ -25,26 +25,26 @@ export const TodoForm: React.FC<Props> = ({
     useEffect(() => {
         setTitle(newTodo.title);
         setDescription(newTodo.description);
-    }, [newTodo])
+    }, [newTodo]);
 
     const handleSubmit: React.FormEventHandler<HTMLFormElement> = (event) => {
         event.preventDefault();
-        addNewTodo({ title, description });
+        addNewTodo({ title, description, done: false });
     }
 
     return (
         <form className={styles.todoForm} onSubmit={handleSubmit}> 
             <RequiredInput fieldName={inputFieldName.title}
-                minLength={1}
-                maxLength={200}
+                minLength={todoConstants.MIN_LENGTH_TITLE}
+                maxLength={todoConstants.MAX_LENGTH_TITLE}
                 labelTitle="Title"
                 value={title}
                 placeholder="Enter a task title..."
                 className={styles.inputCtr}
                 onChange={e => setTitle(e.target.value)} />
             <RequiredInput fieldName={inputFieldName.description}
-                minLength={1}
-                maxLength={2000}
+                minLength={todoConstants.MIN_LENGTH_DESCRIPTION}
+                maxLength={todoConstants.MAX_LENGTH_DESCRIPTION}
                 labelTitle="Description"
                 value={description}
                 placeholder="Enter a task description..."

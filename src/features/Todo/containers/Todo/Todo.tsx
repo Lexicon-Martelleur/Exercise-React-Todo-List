@@ -3,7 +3,12 @@ import { ReactElement } from "react";
 import { TodoList, TodoForm } from "../../components";
 import { useTodoContext } from "../../context";
 import { getEmptyDodo, ITodo } from "../../../../service";
-import { addTodoAction, toggleTodoDoneAction, updateNewTodoAction } from "../../state";
+import {
+    addTodoAction,
+    removeTodoAction,
+    toggleTodoDoneAction,
+    updateNewTodoAction
+} from "../../state";
 
 import styles from "./Todo.module.css";
 
@@ -18,6 +23,10 @@ export const Todo = (): ReactElement => {
         dispatchTodoAction(toggleTodoDoneAction(id));
     }
 
+    const handleRemoveTodo = (id: string) => {
+        dispatchTodoAction(removeTodoAction(id));
+    }
+
     return (
         <section className={styles.todoSection}>
             <div>
@@ -29,7 +38,8 @@ export const Todo = (): ReactElement => {
                 addNewTodo={addNewTodo} />
             <TodoList
                 todoList={todoState.todoList}
-                toggleDone={handleToggleDone} />
+                toggleDone={handleToggleDone}
+                removeTodoItem={handleRemoveTodo} />
         </section>
     );
 }
