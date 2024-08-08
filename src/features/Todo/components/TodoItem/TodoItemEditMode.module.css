@@ -1,3 +1,7 @@
+.article-edit-todo {
+    position: relative;
+}
+
 .close-edit-mode-ctr {
     position: absolute;
     top: 0;

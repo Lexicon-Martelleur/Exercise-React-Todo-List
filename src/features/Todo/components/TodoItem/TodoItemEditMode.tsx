@@ -21,10 +21,13 @@ export const TodoItemEditMode: React.FC<Props> = ({
     onSubmitEditTodo,
     onToggleEditMode
 }): ReactElement => {
-    const derivedClass = className ? className : ""
+    const derivedArticleEditTodoClass = [
+        styles.articleEditTodo,
+        className ? className : ""
+    ].join(" ");
     
     return (
-        <article className={derivedClass}>
+        <article className={derivedArticleEditTodoClass}>
             <TodoForm
                 todo={todoEntity.todo}
                 submitLabel="Edit Task"
