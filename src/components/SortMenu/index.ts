@@ -1,1 +1,1 @@
-export { SortMenu } from "./SortMenu";
+export { SelectMenu } from "./SelectMenu";

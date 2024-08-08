@@ -1,4 +1,4 @@
-.sort-menu-header {
+.select-menu {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -7,14 +7,14 @@
     padding: 1rem;
 }
 
-.sort-menu-select-ctr {
+.select-menu-select-ctr {
     display: flex;
     flex-direction: row;
     gap: 0;
 }
 
-.sort-menu-select,
-.sort-menu-select-icon {
+.select-menu-select,
+.select-menu-select-icon {
     background-color: var(--BG_LIGHT_X);
     outline: none;
     border: none;
@@ -22,19 +22,31 @@
     padding: 0.5rem;
 }
 
-.sort-menu-select {
+.select-menu-select {
     border-radius: 0 0.5rem 0.5rem 0;
-    font-size: 1rem;
     cursor: pointer;
 }
 
-.sort-menu-select-icon {
+.select-menu-select-icon {
     border-radius: 0.5rem 0rem 0rem 0.5rem;
 }
 
-.sort-menu-select > option {
+.select-menu-select > option {
     position: relative;
     right: 20px;
     color: #000F1F;
     font-size: 1rem;
+}
+
+.select-menu-select,
+.select-menu-select > option {
+    font-size: 0.8rem;
+}
+
+@media (min-width: 500px) {
+    .select-menu-select,
+    .select-menu-select > option,
+    .select-menu-title {
+        font-size: 1rem;
+    }
 }

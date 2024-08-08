@@ -7,15 +7,15 @@ import {
     removeTodoAction,
     toggleTodoDoneAction
 } from "../../state";
-import { SortMenu } from "../../../../components";
+import { SelectMenu } from "../../../../components";
 import { TodoItem } from "../TodoItem";
 
 import styles from "./TodoList.module.css";
 
 const sortMode = {
-    author: "Author",
-    date: "Date",
-    none: "None"
+    author: "Sort by author",
+    date: "Sort by date",
+    none: "Not sorted"
 } as const;
 
 type SortModeType = typeof sortMode[
@@ -56,11 +56,10 @@ export const TodoList = (): ReactElement => {
 
     return (
         <section className={styles.todoList}>
-            <SortMenu title="Todos"
-                listToBeSorted={todoState.todoList}
-                selectedSortMode={selectedSortMode}
-                sortMode={sortMode}
-                onSelectSortMode={handleSelectSortMode} />
+            <SelectMenu title={`${todoState.todoList.length} Todos`}
+                options={Object.values(sortMode)}
+                selectedOption={selectedSortMode}
+                onOptionChange={handleSelectSortMode} />
             {getTodoList(selectedSortMode).map(entity => (
                 <TodoItem
                     key={entity.id}
