@@ -9,7 +9,8 @@ import {
     AddTodoAction,
     ToggleTodoDoneAction,
     RemoveTodoAction,
-    EditTodoAction
+    EditTodoAction,
+    SwapTodoListItems
 } from "./types";
 
 export const todoInitData: ITodoState = {
@@ -26,6 +27,7 @@ export function todoReducer (
         case Type.addTodo: return handleAddTodo(action, state);
         case Type.removeTodo: return handleRemoveTodo(action, state);
         case Type.editTodo: return handleEditTodo(action, state);
+        case Type.swapTodoListItems: return handleSwapTodoListItems(action, state);
         case Type.toggleTodoDone: return handleToggleTodoDone(action, state);
         default: return state;
     }
@@ -67,10 +69,7 @@ function handleRemoveTodo (
         entity.id !== action.payload
     ));
 
-    return {
-        ...state,
-        todoList: newList
-    };
+    return { ...state, todoList: newList };
 }
 
 function handleEditTodo (
@@ -86,10 +85,24 @@ function handleEditTodo (
         : entity
     ));
 
-    return {
-        ...state,
-        todoList: newList
-    };
+    return { ...state, todoList: newList };
+}
+
+function handleSwapTodoListItems (
+    action: SwapTodoListItems,
+    state: ITodoState
+): ITodoState {
+    const todoA = state.todoList.find(entity => entity.id === action.payload.idTodoA);
+    const todoB = state.todoList.find(entity => entity.id === action.payload.idTodoB);
+    if (todoA == null || todoB == null) { return state; }
+
+    const newList: ITodoEntity[] = state.todoList.map(entity => {
+        if (entity.id === todoA.id) { return todoB; }
+        else if (entity.id === todoB.id) { return todoA; }
+        else { return entity; }
+    })
+
+    return { ...state, todoList: newList }
 }
 
 function handleToggleTodoDone (
@@ -105,8 +118,5 @@ function handleToggleTodoDone (
         : entity
     ));
 
-    return {
-        ...state,
-        todoList: newList
-    };
+    return { ...state, todoList: newList };
 }

@@ -31,10 +31,16 @@ export interface EditTodoAction {
     payload: { id: string, editedTodo: ITodo };
 }
 
+export interface SwapTodoListItems {
+    type: typeof TodoActionType.swapTodoListItems;
+    payload: { idTodoA: string, idTodoB: string };
+}
+
 export type ITodoAction = (
     UpdateNewTodoAction |
     AddTodoAction |
     ToggleTodoDoneAction |
     RemoveTodoAction |
-    EditTodoAction
+    EditTodoAction |
+    SwapTodoListItems
 );

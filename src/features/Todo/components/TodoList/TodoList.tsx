@@ -5,9 +5,10 @@ import { ITodo, sortByAuthor, sortByDate } from "../../../../service";
 import {
     editTodoAction,
     removeTodoAction,
+    swapTodoListItemsAction,
     toggleTodoDoneAction
 } from "../../state";
-import { SelectMenu } from "../../../../components";
+import { DraggableContainer, SelectMenu } from "../../../../components";
 import { TodoItem } from "../TodoItem";
 
 import styles from "./TodoList.module.css";
@@ -28,6 +29,8 @@ export const TodoList = (): ReactElement => {
         setSelectedSortMode
     ] = useState<SortModeType>(sortMode.none);
     const [dispatchTodoAction, todoState] = useTodoContext();
+    const [draggedId, setDraggedId] = useState<string | undefined>(undefined);
+    const [draggedOverId, setDraggedOverId] = useState<string | undefined>(undefined);
 
     const handleToggleDone = (id: string) => {
         dispatchTodoAction(toggleTodoDoneAction(id));
@@ -54,6 +57,19 @@ export const TodoList = (): ReactElement => {
         setSelectedSortMode(event.target.value as SortModeType)
     }
 
+    const updateDraggedId = (id: string | undefined) => {
+        setDraggedId(id);
+    }
+
+    const updateDraggedOverId = (id: string | undefined) => {
+        setDraggedOverId(id);
+    }
+
+    const handleDrop = () => {
+        if (draggedId == null || draggedOverId == null) { return; }
+        dispatchTodoAction(swapTodoListItemsAction(draggedId, draggedOverId));
+    }
+
     return (
         <section className={styles.todoList}>
             <SelectMenu title={`${todoState.todoList.length} Todos`}
@@ -61,12 +77,18 @@ export const TodoList = (): ReactElement => {
                 selectedOption={selectedSortMode}
                 onOptionChange={handleSelectSortMode} />
             {getTodoList(selectedSortMode).map(entity => (
-                <TodoItem
+                <DraggableContainer
                     key={entity.id}
-                    todoEntity={entity}
-                    onToggleDone={handleToggleDone}
-                    onRemoveTodoItem={handleRemoveTodo}
-                    onEditTodoItem={handleEditTodo} />
+                    childId={entity.id}
+                    onDragged={updateDraggedId}
+                    onDraggedOver={updateDraggedOverId}
+                    onDrop={handleDrop}>
+                    <TodoItem
+                        todoEntity={entity}
+                        onToggleDone={handleToggleDone}
+                        onRemoveTodoItem={handleRemoveTodo}
+                        onEditTodoItem={handleEditTodo} />
+                </DraggableContainer>
             ))}
         </section>
     );

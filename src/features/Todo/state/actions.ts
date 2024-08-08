@@ -4,6 +4,7 @@ import {
     AddTodoAction,
     EditTodoAction,
     RemoveTodoAction,
+    SwapTodoListItems,
     ToggleTodoDoneAction,
     UpdateNewTodoAction
 } from "./types";
@@ -40,5 +41,12 @@ export function editTodoAction (id: string, editedTodo: ITodo): EditTodoAction {
     return {
         type: Type.editTodo,
         payload: { id, editedTodo }
+    };
+}
+
+export function swapTodoListItemsAction (idTodoA: string, idTodoB: string): SwapTodoListItems {
+    return {
+        type: Type.swapTodoListItems,
+        payload: { idTodoA, idTodoB }
     };
 }

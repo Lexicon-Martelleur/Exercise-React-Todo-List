@@ -41,12 +41,9 @@ export function getEmptyDodo (): ITodo {
 
 export function sortByAuthor (todoList: ITodoEntity[]): ITodoEntity[] {
     return todoList.slice().sort((a, b) => {
-        const authorA = a.todo.author.toLowerCase();
-        const authorB = b.todo.author.toLowerCase();
-    
-        if (authorA < authorB) { return -1 }
-        else if (authorA > authorB) { return 1 }
-        else { return 0; }
+        const authorA = a.todo.author;
+        const authorB = b.todo.author;
+        return authorA.localeCompare(authorB);
     });
 }
 
@@ -54,9 +51,8 @@ export function sortByDate (todoList: ITodoEntity[]): ITodoEntity[] {
     return todoList.slice().sort((a, b) => {
         const dateA = a.timestamp;
         const dateB = b.timestamp;
-    
-        if (dateA < dateB) { return -1 }
-        else if (dateA > dateB) { return 1 }
+        if (dateA < dateB) { return -1; }
+        else if (dateA > dateB) { return 1; }
         else { return 0; }
     });
 }

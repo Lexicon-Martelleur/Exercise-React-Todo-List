@@ -28,4 +28,3 @@ function RouteToIndex (): ReactElement {
 	})
 	return <></>
 }
-

@@ -3,6 +3,7 @@ import {
     addTodoAction,
     editTodoAction,
     removeTodoAction,
+    swapTodoListItemsAction,
     toggleTodoDoneAction,
     updateNewTodoAction
 } from "../state/actions";
@@ -34,7 +35,7 @@ describe("Todo State", () => {
             description: "first description",
             done: false
         }
-    } 
+    }
     
     const mockTodoState: ITodoState = {
         newTodo: mockPrevTodo,
@@ -72,6 +73,22 @@ describe("Todo State", () => {
             expect(mockTodoState.todoList).toContain(mockInitTodoEntity);
             const nextState = todoReducer(mockTodoState, action);
             expect(nextState.todoList).not.toContain(mockInitTodoEntity);
+        });
+
+        it("return state with swaped todo items in the todo list", () => {
+            const todoAIndex = mockTodoState.todoList.length - 1;
+            const todoBIndex = todoAIndex + 1;
+
+            const actionAdd = addTodoAction(mockNextTodo);
+            const nextState = todoReducer(mockTodoState, actionAdd);
+            const idTodoA = nextState.todoList[todoAIndex].id;
+            const idTodoB = nextState.todoList[todoBIndex].id;
+            
+            const actionSwap = swapTodoListItemsAction(idTodoA, idTodoB);
+            const nextNextState = todoReducer(nextState, actionSwap);
+            
+            expect(nextNextState.todoList[todoAIndex].id).toBe(idTodoB);
+            expect(nextNextState.todoList[todoBIndex].id).toBe(idTodoA);
         });
 
         it("return state with edited specified todo", () => {
@@ -126,6 +143,17 @@ describe("Todo State", () => {
             const action = removeTodoAction(inPara);
             expect(action.type).toBe(TodoActionType.removeTodo);
             expect(action.payload).toBe(inPara);
+        });
+    });
+
+    describe("wapTodoListItems", () => {
+        it(`return an action of type swap todo items
+            with payload value same as input parameter`, () => {
+            const idTodoA = "2"
+            const idTodoB = "3"
+            const action = swapTodoListItemsAction(idTodoA, idTodoB);
+            expect(action.type).toBe(TodoActionType.swapTodoListItems);
+            expect(action.payload).toStrictEqual({ idTodoA, idTodoB });
         });
     });
 
