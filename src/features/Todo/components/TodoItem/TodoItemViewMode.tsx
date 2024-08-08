@@ -36,13 +36,20 @@ export const TodoItemViewMode: React.FC<Props> = ({
         if (todoDescriptionRef.current == null) { return; }
         todoDescriptionRef.current.classList.toggle(styles.none);
     }
+
+    const getToggleDoneTitle = () => {
+        return selectDone(todoEntity)
+            ? `Set '${selectTitle(todoEntity)}' done`
+            : `Set '${selectTitle(todoEntity)}' not done`
+    }
  
     return (
         <article draggable className={derivedClass}
             onClick={handleToggleViewDescription}>
-            <button className={styles.checkBoxBtn}
+            <button title={getToggleDoneTitle()}
+                className={styles.checkBoxBtn}
                 onClick={onToggleDone}>
-                <Icon icon={Icons.check}
+                <Icon icon={{...Icons.check, title: getToggleDoneTitle()}}
                     className={selectDone(todoEntity) ? "" : styles.hide} />
             </button>
             <div className={styles.todoItemBody}>
