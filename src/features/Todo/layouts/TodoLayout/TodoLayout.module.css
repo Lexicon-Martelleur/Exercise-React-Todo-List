@@ -2,8 +2,8 @@
     display: flex;
     flex-direction: column;
     gap: 2rem;
-    padding: 1.5rem;;
+    padding: 1.5rem;
     background-color: var(--BG_DARK);
     width: 100%;
-    min-height: 100%;
+    flex-grow: 1;
 }
