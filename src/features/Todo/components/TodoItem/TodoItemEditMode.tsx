@@ -6,21 +6,25 @@ import { Icons } from "../../../../assets";
 import { TodoForm } from "../TodoForm";
 import React from "react";
 
-import styles from "./TodoItem.module.css";
+import styles from "./TodoItemEditMode.module.css";
 
 interface Props {
     todoEntity: ITodoEntity;
+    className?: string
     onSubmitEditTodo: (todo: ITodo) => void;
     onToggleEditMode: () => void;
 }
 
 export const TodoItemEditMode: React.FC<Props> = ({
     todoEntity,
+    className,
     onSubmitEditTodo,
     onToggleEditMode
 }): ReactElement => {
+    const derivedClass = className ? className : ""
+    
     return (
-        <article className={styles.todoItem}>
+        <article className={derivedClass}>
             <TodoForm
                 todo={todoEntity.todo}
                 submitLabel="Edit Task"

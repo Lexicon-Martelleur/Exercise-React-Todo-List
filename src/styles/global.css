@@ -14,6 +14,7 @@
 
     --FONT_PRIMARY: "Courier Prime", monospace;
     --BORDER_MEDIUM: 1px solid var(--BORDER_COLOR_MEDIUM);
+    --BORDER_LIGHT: 1px solid var(--BORDER_COLOR_LIGHT);
     --BORDER_LIGHT_FAT: 3px solid var(--BORDER_COLOR_LIGHT);
     --BORDER_MEDIUM_FAT: 3px solid var(--BORDER_COLOR_MEDIUM);
     --BORDER_DARK_FAT: 3px solid var(--BORDER_COLOR_DARK);

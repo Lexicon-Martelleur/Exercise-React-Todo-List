@@ -13,71 +13,7 @@
     padding: 0.5rem;
 }
 
-.close-edit-mode-ctr {
-    position: absolute;
-    top: 0;
-    right: 0;
-    margin: 0.5rem;
-}
-
 .todo-item:hover {
     background-color: var(--BG_MEDIUM);
-}
-
-.todo-item-body {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    flex-grow: 1;
-    overflow-x: hidden;
-    word-wrap: break-word;
-}
-
-.check-box-btn {
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-}
-
-.check-box-btn {
-    background-color: var(--BG_LIGHT_X);
-    border: var(--BORDER_MEDIUM_FAT);
-    padding: 4px;
-}
-
-.check-box-btn:hover {
-    border: var(--BORDER_DARK_FAT);
-}
-
-.update-todo-ctr {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    gap: 1rem;
-    height: 100%;
-}
-
-.select-icon-btn {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    border-radius: 50%;
-    padding: 0.5rem;
-    border: none;
-    background-color: transparent;
-}
-
-.select-icon-btn:hover {
-    background-color: var(--BG_DARK);
-}
-
-.hide {
-    visibility: hidden;
-}
-
-.none {
-    display: none;
+    outline: var(--BORDER_LIGHT);
 }

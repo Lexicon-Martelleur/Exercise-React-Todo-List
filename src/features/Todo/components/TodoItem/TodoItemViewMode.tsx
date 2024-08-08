@@ -1,3 +1,5 @@
+import { ReactElement, useRef } from "react";
+
 import { ITodoEntity } from "../../../../service";
 import { Icon } from "../../../../components";
 import { Icons } from "../../../../assets";
@@ -10,12 +12,11 @@ import {
     selectTitle
 } from "../../state";
 
-import styles from "./TodoItem.module.css";
+import styles from "./TodoItemViewMode.module.css";
 
 interface Props {
     todoEntity: ITodoEntity;
-    todoDescriptionRef: React.RefObject<HTMLParagraphElement>;
-    onToggleViewDescription: () => void;
+    className: string;
     onToggleEditMode: () => void;
     onToggleDone: React.MouseEventHandler<HTMLButtonElement>
     onRemoveTodoItem: (id: string) => void;
@@ -23,15 +24,22 @@ interface Props {
 
 export const TodoItemViewMode: React.FC<Props> = ({
     todoEntity,
-    todoDescriptionRef,
-    onToggleViewDescription,
+    className,
     onToggleEditMode,
     onToggleDone,
     onRemoveTodoItem
-}) => {
+}): ReactElement => {
+    const todoDescriptionRef = useRef<HTMLParagraphElement>(null);
+    const derivedClass = className ? className : ""
+
+    const handleToggleViewDescription = () => {
+        if (todoDescriptionRef.current == null) { return; }
+        todoDescriptionRef.current.classList.toggle(styles.none);
+    }
+ 
     return (
-        <article className={styles.todoItem}
-            onClick={onToggleViewDescription}>
+        <article draggable className={derivedClass}
+            onClick={handleToggleViewDescription}>
             <button className={styles.checkBoxBtn}
                 onClick={onToggleDone}>
                 <Icon icon={Icons.check}
