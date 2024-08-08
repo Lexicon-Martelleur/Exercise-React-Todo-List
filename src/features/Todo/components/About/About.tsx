@@ -7,7 +7,7 @@ import styles from "./About.module.css";
 
 export const About = (): ReactElement => {
     const [_, todoState] = useTodoContext();    
-    const imageRefs = useRef<HTMLDivElement[]>([]);
+    const imageRefs = useRef<(HTMLDivElement | null)[]>([]);
     const imageSources = [
         images.calm1.src,
         images.calm2.src,
@@ -17,7 +17,9 @@ export const About = (): ReactElement => {
     ];
 
     const getNrOfTodosNotDone = () => {
-        return todoState.todoList.filter(item => item.todo.done === true).length;
+        return todoState.todoList
+            .filter(item => item.todo.done === true)
+            .length;
     }
 
     useEffect(() => {
@@ -26,6 +28,10 @@ export const About = (): ReactElement => {
             ref.style.backgroundImage = `url(${imageSources[index]})`;
         });
     }, [imageSources]);
+
+    const toggleLargeImage = (index: number) => {
+        imageRefs.current[index]?.classList.toggle(`${styles.largeImage}`);
+    }
 
     return (
         <>
@@ -37,8 +43,9 @@ export const About = (): ReactElement => {
                 {imageSources.map((_, index) => (
                     <div
                         key={index}
-                        ref={(el) => (imageRefs.current[index] = el!)}
+                        ref={element => { imageRefs.current[index] = element }}
                         className={styles[`box${index + 1}`]}
+                        onClick={_ => { toggleLargeImage(index) }}
                     ></div>
                 ))}
             </section>
