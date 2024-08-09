@@ -92,17 +92,21 @@ function handleSwapTodoListItems (
     action: SwapTodoListItems,
     state: ITodoState
 ): ITodoState {
-    const todoA = state.todoList.find(entity => entity.id === action.payload.idTodoA);
-    const todoB = state.todoList.find(entity => entity.id === action.payload.idTodoB);
-    if (todoA == null || todoB == null) { return state; }
+    const todoAIndex = state.todoList.findIndex(entity => entity.id === action.payload.idTodoA);
+    const todoBIndex = state.todoList.findIndex(entity => entity.id === action.payload.idTodoB);
+    if (todoAIndex === -1 || todoBIndex === -1) { return state; }
+    
+    const newState = {
+        ...state,
+        todoList: [...state.todoList]
+    };
 
-    const newList: ITodoEntity[] = state.todoList.map(entity => {
-        if (entity.id === todoA.id) { return todoB; }
-        else if (entity.id === todoB.id) { return todoA; }
-        else { return entity; }
-    })
+    [
+        newState.todoList[todoAIndex],
+        newState.todoList[todoBIndex]
+    ] = [newState.todoList[todoBIndex], newState.todoList[todoAIndex]];
 
-    return { ...state, todoList: newList }
+    return newState;
 }
 
 function handleToggleTodoDone (

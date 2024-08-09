@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useRef } from "react";
+import { ReactElement, useCallback, useRef } from "react";
 
 import { useTodoContext } from "../../context";
 import { images } from "../../../../assets";
@@ -22,16 +22,15 @@ export const About = (): ReactElement => {
             .length;
     }
 
-    useEffect(() => {
-        imageRefs.current.forEach((ref, index) => {
-            if (ref == null) { return; }
-            ref.style.backgroundImage = `url(${imageSources[index]})`;
-        });
-    }, [imageSources]);
-
     const toggleLargeImage = (index: number) => {
         imageRefs.current[index]?.classList.toggle(`${styles.largeImage}`);
     }
+
+    const setBackgroundImage = useCallback((element: HTMLDivElement | null, imageIndex: number) => {
+        if (element == null) { return; }
+        element.style.backgroundImage = `url(${imageSources[imageIndex]})`;
+        imageRefs.current[imageIndex] = element;
+    }, [imageSources])
 
     return (
         <>
@@ -43,7 +42,7 @@ export const About = (): ReactElement => {
                 {imageSources.map((_, index) => (
                     <div
                         key={index}
-                        ref={element => { imageRefs.current[index] = element }}
+                        ref={element => { setBackgroundImage(element, index) }}
                         className={styles[`box${index + 1}`]}
                         onClick={_ => { toggleLargeImage(index) }}
                     ></div>

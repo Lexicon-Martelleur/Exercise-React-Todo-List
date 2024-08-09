@@ -18,7 +18,7 @@ export const DraggableContainer: React.FC<Props> = ({
 
     const handleOnDragStart:
     React.MouseEventHandler<HTMLElement> = (event) => {
-        const target = event.currentTarget as HTMLElement;
+        const target = event.currentTarget;
         const draggedId = target.dataset.draggableId;
         onDragged(draggedId);
     }
@@ -26,7 +26,7 @@ export const DraggableContainer: React.FC<Props> = ({
     const handleOnDragOver:
     React.MouseEventHandler<HTMLElement> = (event) => {
         event.preventDefault();
-        const target = event.currentTarget as HTMLElement;
+        const target = event.currentTarget;
         const draggedOverId = target.dataset.draggableId;
         onDraggedOver(draggedOverId);
     }
