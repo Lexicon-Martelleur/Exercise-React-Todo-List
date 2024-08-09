@@ -3,3 +3,7 @@
     flex-direction: column;
     gap: 1rem;
 }
+
+.dragged-todo-item {
+    border: var(--BORDER_LIGHT_FAT);
+}

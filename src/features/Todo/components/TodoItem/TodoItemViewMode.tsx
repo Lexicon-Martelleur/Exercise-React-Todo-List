@@ -39,8 +39,8 @@ export const TodoItemViewMode: React.FC<Props> = ({
 
     const getToggleDoneTitle = () => {
         return selectDone(todoEntity)
-            ? `Set '${selectTitle(todoEntity)}' done`
-            : `Set '${selectTitle(todoEntity)}' not done`
+            ? `Set '${selectTitle(todoEntity)}' not done`
+            : `Set '${selectTitle(todoEntity)}' done`;
     }
  
     return (

@@ -80,6 +80,7 @@ export const TodoList = (): ReactElement => {
                 <DraggableContainer
                     key={entity.id}
                     childId={entity.id}
+                    className={styles.draggedTodoItem}
                     onDragged={updateDraggedId}
                     onDraggedOver={updateDraggedOverId}
                     onDrop={handleDrop}>
