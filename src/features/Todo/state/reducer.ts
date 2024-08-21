@@ -1,7 +1,7 @@
 import { v4 as uuid } from "uuid";
 
-import { getInitialTodos, getEmptyDodo, ITodoEntity } from "../../../service";
-import { TodoActionType as Type} from "./constants";
+import { getEmptyDodo, ITodoEntity } from "../../../service";
+import { TodoActionType as Type } from "./constants";
 import {
     ITodoState,
     ITodoAction,
@@ -10,12 +10,14 @@ import {
     ToggleTodoDoneAction,
     RemoveTodoAction,
     EditTodoAction,
-    SwapTodoListItems
+    SwapTodoListItems,
+    AddTodosEntitiesAction
 } from "./types";
 
 export const todoInitData: ITodoState = {
     newTodo: getEmptyDodo(),
-    todoList: getInitialTodos()
+    latestHandledTodo: null,
+    todoList: []
 } as const;
 
 export function todoReducer (
@@ -25,6 +27,7 @@ export function todoReducer (
     switch(action.type) {
         case Type.updateNewTodo: return handleNewTodoAction(action, state);
         case Type.addTodo: return handleAddTodo(action, state);
+        case Type.addTodoEntities: return handleAddTodoEntities(action, state);
         case Type.removeTodo: return handleRemoveTodo(action, state);
         case Type.editTodo: return handleEditTodo(action, state);
         case Type.swapTodoListItems: return handleSwapTodoListItems(action, state);
@@ -54,10 +57,21 @@ function handleAddTodo (
     };
     return {
         ...state,
+        latestHandledTodo: { ...newTodoEntity },
         todoList: [
             ...state.todoList,
             newTodoEntity
         ]
+    };
+}
+
+function handleAddTodoEntities (
+    action: AddTodosEntitiesAction,
+    state: ITodoState
+): ITodoState {
+    return {
+        ...state,
+        todoList: [...action.payload]
     };
 }
 

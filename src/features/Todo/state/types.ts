@@ -3,6 +3,7 @@ import { TodoActionType } from "./constants";
 
 export type ITodoState = Readonly<{
     newTodo: ITodo
+    latestHandledTodo: ITodoEntity | null
     todoList: Readonly<Readonly<ITodoEntity>>[]
 }>;
 
@@ -14,6 +15,11 @@ export interface UpdateNewTodoAction {
 export interface AddTodoAction {
     type: typeof TodoActionType.addTodo;
     payload: ITodo;
+}
+
+export interface AddTodosEntitiesAction {
+    type: typeof TodoActionType.addTodoEntities;
+    payload: ITodoEntity[];
 }
 
 export interface ToggleTodoDoneAction {
@@ -39,6 +45,7 @@ export interface SwapTodoListItems {
 export type ITodoAction = (
     UpdateNewTodoAction |
     AddTodoAction |
+    AddTodosEntitiesAction |
     ToggleTodoDoneAction |
     RemoveTodoAction |
     EditTodoAction |

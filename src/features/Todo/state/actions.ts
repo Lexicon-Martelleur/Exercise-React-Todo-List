@@ -1,7 +1,8 @@
-import { ITodo } from "../../../service";
+import { ITodo, ITodoEntity } from "../../../service";
 import { TodoActionType as Type} from "./constants";
 import {
     AddTodoAction,
+    AddTodosEntitiesAction,
     EditTodoAction,
     RemoveTodoAction,
     SwapTodoListItems,
@@ -20,6 +21,13 @@ export function addTodoAction (todo: ITodo): AddTodoAction {
     return {
         type: Type.addTodo,
         payload: todo
+    };
+}
+
+export function addTodoEntitiesAction (todos: ITodoEntity[]): AddTodosEntitiesAction {
+    return {
+        type: Type.addTodoEntities,
+        payload: todos
     };
 }
 

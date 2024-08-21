@@ -1,42 +1,12 @@
 import { ITodo, ITodoEntity } from "./types";
+import { todoStorage } from "./todoStorage";
 
 export function getInitialTodos (): ITodoEntity[] {
-    return [
-        {
-            id: "1",
-            timestamp: Date.now() + 5000000,
-            todo: {
-                title: "By food",
-                author: "Lars",
-                description: "coffe, apples, milk",
-                done: false
-            }
-        },
-        {
-            id: "2",
-            timestamp: Date.now(),
-            todo: {
-                title: "Read 3 books",
-                author: "Mr. Nice",
-                description: "Bittersweet, ...",
-                done: false
-            }
-        },
-        {
-            id: "3",
-            timestamp: Date.now() + 2000000,
-            todo: {
-                title: "Call friend",
-                author: "Carl",
-                description: "Ask what plan is next saturday",
-                done: false
-            }
-        }
-    ];
+    return todoStorage.getTodos();
 }
 
 export function getEmptyDodo (): ITodo {
-    return { title: "", author: "", description: "", done: false };
+    return todoStorage.getNewTodo();
 }
 
 export function sortByAuthor (todoList: ITodoEntity[]): ITodoEntity[] {
@@ -55,4 +25,12 @@ export function sortByDate (todoList: ITodoEntity[]): ITodoEntity[] {
         else if (dateA > dateB) { return 1; }
         else { return 0; }
     });
+}
+
+export function StoreTodos (todos: ITodoEntity[]): void {
+    todoStorage.saveTodos(todos);
+}
+
+export function StoreNewTodo (newTodo: ITodo): void {
+    todoStorage.saveNewTodo(newTodo);
 }

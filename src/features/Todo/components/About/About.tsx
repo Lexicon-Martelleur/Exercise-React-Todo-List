@@ -7,7 +7,7 @@ import styles from "./About.module.css";
 
 export const About = (): ReactElement => {
     const [_, todoState] = useTodoContext();    
-    const imageRefs = useRef<(HTMLDivElement | null)[]>([]);
+    const imageRefs = useRef<(HTMLDivElement)[]>([]);
     const imageSources = [
         images.calm1.src,
         images.calm2.src,
