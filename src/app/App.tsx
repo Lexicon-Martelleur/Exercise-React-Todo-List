@@ -10,6 +10,7 @@ import {
 	TodoActionType as Type
 } from "../features/Todo/state";
 import { ITodoEntity, StoreNewTodo, StoreTodos } from "../service";
+import { isDevelopment } from "../config";
 
 /**
  * @TODO Clean up
@@ -24,15 +25,21 @@ export const App = (): ReactElement => {
 
 	const dispatchTodoActionStorageWrapper = (action: ITodoAction) => {
 		dispatchTodoAction(action);
-		/** @TODO Log only in dev mode */
-		// console.log("action", action);
+		if (isDevelopment()) {
+			console.log("action", action);
+		}
 		actionTypeRef.current = action.type;
 	}
 
 	useEffect(() => {
 		(async () => {
 			try {
-				const todoList = await todoApi.getTodos();
+				const [todoList, paginationMetaData] = await todoApi.getTodos();
+				/**
+				 * @TODO Use pagination metadata to implment
+				 * pagination on frontend. 
+				 **/ 
+				console.log("paginationMetaData", paginationMetaData)
 				dispatchTodoAction(addTodoEntitiesAction(todoList));
 			} catch (e) {
 				console.log(e)

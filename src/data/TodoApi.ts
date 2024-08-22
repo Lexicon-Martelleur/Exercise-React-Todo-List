@@ -1,10 +1,16 @@
 import { isTodoEntity, ITodoEntity } from "../service";
-import { ITodoAPI } from "./ITodoApi"
+import { getTodoAPI } from "../config";
+import { ITodoAPI } from "./ITodoApi";
+import { APIError } from "./APIError";
+import { IPaginationMetaData, isPaginationMetaData } from "../http"
 
 class TodoAPI implements ITodoAPI {
-    private readonly API = "http://192.168.0.36:5114/api"
+    private readonly API = getTodoAPI();
+    private readonly defaultHeader = {
+        "Content-Type": "application/json",
+    }
 
-    async getTodos (): Promise<ITodoEntity[]> {
+    async getTodos (): Promise<[ITodoEntity[], IPaginationMetaData]> {
         try {
             const res = await fetch(`${this.API}/todo`);
             const todos = await res.json() as ITodoEntity[];
@@ -14,23 +20,22 @@ class TodoAPI implements ITodoAPI {
                     id: `${item.id}`,
                     timestamp: Number(item.timestamp),
             }})
-            if (todoList.every(isTodoEntity)) {
-                return todoList;
+            const paginationMetaData = JSON.parse(res.headers.get("X-Pagination") ?? "");
+            if (todoList.every(isTodoEntity) &&
+                isPaginationMetaData(paginationMetaData)) {
+                return [todoList, paginationMetaData];
             } else {
-                throw new Error("API error");
+                throw new APIError();
             }
         } catch (e) {
-            console.log(e);
-            throw new Error("API error");
+            throw new APIError(e instanceof Error ? e : undefined)
         }
     }
 
     async createTodo (todo: ITodoEntity): Promise<ITodoEntity> {
         try {
             const res = await fetch(`${this.API}/todo`, {
-                headers: {
-                    "Content-Type": "application/json",
-                },
+                headers: this.defaultHeader,
                 method: "POST",
                 body: JSON.stringify({
                     timestamp: `${todo.timestamp}`,
@@ -48,11 +53,10 @@ class TodoAPI implements ITodoAPI {
             if (isTodoEntity(todoEntity)) {
                 return todoEntity;
             } else {
-                throw new Error("API error")
+                throw new APIError()
             }
         } catch (e) {
-            console.log(e);
-            throw new Error("API error");
+            throw new APIError(e instanceof Error ? e : undefined)
         }
     }
 
