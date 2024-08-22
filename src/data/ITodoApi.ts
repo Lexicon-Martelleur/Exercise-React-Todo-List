@@ -5,5 +5,6 @@ export interface ITodoAPI {
     getTodos: () => Promise<[ITodoEntity[], IPaginationMetaData]>;
     createTodo: (todo: ITodoEntity) => Promise<ITodoEntity>;
     deleteTodo: (todoId: number) => Promise<ITodoEntity>;
-    updateTodo: (todoId: number) => Promise<ITodoEntity>;
+    putTodo: (todo: ITodoEntity) => Promise<ITodoEntity>;
+    patchTodoDone: (todo: ITodoEntity) => Promise<ITodoEntity>;
 }

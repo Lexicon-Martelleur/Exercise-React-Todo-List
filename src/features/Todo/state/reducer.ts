@@ -55,6 +55,7 @@ function handleAddTodo (
         todo: action.payload,
         timestamp: Date.now()
     };
+
     return {
         ...state,
         latestHandledTodo: { ...newTodoEntity },
@@ -79,18 +80,22 @@ function handleRemoveTodo (
     action: RemoveTodoAction,
     state: ITodoState
 ): ITodoState {
-    const newList: ITodoEntity[] = state.todoList.filter(entity => (
+    const latestHandledTodo = state.todoList.find(entity => (
+        entity.id !== action.payload
+    )) ?? null; 
+    
+    const todoList: ITodoEntity[] = state.todoList.filter(entity => (
         entity.id !== action.payload
     ));
 
-    return { ...state, todoList: newList };
+    return { ...state, latestHandledTodo, todoList };
 }
 
 function handleEditTodo (
     action: EditTodoAction,
     state: ITodoState
 ): ITodoState {
-    const newList: ITodoEntity[] = state.todoList.map(entity => (
+    const todoList: ITodoEntity[] = state.todoList.map(entity => (
         entity.id === action.payload.id
         ? {
             ...entity,
@@ -99,7 +104,11 @@ function handleEditTodo (
         : entity
     ));
 
-    return { ...state, todoList: newList };
+    const latestHandledTodo = state.todoList.find(entity => (
+        entity.id !== action.payload.id
+    )) ?? null; 
+
+    return { ...state, latestHandledTodo, todoList };
 }
 
 function handleSwapTodoListItems (

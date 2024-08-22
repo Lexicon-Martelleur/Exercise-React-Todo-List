@@ -11,7 +11,9 @@ export class APIError extends Error {
         this.internalError = internalError ?? null 
         if (isDevelopment()) {
             console.log(`Error: ${errorMsg}`)
-            internalError != null && console.log(`Internal error: ${internalError.message}`)
+            internalError != null && console.log(`Internal error: ${internalError}`)
+        } else {
+            console.log(`Error: ${errorMsg}`)
         }
     }
 }

@@ -2,6 +2,7 @@ import { isTodoEntity, ITodoEntity } from "../service";
 import { getTodoAPI } from "../config";
 import { ITodoAPI } from "./ITodoApi";
 import { APIError } from "./APIError";
+import { createAPIProxy } from "./APIProxy";
 import { IPaginationMetaData, isPaginationMetaData } from "../http"
 
 class TodoAPI implements ITodoAPI {
@@ -11,52 +12,44 @@ class TodoAPI implements ITodoAPI {
     }
 
     async getTodos (): Promise<[ITodoEntity[], IPaginationMetaData]> {
-        try {
-            const res = await fetch(`${this.API}/todo`);
-            const todos = await res.json() as ITodoEntity[];
-            const todoList = todos.map(item => {
-                return {
-                    ...item,
-                    id: `${item.id}`,
-                    timestamp: Number(item.timestamp),
-            }})
-            const paginationMetaData = JSON.parse(res.headers.get("X-Pagination") ?? "");
-            if (todoList.every(isTodoEntity) &&
-                isPaginationMetaData(paginationMetaData)) {
+        const res = await fetch(`${this.API}/todo`);
+        const todos = await res.json() as ITodoEntity[];
+        const todoList = todos.map(item => {
+            return {
+                ...item,
+                id: `${item.id}`,
+                timestamp: Number(item.timestamp),
+        }})
+        const paginationMetaData = JSON.parse(res.headers.get("X-Pagination") ?? "");
+        if (todoList.every(isTodoEntity) &&
+            isPaginationMetaData(paginationMetaData)) {
                 return [todoList, paginationMetaData];
-            } else {
-                throw new APIError();
-            }
-        } catch (e) {
-            throw new APIError(e instanceof Error ? e : undefined)
+        } else {
+            throw new APIError();
         }
     }
 
     async createTodo (todo: ITodoEntity): Promise<ITodoEntity> {
-        try {
-            const res = await fetch(`${this.API}/todo`, {
-                headers: this.defaultHeader,
-                method: "POST",
-                body: JSON.stringify({
-                    timestamp: `${todo.timestamp}`,
-                    todo: todo.todo
-                }),
-            })
+        const res = await fetch(`${this.API}/todo`, {
+            headers: this.defaultHeader,
+            method: "POST",
+            body: JSON.stringify({
+                timestamp: `${todo.timestamp}`,
+                todo: todo.todo
+            }),
+        })
 
-            const createdTodo = await res.json() as ITodoEntity;
-            const todoEntity = {
-                ...createdTodo,
-                id: `${createdTodo.id}`,
-                timestamp: Number(createdTodo.timestamp),
-            }
+        const createdTodo = await res.json() as ITodoEntity;
+        const todoEntity = {
+            ...createdTodo,
+            id: `${createdTodo.id}`,
+            timestamp: Number(createdTodo.timestamp),
+        }
 
-            if (isTodoEntity(todoEntity)) {
-                return todoEntity;
-            } else {
-                throw new APIError()
-            }
-        } catch (e) {
-            throw new APIError(e instanceof Error ? e : undefined)
+        if (isTodoEntity(todoEntity)) {
+            return todoEntity;
+        } else {
+            throw new APIError()
         }
     }
 
@@ -64,9 +57,14 @@ class TodoAPI implements ITodoAPI {
         throw new Error("Not implemented");
     }
     
-    async updateTodo (todoId: number): Promise<ITodoEntity> {
+    async putTodo (todo: ITodoEntity): Promise<ITodoEntity> {
+        throw new Error("Not implemented");
+    }
+
+    async patchTodoDone (todo: ITodoEntity): Promise<ITodoEntity> {
         throw new Error("Not implemented");
     }
 }
 
-export const todoApi: ITodoAPI = new TodoAPI();
+const defaultTodoApi: ITodoAPI = new TodoAPI();
+export const todoApi = createAPIProxy(defaultTodoApi);
