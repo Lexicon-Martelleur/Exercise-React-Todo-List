@@ -19,8 +19,10 @@ export function createAPIProxy<ApiTarget extends object>(
                 try {
                     return await targetProperty.apply(target, args);
                 } catch (err) {
-                    const internalErr = err instanceof Error ? err : undefined
-                    throw new APIError(internalErr);
+                    const apiError = err instanceof Error 
+                        ? new APIError(err)
+                        : new APIError();
+                    throw apiError;
                 }
             };
         }

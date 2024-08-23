@@ -81,7 +81,7 @@ function handleRemoveTodo (
     state: ITodoState
 ): ITodoState {
     const latestHandledTodo = state.todoList.find(entity => (
-        entity.id !== action.payload
+        entity.id === action.payload
     )) ?? null; 
     
     const todoList: ITodoEntity[] = state.todoList.filter(entity => (
@@ -104,9 +104,11 @@ function handleEditTodo (
         : entity
     ));
 
-    const latestHandledTodo = state.todoList.find(entity => (
-        entity.id !== action.payload.id
+    const latestHandledTodo = todoList.find(entity => (
+        entity.id === action.payload.id
     )) ?? null; 
+
+    console.log('latest', latestHandledTodo)
 
     return { ...state, latestHandledTodo, todoList };
 }

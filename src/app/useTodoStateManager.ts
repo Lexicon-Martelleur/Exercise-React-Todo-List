@@ -61,6 +61,11 @@ export function useTodoStateManager () {
 		})()
 	}, []);
 
+	/**
+	 * @TODO
+	 * 1. Display status to user.
+	 * 2. Refactor to be used before local state update.
+	 */
 	useEffect(() => {(async () => {
 		const todo = todoState.latestHandledTodo;
 		const isTodo = todo != null

@@ -1,4 +1,4 @@
-import { isTodoEntity, ITodoEntity } from "../service";
+import { isTodo, isTodoEntity, ITodoEntity } from "../service";
 import { getTodoAPI } from "../config";
 import { ITodoAPI } from "./ITodoApi";
 import { APIError } from "./APIError";
@@ -54,11 +54,41 @@ class TodoAPI implements ITodoAPI {
     }
 
     async deleteTodo (todoId: number): Promise<ITodoEntity> {
-        throw new Error("Not implemented");
+        const res = await fetch(`${this.API}/todo/${todoId}`, {
+            headers: this.defaultHeader,
+            method: "DELETE"
+        })
+
+        if (res.ok) {
+            return await res.json();    
+        } else {
+            throw new APIError();
+        }
     }
     
     async putTodo (todo: ITodoEntity): Promise<ITodoEntity> {
-        throw new Error("Not implemented");
+        const id = Number(todo.id);
+        const res = await fetch(`${this.API}/todo/${id}`, {
+            headers: this.defaultHeader,
+            method: "PUT",
+            body: JSON.stringify({
+                id,
+                timestamp: `${todo.timestamp}`,
+                todo: todo.todo
+            }),
+        })
+
+        const updatedTodo = await res.json() as ITodoEntity;
+        const todoEntity = {
+            ...updatedTodo,
+            id: `${updatedTodo.id}`,
+            timestamp: Number(updatedTodo.timestamp)
+        }
+        if (isTodoEntity(todoEntity)) {
+            return updatedTodo;
+        } else {
+            throw new APIError()
+        }
     }
 
     async patchTodoDone (todo: ITodoEntity): Promise<ITodoEntity> {
