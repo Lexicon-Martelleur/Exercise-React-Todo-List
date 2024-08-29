@@ -12,6 +12,11 @@ import { useTodoAPI } from "./useTodoAPI";
 
 export type TodoStateManager = ReturnType<typeof useTodoStateManager>
 
+/**
+ * Used to syncronize state between local and remote
+ * Current strategy is local first
+ * @TODO Implementation design need to be refined
+ */
 export function useTodoStateManager () {
     const [
 		todoState,

@@ -1,18 +1,17 @@
-import { ReactElement } from "react";
-import { Outlet } from "react-router-dom";
+import React, { ReactElement, ReactNode } from "react";
 
 import { BaseLayout } from "../layout";
-import { useTodoStateManager } from "../features";
 
-export const App = (): ReactElement => {
-	const [
-		todoState,
-		dispatchTodoAction
-	] = useTodoStateManager();
+interface Props {
+	children?: ReactNode;
+}
 
+export const App: React.FC<Props> = ({
+	children
+}): ReactElement => {
 	return (
 		<BaseLayout>
-      		<Outlet context={[dispatchTodoAction, todoState]}/>  
+			{children}
     	</BaseLayout>
 	);
 }

@@ -41,7 +41,9 @@ describe("Todo State", () => {
         newTodo: mockPrevTodo,
         latestHandledTodo: null,
         todoPagination: null,
-        todoList: [ mockInitTodoEntity ]
+        todoList: [ mockInitTodoEntity ],
+        isError: false,
+        errorMessage: "Error message"
     };
 
     describe("todoReducer", () => {

@@ -6,6 +6,8 @@ export type ITodoState = Readonly<{
     latestHandledTodo: ITodoEntity | null
     todoPagination: IPaginationMetaData | null
     todoList: Readonly<Readonly<ITodoEntity>>[]
+    isError: boolean
+    errorMessage: string 
 }>;
 
 export interface UpdateNewTodoAction {

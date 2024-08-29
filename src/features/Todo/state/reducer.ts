@@ -19,7 +19,9 @@ export const todoInitData: ITodoState = {
     newTodo: getEmptyDodo(),
     latestHandledTodo: null,
     todoPagination: null,
-    todoList: []
+    todoList: [],
+    isError: false,
+    errorMessage: ""
 } as const;
 
 export function todoReducer (

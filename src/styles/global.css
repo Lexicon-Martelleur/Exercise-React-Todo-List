@@ -18,6 +18,11 @@
     --BORDER_LIGHT_FAT: 3px solid var(--BORDER_COLOR_LIGHT);
     --BORDER_MEDIUM_FAT: 3px solid var(--BORDER_COLOR_MEDIUM);
     --BORDER_DARK_FAT: 3px solid var(--BORDER_COLOR_DARK);
+
+    --Z_INDEX_LEVEL_1: 100;
+    --Z_INDEX_LEVEL_2: 200;
+    --Z_INDEX_LEVEL_3: 300;
+    --Z_INDEX_LEVEL_MAX: 1000;
 }
 
 * {
