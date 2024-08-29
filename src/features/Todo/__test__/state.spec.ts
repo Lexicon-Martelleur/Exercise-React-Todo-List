@@ -1,11 +1,13 @@
-import { ITodo, ITodoEntity } from "../../../service"
+import { IPaginationMetaData, ITodo, ITodoEntity } from "../../../service"
 import {
     addTodoAction,
     editTodoAction,
     removeTodoAction,
     swapTodoListItemsAction,
     toggleTodoDoneAction,
-    updateNewTodoAction
+    updateNewTodoAction,
+    updateTodoErrorStateAction,
+    updateTodoPaginationAction
 } from "../state/actions";
 import { TodoActionType } from "../state/constants";
 import { todoReducer } from "../state/reducer";
@@ -110,6 +112,29 @@ describe("Todo State", () => {
             const nextState = todoReducer(mockTodoState, action);
             expect(nextState.todoList[indexTodo].todo).toStrictEqual(editedTodo);
         });
+
+        it("return state with updated pagination state", () => {
+            const newPaginationData: IPaginationMetaData = {
+                TotalItemCount: 100,
+                TotalPageCount: 10,
+                PageSize: 10,
+                CurrentPage: 3
+            }
+            const action = updateTodoPaginationAction(newPaginationData);
+            const nextState = todoReducer(mockTodoState, action);
+            expect(nextState.todoPagination).toStrictEqual(newPaginationData);
+        });
+
+        it("return state updated with error state", () => {
+            const isError = true;
+            const errorMsg = "New Error message";
+            const action = updateTodoErrorStateAction(
+                isError,
+                errorMsg);
+            const nextState = todoReducer(mockTodoState, action);
+            expect(nextState.isError).toStrictEqual(isError);
+            expect(nextState.errorMessage).toStrictEqual(errorMsg);
+        });
     });
 
     describe("addTodoAction", () => {
@@ -174,6 +199,42 @@ describe("Todo State", () => {
             const action = editTodoAction(id, editedTodo);
             expect(action.type).toBe(TodoActionType.editTodo);
             expect(action.payload).toStrictEqual({id, editedTodo});
+        });
+    });
+
+    describe("updateTodoPaginationAction", () => {
+        it(`return an action of type update todo pagination
+            with payload value same as input parameter`, () => {
+            const paginationData: IPaginationMetaData = {
+                TotalItemCount: 100,
+                TotalPageCount: 10,
+                PageSize: 10,
+                CurrentPage: 3
+            };
+            const action = updateTodoPaginationAction(paginationData);
+            expect(action.type).toBe(TodoActionType.updateTodoPagination);
+            expect(action.payload).toStrictEqual(paginationData);
+        });
+    });
+
+    describe("updateTodoErrorStateAction", () => {
+        it(`return an action of type update todo error state
+            with payload value same as input parameter`, () => {
+            const isError = true;
+            const errorMsg = "Error Message"
+            const action = updateTodoErrorStateAction(isError, errorMsg);
+            expect(action.type).toBe(TodoActionType.updateErrorState);
+            expect(action.payload).toStrictEqual({ isError, errorMsg });
+        });
+
+        it("return default erromessage set to empty", () => {
+            const isError = true;
+            const emptyMessage = "";
+            const action = updateTodoErrorStateAction(isError);
+            expect(action.type).toBe(TodoActionType.updateErrorState);
+            expect(action.payload).toStrictEqual({
+                isError, errorMsg: emptyMessage
+            });
         });
     });
 });
