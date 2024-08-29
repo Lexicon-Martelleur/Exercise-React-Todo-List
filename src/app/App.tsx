@@ -3,7 +3,7 @@ import { Outlet } from "react-router-dom";
 
 import { BaseLayout } from "../layout";
 
-import { useTodoStateManager } from "./useTodoStateManager";
+import { useTodoStateManager } from "../features";
 
 export const App = (): ReactElement => {
 	const [

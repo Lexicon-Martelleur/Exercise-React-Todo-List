@@ -1,14 +1,14 @@
 import { useEffect, useReducer, useRef } from "react";
 
-import { todoInitData, todoReducer } from "../features";
-import { todoApi } from "../data";
+import { todoInitData, todoReducer } from "../..";
+import { todoApi } from "../../../data";
 import {
 	addTodoEntitiesAction,
 	ITodoAction,
 	TodoActionType as Type
-} from "../features/Todo/state";
-import { StoreNewTodo, StoreTodos } from "../service";
-import { isDevelopment } from "../config";
+} from "../state";
+import { StoreNewTodo, StoreTodos } from "../../../service";
+import { isDevelopment } from "../../../config";
 
 export type TodoStateManager = ReturnType<typeof useTodoStateManager>
 
@@ -50,7 +50,7 @@ export function useTodoStateManager () {
 			try {
 				const [todoList, paginationMetaData] = await todoApi.getTodos();
 				/**
-				 * @TODO Use pagination metadata to implment
+				 * @TODO Use pagination metadata to implement
 				 * pagination on frontend. 
 				 **/ 
 				console.log("paginationMetaData", paginationMetaData)
@@ -63,8 +63,8 @@ export function useTodoStateManager () {
 
 	/**
 	 * @TODO
-	 * 1. Display status to user.
-	 * 2. Refactor to be used before local state update.
+	 * 1. Display status to user, e.g, action failed on server.
+	 * 2. Could! Refactor to be used before local state update.
 	 */
 	useEffect(() => {(async () => {
 		const todo = todoState.latestHandledTodo;

@@ -138,7 +138,7 @@ function handleToggleTodoDone (
     action: ToggleTodoDoneAction,
     state: ITodoState
 ): ITodoState {
-    const newList: ITodoEntity[] = state.todoList.map(entity => (
+    const todoList: ITodoEntity[] = state.todoList.map(entity => (
         entity.id === action.payload
         ? {
             ...entity,
@@ -147,5 +147,9 @@ function handleToggleTodoDone (
         : entity
     ));
 
-    return { ...state, todoList: newList };
+    const latestHandledTodo = todoList.find(entity => (
+        entity.id === action.payload
+    )) ?? null; 
+
+    return { ...state, latestHandledTodo, todoList };
 }
