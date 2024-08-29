@@ -1,10 +1,9 @@
-import { IPaginationMetaData } from "../http";
-import { ITodoEntity } from "../service";
+import { ITodoEntity, IPaginationMetaData} from "../service";
 
 export interface ITodoAPI {
-    getTodos: () => Promise<[ITodoEntity[], IPaginationMetaData]>;
-    createTodo: (todo: ITodoEntity) => Promise<ITodoEntity>;
-    deleteTodo: (todoId: number) => Promise<ITodoEntity>;
-    putTodo: (todo: ITodoEntity) => Promise<ITodoEntity>;
-    patchTodoDone: (todo: ITodoEntity) => Promise<ITodoEntity>;
+    getTodos: (pageNr: number, signal?: AbortSignal) => Promise<[ITodoEntity[], IPaginationMetaData]>;
+    createTodo: (todo: ITodoEntity, signal?: AbortSignal) => Promise<ITodoEntity>;
+    deleteTodo: (todoId: number, signal?: AbortSignal) => Promise<ITodoEntity>;
+    putTodo: (todo: ITodoEntity, signal?: AbortSignal) => Promise<ITodoEntity>;
+    patchTodoDone: (todo: ITodoEntity, signal?: AbortSignal) => Promise<ITodoEntity>;
 }

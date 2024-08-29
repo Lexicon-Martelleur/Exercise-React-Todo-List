@@ -1,9 +1,10 @@
-import { ITodo, ITodoEntity } from "../../../service";
+import { IPaginationMetaData, ITodo, ITodoEntity } from "../../../service";
 import { TodoActionType } from "./constants";
 
 export type ITodoState = Readonly<{
     newTodo: ITodo
     latestHandledTodo: ITodoEntity | null
+    todoPagination: IPaginationMetaData | null
     todoList: Readonly<Readonly<ITodoEntity>>[]
 }>;
 
@@ -42,6 +43,11 @@ export interface SwapTodoListItems {
     payload: { idTodoA: string, idTodoB: string };
 }
 
+export interface UpdateTodoPaginationAction {
+    type: typeof TodoActionType.updateTodoPagination;
+    payload: IPaginationMetaData | null;
+}
+
 export type ITodoAction = (
     UpdateNewTodoAction |
     AddTodoAction |
@@ -49,5 +55,6 @@ export type ITodoAction = (
     ToggleTodoDoneAction |
     RemoveTodoAction |
     EditTodoAction |
-    SwapTodoListItems
+    SwapTodoListItems |
+    UpdateTodoPaginationAction
 );

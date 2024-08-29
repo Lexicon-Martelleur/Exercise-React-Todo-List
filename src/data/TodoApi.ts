@@ -1,21 +1,31 @@
-import { isTodoEntity, ITodoEntity } from "../service";
+import {
+    isTodoEntity,
+    ITodoEntity,
+    IPaginationMetaData,
+    isPaginationMetaData
+} from "../service";
 import { getTodoAPI } from "../config";
 import { ITodoAPI } from "./ITodoApi";
 import { APIError } from "./APIError";
 import { createAPIProxy } from "./APIProxy";
-import { IPaginationMetaData, isPaginationMetaData } from "../http"
 
 class TodoAPI implements ITodoAPI {
     private readonly API = getTodoAPI();
+    private readonly nrOfTodos = 10;
     
     private readonly defaultHeader = {
         "Content-Type": "application/json",
-    }
+    };
 
-    async getTodos (signal?: AbortSignal): Promise<[ITodoEntity[], IPaginationMetaData]> {
-        const res = await fetch(`${this.API}/todo`, {
+    async getTodos (
+        pageNr: number,
+        signal?: AbortSignal
+    ): Promise<[ITodoEntity[], IPaginationMetaData]> {
+        const url = `${this.API}/todo?pageSize=${this.nrOfTodos}&pageNr=${pageNr}`
+        const res = await fetch(url, {
             signal
         });
+        if(!res.ok) { throw new APIError(res.statusText); }
         const todos = await res.json() as ITodoEntity[];
         const todoList = todos.map(item => {
             return {
@@ -42,7 +52,7 @@ class TodoAPI implements ITodoAPI {
                 todo: todo.todo
             }),
         })
-
+        if(!res.ok) { throw new APIError(res.statusText); }
         const createdTodo = await res.json() as ITodoEntity;
         const todoEntity = {
             ...createdTodo,
@@ -67,7 +77,7 @@ class TodoAPI implements ITodoAPI {
         if (res.ok) {
             return await res.json();    
         } else {
-            throw new APIError();
+            throw new APIError(res.statusText);
         }
     }
     
@@ -83,7 +93,7 @@ class TodoAPI implements ITodoAPI {
                 todo: todo.todo
             }),
         })
-
+        if(!res.ok) { throw new APIError(res.statusText); }
         const updatedTodo = await res.json() as ITodoEntity;
         const todoEntity = {
             ...updatedTodo,
@@ -111,7 +121,7 @@ class TodoAPI implements ITodoAPI {
                 } 
             ]),
         })
-
+        if(!res.ok) { throw new APIError(res.statusText); }
         const updatedTodo = await res.json() as ITodoEntity;
         const todoEntity = {
             ...updatedTodo,

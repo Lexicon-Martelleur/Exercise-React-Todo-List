@@ -11,12 +11,14 @@ import {
     RemoveTodoAction,
     EditTodoAction,
     SwapTodoListItems,
-    AddTodosEntitiesAction
+    AddTodosEntitiesAction,
+    UpdateTodoPaginationAction
 } from "./types";
 
 export const todoInitData: ITodoState = {
     newTodo: getEmptyDodo(),
     latestHandledTodo: null,
+    todoPagination: null,
     todoList: []
 } as const;
 
@@ -32,6 +34,7 @@ export function todoReducer (
         case Type.editTodo: return handleEditTodo(action, state);
         case Type.swapTodoListItems: return handleSwapTodoListItems(action, state);
         case Type.toggleTodoDone: return handleToggleTodoDone(action, state);
+        case Type.updateTodoPagination: return handleUpdateTodoPagination(action, state);
         default: return state;
     }
 }
@@ -152,4 +155,11 @@ function handleToggleTodoDone (
     )) ?? null; 
 
     return { ...state, latestHandledTodo, todoList };
+}
+
+function handleUpdateTodoPagination (
+    action: UpdateTodoPaginationAction,
+    state: ITodoState
+) {
+    return { ...state, todoPagination: action.payload }
 }

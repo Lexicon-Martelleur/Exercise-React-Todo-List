@@ -39,6 +39,8 @@ describe("Todo State", () => {
     
     const mockTodoState: ITodoState = {
         newTodo: mockPrevTodo,
+        latestHandledTodo: null,
+        todoPagination: null,
         todoList: [ mockInitTodoEntity ]
     };
 
@@ -146,7 +148,7 @@ describe("Todo State", () => {
         });
     });
 
-    describe("wapTodoListItems", () => {
+    describe("swapTodoListItems", () => {
         it(`return an action of type swap todo items
             with payload value same as input parameter`, () => {
             const idTodoA = "2"

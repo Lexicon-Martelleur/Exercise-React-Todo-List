@@ -5,13 +5,20 @@ import { ITodo, sortByAuthor, sortByDate } from "../../../../service";
 import {
     editTodoAction,
     removeTodoAction,
+    selectNrOfTodoPage,
+    selectTodoPage,
     swapTodoListItemsAction,
     toggleTodoDoneAction
 } from "../../state";
-import { DraggableContainer, SelectMenu } from "../../../../components";
+import {
+    DraggableContainer,
+    SelectMenu,
+    PageNavigation
+} from "../../../../components";
 import { TodoItem } from "../TodoItem";
 
 import styles from "./TodoList.module.css";
+import { useTodoAPI } from "../../hooks";
 
 const sortMode = {
     author: "Sort by author",
@@ -31,6 +38,7 @@ export const TodoList = (): ReactElement => {
     const [dispatchTodoAction, todoState] = useTodoContext();
     const [draggedId, setDraggedId] = useState<string | undefined>(undefined);
     const [draggedOverId, setDraggedOverId] = useState<string | undefined>(undefined);
+    const todoAPIHook = useTodoAPI();
 
     const handleToggleDone = (id: string) => {
         dispatchTodoAction(toggleTodoDoneAction(id));
@@ -70,8 +78,24 @@ export const TodoList = (): ReactElement => {
         dispatchTodoAction(swapTodoListItemsAction(draggedId, draggedOverId));
     }
 
+    const handleNextPage = () => {
+        const page = selectTodoPage(todoState) + 1
+		todoAPIHook.getTodos(page, dispatchTodoAction);
+    }
+
+    const handlePrevPage = () => {
+        const page = selectTodoPage(todoState) - 1			
+		todoAPIHook.getTodos(page, dispatchTodoAction);
+    }
+
     return (
         <section className={styles.todoList}>
+            {todoState.todoPagination != null && <PageNavigation
+                page={selectTodoPage(todoState)}
+                nrOfPages={selectNrOfTodoPage(todoState)}
+                onPrev={handlePrevPage}
+                onNext={handleNextPage} />
+            }
             <SelectMenu title={`${todoState.todoList.length} Todos`}
                 options={Object.values(sortMode)}
                 selectedOption={selectedSortMode}
@@ -91,6 +115,12 @@ export const TodoList = (): ReactElement => {
                         onEditTodoItem={handleEditTodo} />
                 </DraggableContainer>
             ))}
+            {todoState.todoPagination != null && <PageNavigation
+                page={selectTodoPage(todoState)}
+                nrOfPages={selectNrOfTodoPage(todoState)}
+                onPrev={handlePrevPage}
+                onNext={handleNextPage} />
+            }
         </section>
     );
 }

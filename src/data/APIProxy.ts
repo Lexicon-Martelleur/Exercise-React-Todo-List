@@ -1,8 +1,11 @@
-import { APIError } from "./APIError";
+import { getTodoAPI } from "../config";
+import { APIError, APIErrorCode } from "./APIError";
+
+const API = getTodoAPI();
 
 /**
  * A generic proxy used to wrap api calls with a common
- * error managment strategy.
+ * abort and error managment strategy.
  */
 export function createAPIProxy<ApiTarget extends object>(
     target: ApiTarget
@@ -12,7 +15,7 @@ export function createAPIProxy<ApiTarget extends object>(
             const targetProperty = Reflect.get(target, property, receiver);
 
             if (typeof targetProperty !== 'function') {
-                return targetProperty
+                return targetProperty;
             }
 
             return async function (...args: unknown[]): Promise<unknown> {
@@ -24,12 +27,12 @@ export function createAPIProxy<ApiTarget extends object>(
                     return result;
                 } catch (err) {
                     clearTimeout(timeoutId)
-                    if (err instanceof Error && err.name === "AbortError" ) {
-                        throw new APIError(err, "The request was aborted")
+                    if (err instanceof APIError && err.errorCode === APIErrorCode.ABORTED) {
+                        throw new APIError(`The request was aborted from ${API}`, err);
                     } else if (err instanceof Error) {
-                        throw new APIError(err)
+                        throw new APIError(`Api error when requesting data from ${API}`, err);
                     } else {
-                        throw new  APIError()
+                        throw new  APIError();
                     };
                 }
             };
@@ -40,10 +43,10 @@ export function createAPIProxy<ApiTarget extends object>(
 function getTimoutSignal (timeout = 10000): [NodeJS.Timeout, AbortSignal] {
     const controller = new AbortController();
     const { signal } = controller;
-    const reason = `The request was aborted due delay extended ${timeout}.`
+    const reason = `The request was aborted due delay extended ${timeout}.`;
 
     const timeoutId = setTimeout(() => controller.abort(
-        new APIError(null, reason)
+        new APIError(reason, null, APIErrorCode.ABORTED)
     ), timeout);
     return [timeoutId, signal];
 }

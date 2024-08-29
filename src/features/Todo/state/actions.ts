@@ -1,4 +1,4 @@
-import { ITodo, ITodoEntity } from "../../../service";
+import { IPaginationMetaData, ITodo, ITodoEntity } from "../../../service";
 import { TodoActionType as Type} from "./constants";
 import {
     AddTodoAction,
@@ -7,7 +7,8 @@ import {
     RemoveTodoAction,
     SwapTodoListItems,
     ToggleTodoDoneAction,
-    UpdateNewTodoAction
+    UpdateNewTodoAction,
+    UpdateTodoPaginationAction
 } from "./types";
 
 export function updateNewTodoAction (todo: ITodo): UpdateNewTodoAction {
@@ -52,9 +53,18 @@ export function editTodoAction (id: string, editedTodo: ITodo): EditTodoAction {
     };
 }
 
-export function swapTodoListItemsAction (idTodoA: string, idTodoB: string): SwapTodoListItems {
+export function swapTodoListItemsAction (idTodoA: string, idTodoB: string):
+SwapTodoListItems {
     return {
         type: Type.swapTodoListItems,
         payload: { idTodoA, idTodoB }
+    };
+}
+
+export function updateTodoPaginationAction (paginationTodoData: IPaginationMetaData | null):
+UpdateTodoPaginationAction {
+    return {
+        type: Type.updateTodoPagination,
+        payload: paginationTodoData
     };
 }

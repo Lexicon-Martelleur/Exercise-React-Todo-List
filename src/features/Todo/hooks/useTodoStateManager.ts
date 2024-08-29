@@ -1,14 +1,14 @@
 import { useEffect, useReducer, useRef } from "react";
 
-import { todoInitData, todoReducer } from "../..";
-import { todoApi } from "../../../data";
+import { todoInitData, todoReducer } from "../state";
 import {
-	addTodoEntitiesAction,
 	ITodoAction,
-	TodoActionType as Type
+	TodoActionType as Type,
+	selectTodoPage
 } from "../state";
 import { StoreNewTodo, StoreTodos } from "../../../service";
 import { isDevelopment } from "../../../config";
+import { useTodoAPI } from "./useTodoAPI";
 
 export type TodoStateManager = ReturnType<typeof useTodoStateManager>
 
@@ -17,6 +17,7 @@ export function useTodoStateManager () {
 		todoState,
 		dispatchTodoAction
 	] = useReducer(todoReducer, todoInitData);
+	const todoAPIHook = useTodoAPI();
 	const actionTypeRef = useRef("");
     
     const dispatchTodoActionStorageWrapper = (action: ITodoAction) => {
@@ -30,8 +31,9 @@ export function useTodoStateManager () {
 	/**
 	 * @TODO Validate when storage have been changed 
 	 * If invalid
-	 * 	1. update state to default
-	 * 	2. and notify user
+	 *  1. Delete invalid data 
+	 * 	2. Try to fetch data
+	 * 	3. And notify user
 	 * If valid do noting
 	*/
 	useEffect(() => {
@@ -46,19 +48,8 @@ export function useTodoStateManager () {
 	}, []);
 
 	useEffect(() => {
-		(async () => {
-			try {
-				const [todoList, paginationMetaData] = await todoApi.getTodos();
-				/**
-				 * @TODO Use pagination metadata to implement
-				 * pagination on frontend. 
-				 **/ 
-				console.log("paginationMetaData", paginationMetaData)
-				dispatchTodoAction(addTodoEntitiesAction(todoList));
-			} catch (e) {
-				console.log(e)
-			}
-		})()
+		const page = selectTodoPage(todoState);
+		todoAPIHook.getTodos(page, dispatchTodoActionStorageWrapper);
 	}, []);
 
 	/**
@@ -66,28 +57,24 @@ export function useTodoStateManager () {
 	 * 1. Display status to user, e.g, action failed on server.
 	 * 2. Could! Refactor to be used before local state update.
 	 */
-	useEffect(() => {(async () => {
+	useEffect(() => {
 		const todo = todoState.latestHandledTodo;
 		const isTodo = todo != null
-		try {
-			switch(actionTypeRef.current) {
-				case Type.addTodo:
-					isTodo && await todoApi.createTodo(todo); break;
-				case Type.removeTodo:
-					isTodo && await todoApi.deleteTodo(Number(todo.id)); break;
-				case Type.editTodo:
-					isTodo && await todoApi.putTodo(todo); break;
-				case Type.toggleTodoDone:
-					isTodo && await todoApi.patchTodoDone(todo); break;
-				case Type.swapTodoListItems:
-					StoreTodos(todoState.todoList); break;
-				case Type.updateNewTodo:
-					StoreNewTodo(todoState.newTodo); break; 
-				default: break;
-			}
-		} catch (e) {
-			console.log(e)
-		}})()
+		switch(actionTypeRef.current) {
+			case Type.addTodo:
+				isTodo && todoAPIHook.createTodo(todo); break;
+			case Type.removeTodo:
+				isTodo && todoAPIHook.deleteTodo(Number(todo.id)); break;
+			case Type.editTodo:
+				isTodo && todoAPIHook.putTodo(todo); break;
+			case Type.toggleTodoDone:
+				isTodo && todoAPIHook.patchTodoDone(todo); break;
+			case Type.swapTodoListItems:
+				StoreTodos(todoState.todoList); break;
+			case Type.updateNewTodo:
+				StoreNewTodo(todoState.newTodo); break; 
+			default: break;
+		}
 	}, [todoState]);
 
     return [

@@ -1,4 +1,5 @@
 import { ITodoEntity } from "../../../service";
+import { ITodoState } from "./types";
 
 export function selectID (todoEntity: ITodoEntity): string {
     return todoEntity.id;
@@ -23,4 +24,12 @@ export function selectDone (todoEntity: ITodoEntity): boolean {
 export function selectDate (todoEntity: ITodoEntity): string {
     const date = new Date(todoEntity.timestamp)
     return date.toLocaleString();
+}
+
+export function selectTodoPage (todoState: ITodoState): number {
+    return todoState.todoPagination?.CurrentPage ?? 1;
+}
+
+export function selectNrOfTodoPage (todoState: ITodoState): number {
+    return todoState.todoPagination?.TotalPageCount ?? 1;
 }
