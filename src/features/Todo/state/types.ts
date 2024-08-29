@@ -50,6 +50,11 @@ export interface UpdateTodoPaginationAction {
     payload: IPaginationMetaData | null;
 }
 
+export interface UpdateTodoErroStateAction {
+    type: typeof TodoActionType.updateErrorState;
+    payload: { isError: boolean, errorMsg: string };
+}
+
 export type ITodoAction = (
     UpdateNewTodoAction |
     AddTodoAction |
@@ -58,5 +63,6 @@ export type ITodoAction = (
     RemoveTodoAction |
     EditTodoAction |
     SwapTodoListItems |
-    UpdateTodoPaginationAction
+    UpdateTodoPaginationAction |
+    UpdateTodoErroStateAction
 );

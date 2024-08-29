@@ -1,26 +1,27 @@
-import { ReactElement, useEffect } from "react";
+import { ReactElement } from "react";
 import { Outlet } from "react-router-dom";
 
 import { useTodoStateManager } from "../hooks";
 import { ErrorModal } from "../../../components";
+import { updateTodoErrorStateAction } from "../state";
 
 export const Todo = (): ReactElement => {
-    const [
+    const {
 		todoState,
-		dispatchTodoAction
-	] = useTodoStateManager();
+		dispatchTodoActionStorageWrapper
+     } = useTodoStateManager();
 
-    useEffect(()=> {
-        console.log(todoState)
-    })
+    const handleCloseError = () => {
+        dispatchTodoActionStorageWrapper(updateTodoErrorStateAction(false))        
+    }
 
     return (
         <>
            {todoState.isError && <ErrorModal
-                title=""
-                message=""
-                onClose={() => {}} />}
-            <Outlet context={[dispatchTodoAction, todoState]}/>  
+                title={"Error"}
+                message={todoState.errorMessage}
+                onClose={handleCloseError} />}
+            <Outlet context={[dispatchTodoActionStorageWrapper, todoState]}/>  
         </>
-    )
+    );
 }

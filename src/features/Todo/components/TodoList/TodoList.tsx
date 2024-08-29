@@ -38,7 +38,7 @@ export const TodoList = (): ReactElement => {
     const [dispatchTodoAction, todoState] = useTodoContext();
     const [draggedId, setDraggedId] = useState<string | undefined>(undefined);
     const [draggedOverId, setDraggedOverId] = useState<string | undefined>(undefined);
-    const todoAPIHook = useTodoAPI();
+    const todoAPIHook = useTodoAPI(dispatchTodoAction);
 
     const handleToggleDone = (id: string) => {
         dispatchTodoAction(toggleTodoDoneAction(id));
@@ -80,12 +80,12 @@ export const TodoList = (): ReactElement => {
 
     const handleNextPage = () => {
         const page = selectTodoPage(todoState) + 1
-		todoAPIHook.getTodos(page, dispatchTodoAction);
+		todoAPIHook.getTodos(page);
     }
 
     const handlePrevPage = () => {
         const page = selectTodoPage(todoState) - 1			
-		todoAPIHook.getTodos(page, dispatchTodoAction);
+		todoAPIHook.getTodos(page);
     }
 
     return (

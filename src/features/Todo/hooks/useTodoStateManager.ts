@@ -15,23 +15,27 @@ export type TodoStateManager = ReturnType<typeof useTodoStateManager>
 /**
  * Used to syncronize state between local and remote
  * Current strategy is local first
- * @TODO Implementation design need to be refined
+ * @TODO 
+ * 1) Implementation design need to be refined
+ * 2) Optional! Refactor strategy to update and use server state first.
  */
 export function useTodoStateManager () {
     const [
 		todoState,
 		dispatchTodoAction
 	] = useReducer(todoReducer, todoInitData);
-	const todoAPIHook = useTodoAPI();
+    
 	const actionTypeRef = useRef("");
     
-    const dispatchTodoActionStorageWrapper = (action: ITodoAction) => {
+	const dispatchTodoActionStorageWrapper = (action: ITodoAction) => {
 		dispatchTodoAction(action);
 		if (isDevelopment()) {
 			console.log("action", action);
 		}
 		actionTypeRef.current = action.type;
 	}
+	
+	const todoAPIHook = useTodoAPI(dispatchTodoActionStorageWrapper);
 
 	/**
 	 * @TODO Validate when storage have been changed 
@@ -54,14 +58,9 @@ export function useTodoStateManager () {
 
 	useEffect(() => {
 		const page = selectTodoPage(todoState);
-		todoAPIHook.getTodos(page, dispatchTodoActionStorageWrapper);
+		todoAPIHook.getTodos(page);
 	}, []);
 
-	/**
-	 * @TODO
-	 * 1. Display status to user, e.g, action failed on server.
-	 * 2. Could! Refactor to be used before local state update.
-	 */
 	useEffect(() => {
 		const todo = todoState.latestHandledTodo;
 		const isTodo = todo != null
@@ -82,8 +81,8 @@ export function useTodoStateManager () {
 		}
 	}, [todoState]);
 
-    return [
+    return {
         todoState,
         dispatchTodoActionStorageWrapper
-    ]
+	};
 }

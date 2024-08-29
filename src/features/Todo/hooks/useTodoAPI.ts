@@ -4,6 +4,7 @@ import { todoApi } from "../../../data";
 import {
 	addTodoEntitiesAction,
 	ITodoAction,
+	updateTodoErrorStateAction,
 	updateTodoPaginationAction,
 } from "../state";
 import { isDevelopment } from "../../../config";
@@ -14,56 +15,62 @@ export type TodoAPI = ReturnType<typeof useTodoAPI>
 /**
  * A custom hook used as a wrapper for
  * Todo API.
- * @TODO 
- * 1. Dispatch Error message in all methods if something wrong.
- * 2. Create an generic error module component that can be used in App
- * to display the error message. 
  */
-export function useTodoAPI () {
+export function useTodoAPI (dispatchTodoAction: React.Dispatch<ITodoAction>) {
+
+    const handleError = useCallback((
+        err: unknown,
+        errorMsg: string
+    ) => {
+        isDevelopment() && console.log(err);
+        dispatchTodoAction(updateTodoErrorStateAction(true, errorMsg))
+    }, [dispatchTodoAction])
 
     const getTodos = useCallback((
         page: number,
-        dispatchTodoAction: React.Dispatch<ITodoAction>
     ) => {
         (async () => {
             try {
                 const [todoList, paginationMetaData] = await todoApi.getTodos(page);
                 dispatchTodoAction(updateTodoPaginationAction(paginationMetaData))
                 dispatchTodoAction(addTodoEntitiesAction(todoList));
-            } catch (e) {
+            } catch (err) {
                 dispatchTodoAction(updateTodoPaginationAction(null))
                 dispatchTodoAction(addTodoEntitiesAction([]));
+                handleError(err, "Failed fetching todos from server.")
             }
         })()
-    }, [todoApi])
+    }, [todoApi, dispatchTodoAction, handleError])
 
-    const createTodo = useCallback((todo: ITodoEntity) => {
+    const createTodo = useCallback((
+        todo: ITodoEntity
+    ) => {
         (async () => {
             try { todoApi.createTodo(todo); }
-            catch (err) { isDevelopment() && console.log(err) }
+            catch (err) { handleError(err, "Failed create todo on server.") }
         })()
-    }, [todoApi])
+    }, [todoApi, handleError])
 
     const deleteTodo = useCallback((todoId: number) => {
         (async () => {
             try { todoApi.deleteTodo(todoId); }
-            catch (err) { isDevelopment() && console.log(err) }
+            catch (err) { handleError(err, "Failed delete todo on server.") }
         })()
-    }, [todoApi])
+    }, [todoApi, handleError])
 
     const putTodo = useCallback((todo: ITodoEntity) => {
         (async () => {
             try { todoApi.putTodo(todo); }
-            catch (err) { isDevelopment() && console.log(err) }
+            catch (err) { handleError(err, "Failed update todo on server.") }
         })()
-    }, [todoApi])
+    }, [todoApi, handleError])
 
     const patchTodoDone = useCallback((todo: ITodoEntity) => {
         (async () => {
             try { todoApi.patchTodoDone(todo); }
-            catch (err) { isDevelopment() && console.log(err) }
+            catch (err) { handleError(err, "Failed updated todo done on server.") }
         })()
-    }, [todoApi])
+    }, [todoApi, handleError])
 
     return {
         getTodos,

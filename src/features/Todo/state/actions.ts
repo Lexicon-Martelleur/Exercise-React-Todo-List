@@ -8,6 +8,7 @@ import {
     SwapTodoListItems,
     ToggleTodoDoneAction,
     UpdateNewTodoAction,
+    UpdateTodoErroStateAction,
     UpdateTodoPaginationAction
 } from "./types";
 
@@ -66,5 +67,15 @@ UpdateTodoPaginationAction {
     return {
         type: Type.updateTodoPagination,
         payload: paginationTodoData
+    };
+}
+
+export function updateTodoErrorStateAction (
+    isError: boolean,
+    errorMsg = ""
+): UpdateTodoErroStateAction {
+    return {
+        type: Type.updateErrorState,
+        payload: { isError, errorMsg }
     };
 }

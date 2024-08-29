@@ -12,7 +12,8 @@ import {
     EditTodoAction,
     SwapTodoListItems,
     AddTodosEntitiesAction,
-    UpdateTodoPaginationAction
+    UpdateTodoPaginationAction,
+    UpdateTodoErroStateAction
 } from "./types";
 
 export const todoInitData: ITodoState = {
@@ -37,6 +38,7 @@ export function todoReducer (
         case Type.swapTodoListItems: return handleSwapTodoListItems(action, state);
         case Type.toggleTodoDone: return handleToggleTodoDone(action, state);
         case Type.updateTodoPagination: return handleUpdateTodoPagination(action, state);
+        case Type.updateErrorState: return handleUpdateErrorState(action, state);
         default: return state;
     }
 }
@@ -164,4 +166,16 @@ function handleUpdateTodoPagination (
     state: ITodoState
 ) {
     return { ...state, todoPagination: action.payload }
+}
+
+function handleUpdateErrorState(
+    action: UpdateTodoErroStateAction,
+    state: ITodoState
+) {
+    console.log('action', action)
+    return {
+        ...state,
+        isError: action.payload.isError,
+        errorMessage: action.payload.errorMsg
+    }
 }
