@@ -6,8 +6,8 @@ export class APIError extends Error {
     readonly name = "APIError"
     readonly internalError: Error | null;
 
-    constructor(internalError?: Error) {
-        super(errorMsg)
+    constructor(internalError?: Error | null, message?: string | null) {
+        super(message ? message : errorMsg)
         this.internalError = internalError ?? null 
         if (isDevelopment()) {
             console.log(`Error: ${errorMsg}`)

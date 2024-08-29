@@ -7,12 +7,15 @@ import { IPaginationMetaData, isPaginationMetaData } from "../http"
 
 class TodoAPI implements ITodoAPI {
     private readonly API = getTodoAPI();
+    
     private readonly defaultHeader = {
         "Content-Type": "application/json",
     }
 
-    async getTodos (): Promise<[ITodoEntity[], IPaginationMetaData]> {
-        const res = await fetch(`${this.API}/todo`);
+    async getTodos (signal?: AbortSignal): Promise<[ITodoEntity[], IPaginationMetaData]> {
+        const res = await fetch(`${this.API}/todo`, {
+            signal
+        });
         const todos = await res.json() as ITodoEntity[];
         const todoList = todos.map(item => {
             return {
@@ -29,10 +32,11 @@ class TodoAPI implements ITodoAPI {
         }
     }
 
-    async createTodo (todo: ITodoEntity): Promise<ITodoEntity> {
+    async createTodo (todo: ITodoEntity, signal?: AbortSignal): Promise<ITodoEntity> {
         const res = await fetch(`${this.API}/todo`, {
             headers: this.defaultHeader,
             method: "POST",
+            signal,
             body: JSON.stringify({
                 timestamp: `${todo.timestamp}`,
                 todo: todo.todo
@@ -53,10 +57,11 @@ class TodoAPI implements ITodoAPI {
         }
     }
 
-    async deleteTodo (todoId: number): Promise<ITodoEntity> {
+    async deleteTodo (todoId: number, signal?: AbortSignal): Promise<ITodoEntity> {
         const res = await fetch(`${this.API}/todo/${todoId}`, {
             headers: this.defaultHeader,
-            method: "DELETE"
+            method: "DELETE",
+            signal
         })
 
         if (res.ok) {
@@ -66,11 +71,12 @@ class TodoAPI implements ITodoAPI {
         }
     }
     
-    async putTodo (todo: ITodoEntity): Promise<ITodoEntity> {
+    async putTodo (todo: ITodoEntity, signal?: AbortSignal): Promise<ITodoEntity> {
         const id = Number(todo.id);
         const res = await fetch(`${this.API}/todo/${id}`, {
             headers: this.defaultHeader,
             method: "PUT",
+            signal,
             body: JSON.stringify({
                 id,
                 timestamp: `${todo.timestamp}`,
@@ -91,11 +97,12 @@ class TodoAPI implements ITodoAPI {
         }
     }
 
-    async patchTodoDone (todo: ITodoEntity): Promise<ITodoEntity> {
+    async patchTodoDone (todo: ITodoEntity, signal?: AbortSignal): Promise<ITodoEntity> {
         const id = Number(todo.id);
         const res = await fetch(`${this.API}/todo/${id}`, {
             headers: this.defaultHeader,
             method: "PATCH",
+            signal,
             body: JSON.stringify([
                 {
                     op: "replace",
