@@ -15,7 +15,8 @@ import {
     UpdateTodoPaginationAction,
     UpdateTodoErroStateAction,
     AddFailedStoredTodosAction,
-    RemoveAllFailedStoredTodosAction
+    RemoveAllFailedStoredTodosAction,
+    UpdateTodoDoneAction
 } from "./types";
 
 export function todoReducer (
@@ -30,6 +31,7 @@ export function todoReducer (
         case Type.editTodo: return handleEditTodo(action, state);
         case Type.swapTodoListItems: return handleSwapTodoListItems(action, state);
         case Type.toggleTodoDone: return handleToggleTodoDone(action, state);
+        case Type.updateTodoDone: return handleUpdateTodoDone(action, state);
         case Type.updateTodoPagination: return handleUpdateTodoPagination(action, state);
         case Type.updateErrorState: return handleUpdateErrorState(action, state);
         case Type.addFailedStoredTodos: return handleAddFailedStoredTodos(action, state);
@@ -158,6 +160,26 @@ function handleToggleTodoDone (
 
     const latestHandledTodo = remoteTodos.find(todo => (
         todo.id === action.payload
+    )) ?? null; 
+
+    return { ...state, latestHandledTodo, remoteTodos };
+}
+
+function handleUpdateTodoDone (
+    action: UpdateTodoDoneAction,
+    state: ITodoState
+): ITodoState {
+    const remoteTodos: ITodoEntity[] = state.remoteTodos.map(todoEntity => (
+        todoEntity.id === action.payload.id
+        ? {
+            ...todoEntity,
+            todo: { ...todoEntity.todo, done: action.payload.todo.done }
+        }
+        : todoEntity
+    ));
+
+    const latestHandledTodo = remoteTodos.find(todo => (
+        todo.id === action.payload.id
     )) ?? null; 
 
     return { ...state, latestHandledTodo, remoteTodos };

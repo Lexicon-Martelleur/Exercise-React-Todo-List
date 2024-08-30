@@ -50,17 +50,29 @@ export function useTodoAPI (
         })()
     }, [todoApi, dispatchTodoAction, handleError])
 
-    const createTodo = useCallback((todo: ITodoEntity) => {
+    const createTodo = useCallback((
+        todo: ITodoEntity,
+        page: number
+    ) => {
         (async () => {
-            try { await todoApi.createTodo(todo); }
+            try {
+                await todoApi.createTodo(todo);
+                getTodos(page);
+            }
             catch (err) { handleError(
                 err, `Failed create todo on ${api}` , todo, todoOperation.CREATE); }
         })()
     }, [todoApi, handleError])
 
-    const deleteTodo = useCallback((todo: ITodoEntity) => {
+    const deleteTodo = useCallback((
+        todo: ITodoEntity,
+        page: number
+    ) => {
         (async () => {
-            try { await todoApi.deleteTodo(Number(todo.id)); }
+            try {
+                await todoApi.deleteTodo(Number(todo.id));
+                getTodos(page);
+            }
             catch (err) { handleError(
                 err, `Failed delete todo on ${api}`, todo, todoOperation.DELETE); }
         })()

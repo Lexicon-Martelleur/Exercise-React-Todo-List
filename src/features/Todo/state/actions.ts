@@ -11,7 +11,8 @@ import {
     UpdateNewTodoAction,
     UpdateTodoErroStateAction,
     UpdateTodoPaginationAction,
-    RemoveAllFailedStoredTodosAction
+    RemoveAllFailedStoredTodosAction,
+    UpdateTodoDoneAction
 } from "./types";
 
 export function updateNewTodoAction (todo: ITodo): UpdateNewTodoAction {
@@ -41,6 +42,15 @@ export function toggleTodoDoneAction (id: string): ToggleTodoDoneAction {
     return {
         type: Type.toggleTodoDone,
         payload: id
+    };
+}
+
+export function updateTodoDoneAction (
+    todo: ITodoEntity
+): UpdateTodoDoneAction {
+    return {
+        type: Type.updateTodoDone,
+        payload: todo
     };
 }
 

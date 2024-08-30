@@ -59,13 +59,15 @@ export function useTodoStateManager () {
 	}, []);
 
 	useEffect(() => {
+		const page = selectTodoPage(todoState);
 		const todo = todoState.latestHandledTodo;
 		const isTodo = todo != null
 		switch(actionTypeRef.current) {
 			case Type.addTodo:
-				isTodo && todoAPIHook.createTodo(todo); break;
+				isTodo && todoAPIHook.createTodo(todo, page); break;
 			case Type.removeTodo:
-				isTodo && todoAPIHook.deleteTodo(todo); break;
+				isTodo && todoAPIHook.deleteTodo(todo, page);
+				break;
 			case Type.editTodo:
 				isTodo && todoAPIHook.putTodo(todo); break;
 			case Type.toggleTodoDone:

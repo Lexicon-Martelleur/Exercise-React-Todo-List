@@ -42,6 +42,11 @@ export const TodoItemViewMode: React.FC<Props> = ({
             ? `Set '${selectTitle(todoEntity)}' not done`
             : `Set '${selectTitle(todoEntity)}' done`;
     }
+
+    const handleRemoveTodo: React.MouseEventHandler<HTMLButtonElement> = (event) => {
+        event.stopPropagation();
+        onRemoveTodoItem(selectID(todoEntity))
+    }
  
     return (
         <article draggable className={derivedClass}
@@ -65,7 +70,7 @@ export const TodoItemViewMode: React.FC<Props> = ({
             </div>
             <div className={styles.updateTodoCtr}>
                 <button className={styles.selectIconBtn}
-                    onClick={_ => { onRemoveTodoItem(selectID(todoEntity)) }}>
+                    onClick={handleRemoveTodo}>
                     <Icon icon={Icons.trash}/>
                 </button>
                 <button className={styles.selectIconBtn}
