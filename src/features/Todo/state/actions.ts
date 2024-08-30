@@ -1,4 +1,4 @@
-import { IPaginationMetaData, ITodo, ITodoEntity } from "../../../service";
+import { IPaginationData, ITodo, ITodoEntity } from "../../../service";
 import { TodoActionType as Type} from "./constants";
 import {
     AddTodoAction,
@@ -62,7 +62,7 @@ SwapTodoListItems {
     };
 }
 
-export function updateTodoPaginationAction (paginationTodoData: IPaginationMetaData | null):
+export function updateTodoPaginationAction (paginationTodoData: IPaginationData | null):
 UpdateTodoPaginationAction {
     return {
         type: Type.updateTodoPagination,

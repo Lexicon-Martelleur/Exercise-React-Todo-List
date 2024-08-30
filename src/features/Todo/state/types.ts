@@ -1,10 +1,10 @@
-import { IPaginationMetaData, ITodo, ITodoEntity } from "../../../service";
+import { IPaginationData, ITodo, ITodoEntity } from "../../../service";
 import { TodoActionType } from "./constants";
 
 export type ITodoState = Readonly<{
     newTodo: ITodo
     latestHandledTodo: ITodoEntity | null
-    todoPagination: IPaginationMetaData | null
+    todoPagination: IPaginationData | null
     todoList: Readonly<Readonly<ITodoEntity>>[]
     isError: boolean
     errorMessage: string 
@@ -47,7 +47,7 @@ export interface SwapTodoListItems {
 
 export interface UpdateTodoPaginationAction {
     type: typeof TodoActionType.updateTodoPagination;
-    payload: IPaginationMetaData | null;
+    payload: IPaginationData | null;
 }
 
 export interface UpdateTodoErroStateAction {

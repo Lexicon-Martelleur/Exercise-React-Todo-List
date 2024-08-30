@@ -1,4 +1,4 @@
-import { IPaginationMetaData, ITodo, ITodoEntity } from "../../../service";
+import { IPaginationData, ITodo, ITodoEntity } from "../../../service";
 import {
     addTodoAction,
     editTodoAction,
@@ -114,11 +114,11 @@ describe("Todo State", () => {
         });
 
         it("return state with updated pagination state", () => {
-            const newPaginationData: IPaginationMetaData = {
+            const newPaginationData: IPaginationData = {
                 TotalItemCount: 100,
                 TotalPageCount: 10,
                 PageSize: 10,
-                CurrentPage: 3
+                PageNr: 3
             }
             const action = updateTodoPaginationAction(newPaginationData);
             const nextState = todoReducer(mockTodoState, action);
@@ -205,11 +205,11 @@ describe("Todo State", () => {
     describe("updateTodoPaginationAction", () => {
         it(`return an action of type update todo pagination
             with payload value same as input parameter`, () => {
-            const paginationData: IPaginationMetaData = {
+            const paginationData: IPaginationData = {
                 TotalItemCount: 100,
                 TotalPageCount: 10,
                 PageSize: 10,
-                CurrentPage: 3
+                PageNr: 3
             };
             const action = updateTodoPaginationAction(paginationData);
             expect(action.type).toBe(TodoActionType.updateTodoPagination);
