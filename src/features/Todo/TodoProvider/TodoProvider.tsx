@@ -46,8 +46,8 @@ export const TodoProvider = (): ReactElement => {
 
     const getFailedStoredMessage = () => {
         const nrOfFailedTodos = selecUniqueRemoteFailedTodos(todoState).length;
-        return `You have ${nrOfFailedTodos} failed updated, created or deleted todos
-        actions, would you like to try them again?`;
+        return `You have ${nrOfFailedTodos} todo items that is not synchronized with remote
+        storage, would you like to fix this?`;
     }
 
     return (

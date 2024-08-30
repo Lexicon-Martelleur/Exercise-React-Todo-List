@@ -1,4 +1,4 @@
-import { ITodoEntity } from "../../../service";
+import { ITodoEntity, sortByDate } from "../../../service";
 import { ITodoState } from "./types";
 
 export function selectID (todoEntity: ITodoEntity): string {
@@ -46,4 +46,16 @@ export function selecAllRemoteFailedTodos (
     todoState: ITodoState
 ): ITodoEntity[] {
     return todoState.remoteFailedTodos;
+}
+
+export function selecUniqueTodosFilteredByLatest (
+    todoState: ITodoState
+): ITodoEntity[] {
+    return [
+        ...todoState.remoteFailedTodos,
+        ...todoState.remoteTodos
+    ].filter((item, index, array) => 
+        index === sortByDate(array).findIndex(arrayItem =>
+            arrayItem.id === item.id)
+    );
 }

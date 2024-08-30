@@ -1,6 +1,6 @@
 import { v4 as uuid } from "uuid";
 
-import { ITodoEntity } from "../../../service";
+import { getUNIXTimestampInSeconds, ITodoEntity } from "../../../service";
 import { TodoActionType as Type } from "./constants";
 import {
     ITodoState,
@@ -53,7 +53,7 @@ function handleAddTodo (
     const latestHandledTodo: ITodoEntity = {
         id: uuid(),
         todo: action.payload,
-        timestamp: Date.now()
+        timestamp: getUNIXTimestampInSeconds()
     };
 
     return {
@@ -83,7 +83,7 @@ function handleRemoveTodo (
     if (latestHandledTodo != null) {
         latestHandledTodo = {
             ...latestHandledTodo,
-            timestamp: Date.now()
+            timestamp: getUNIXTimestampInSeconds()
         };
     }
     
@@ -102,7 +102,7 @@ function handleEditTodo (
         todo.id === action.payload.id
         ? {
             ...todo,
-            timestamp: Date.now(),
+            timestamp: getUNIXTimestampInSeconds(),
             todo: { ...action.payload.editedTodo }
         }
         : todo
@@ -148,7 +148,7 @@ function handleToggleTodoDone (
         todoEntity.id === action.payload
         ? {
             ...todoEntity,
-            timestamp: Date.now(),
+            timestamp: getUNIXTimestampInSeconds(),
             todo: { ...todoEntity.todo, done: !todoEntity.todo.done }
         }
         : todoEntity
@@ -192,7 +192,7 @@ function handleAddFailedStoredTodos (
     return {
         ...state,
         latestHandledTodo: failedTodo,
-        timestamp: Date.now(),
+        timestamp: getUNIXTimestampInSeconds(),
         remoteFailedTodos: [
             ...state.remoteFailedTodos,
             failedTodo

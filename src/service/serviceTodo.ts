@@ -34,3 +34,7 @@ export function storeFailedRemoteStoredTodo (todo: ITodoEntity): void {
 export function storeNewTodo (newTodo: ITodo): void {
     todoStorage.saveNewTodo(newTodo);
 }
+
+export function getUNIXTimestampInSeconds (): number {
+    return Math.floor(Date.now() / 1000);
+}

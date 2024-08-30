@@ -7,6 +7,7 @@ import {
     removeTodoAction,
     selectNrOfTodoPage,
     selectTodoPage,
+    selecUniqueTodosFilteredByLatest,
     swapTodoListItemsAction,
     toggleTodoDoneAction
 } from "../../state";
@@ -57,7 +58,7 @@ export const TodoList = (): ReactElement => {
             case sortMode.author: return sortByAuthor(todoState.remoteTodos);
             case sortMode.date: return sortByDate(todoState.remoteTodos);
             case sortMode.none: return todoState.remoteTodos
-            default: return todoState.remoteTodos;
+            default: return selecUniqueTodosFilteredByLatest(todoState);
         }
     }
 
