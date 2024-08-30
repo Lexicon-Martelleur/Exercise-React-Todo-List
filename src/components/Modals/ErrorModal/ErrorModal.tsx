@@ -12,6 +12,11 @@ interface Props {
     onClose?: () => void
 }
 
+/**
+ * @TODO Update modal to an basmodal
+ * All modals should have react node children
+ * as props for body.
+ */
 export const ErrorModal: React.FC<Props> = ({
     title,
     message,

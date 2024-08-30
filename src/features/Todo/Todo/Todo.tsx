@@ -5,6 +5,14 @@ import { useTodoStateManager } from "../hooks";
 import { ErrorModal, InfoModal } from "../../../components";
 import { updateTodoErrorStateAction } from "../state";
 
+/**
+ * @TODO 
+ * 1. Check if any failed stored, updated, patched, or deleted todo. 
+ * 2. If so ask/recommend user if user want to try synchronize data.
+ * 3. If user check ok try to synch with server.
+ * 4. Display result to user.
+ * 5. If synch ok delete data.  
+ */
 export const Todo = (): ReactElement => {
     const [
         displayFailedStorageInfo,

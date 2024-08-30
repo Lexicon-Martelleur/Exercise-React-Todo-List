@@ -13,6 +13,11 @@ interface Props {
     onOk?: () => void
 }
 
+/**
+ * @TODO Update modal to an basmodal
+ * All modals should have react node children
+ * as props for body.
+ */
 export const InfoModal: React.FC<Props> = ({
     title,
     message,

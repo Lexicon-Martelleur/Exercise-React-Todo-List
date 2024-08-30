@@ -54,14 +54,6 @@ export function useTodoStateManager () {
 	}, []);
 
 	useEffect(() => {
-		/**
-		 * @TODO 
-		 * 1. Check if any failed stored, updated, patched, or deleted todo. 
-		 * 2. If so ask/recommend user if user want to try synchronize data.
-		 * 3. If user check ok try to synch with server.
-		 * 4. Display result to user.
-		 * 5. If synch ok delete data.  
-		 */
 		const page = selectTodoPage(todoState);
 		todoAPIHook.getTodos(page);
 	}, []);
