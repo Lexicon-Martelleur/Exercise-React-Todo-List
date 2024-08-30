@@ -1,6 +1,6 @@
 import { v4 as uuid } from "uuid";
 
-import { getEmptyDodo, getTodos, ITodoEntity } from "../../../service";
+import { ITodoEntity } from "../../../service";
 import { TodoActionType as Type } from "./constants";
 import {
     ITodoState,
@@ -13,17 +13,9 @@ import {
     SwapTodoListItems,
     AddTodosEntitiesAction,
     UpdateTodoPaginationAction,
-    UpdateTodoErroStateAction
+    UpdateTodoErroStateAction,
+    AddFailedStoredTodosAction
 } from "./types";
-
-export const todoInitData: ITodoState = {
-    newTodo: getEmptyDodo(),
-    latestHandledTodo: null,
-    todoPagination: null,
-    todoList: getTodos(),
-    isError: false,
-    errorMessage: ""
-} as const;
 
 export function todoReducer (
     state: ITodoState,
@@ -39,6 +31,7 @@ export function todoReducer (
         case Type.toggleTodoDone: return handleToggleTodoDone(action, state);
         case Type.updateTodoPagination: return handleUpdateTodoPagination(action, state);
         case Type.updateErrorState: return handleUpdateErrorState(action, state);
+        case Type.addFailedStoredTodos: return handleAddFailedStoredTodos(action, state);
         default: return state;
     }
 }
@@ -87,9 +80,16 @@ function handleRemoveTodo (
     action: RemoveTodoAction,
     state: ITodoState
 ): ITodoState {
-    const latestHandledTodo = state.todoList.find(entity => (
+    let latestHandledTodo = state.todoList.find(entity => (
         entity.id === action.payload
-    )) ?? null; 
+    )) ?? null;
+
+    if (latestHandledTodo != null) {
+        latestHandledTodo = {
+            ...latestHandledTodo,
+            timestamp: Date.now()
+        };
+    }
     
     const todoList: ITodoEntity[] = state.todoList.filter(entity => (
         entity.id !== action.payload
@@ -106,6 +106,7 @@ function handleEditTodo (
         entity.id === action.payload.id
         ? {
             ...entity,
+            timestamp: Date.now(),
             todo: { ...action.payload.editedTodo }
         }
         : entity
@@ -149,6 +150,7 @@ function handleToggleTodoDone (
         entity.id === action.payload
         ? {
             ...entity,
+            timestamp: Date.now(),
             todo: { ...entity.todo, done: !entity.todo.done }
         }
         : entity
@@ -168,14 +170,34 @@ function handleUpdateTodoPagination (
     return { ...state, todoPagination: action.payload }
 }
 
-function handleUpdateErrorState(
+function handleUpdateErrorState (
     action: UpdateTodoErroStateAction,
     state: ITodoState
 ) {
-    console.log('action', action)
     return {
         ...state,
         isError: action.payload.isError,
         errorMessage: action.payload.errorMsg
+    }
+}
+
+function handleAddFailedStoredTodos (
+    action: AddFailedStoredTodosAction,
+    state: ITodoState
+) {
+    action.payload.entity
+    const failedTodo = {
+        ...action.payload.entity,
+        failedOperation: action.payload.operation
+    }
+
+    return {
+        ...state,
+        latestHandledTodo: failedTodo,
+        timestamp: Date.now(),
+        failedStoredTodoList: [
+            ...state.failedStoredTodoList,
+            failedTodo
+        ]
     }
 }

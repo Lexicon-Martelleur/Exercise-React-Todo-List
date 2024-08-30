@@ -1,4 +1,4 @@
-import { IPaginationData, ITodo, ITodoEntity } from "../../../service";
+import { IPaginationData, ITodo, ITodoEntity, TodoOperationType } from "../../../service";
 import { TodoActionType as Type} from "./constants";
 import {
     AddTodoAction,
@@ -7,6 +7,7 @@ import {
     RemoveTodoAction,
     SwapTodoListItems,
     ToggleTodoDoneAction,
+    AddFailedStoredTodosAction,
     UpdateNewTodoAction,
     UpdateTodoErroStateAction,
     UpdateTodoPaginationAction
@@ -84,5 +85,15 @@ export function updateTodoErrorStateAction (
     return {
         type: Type.updateErrorState,
         payload: { isError, errorMsg }
+    };
+}
+
+export function addFailedStoredTodosAction (
+    entity: ITodoEntity,
+    operation: TodoOperationType
+): AddFailedStoredTodosAction {
+    return {
+        type: Type.addFailedStoredTodos,
+        payload: { entity, operation }
     };
 }

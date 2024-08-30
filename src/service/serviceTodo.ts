@@ -1,10 +1,6 @@
 import { ITodo, ITodoEntity } from "./types";
 import { todoStorage } from "../data/todoStorage";
 
-export function getInitialTodos (): ITodoEntity[] {
-    return todoStorage.getTodos();
-}
-
 export function getEmptyDodo (): ITodo {
     return todoStorage.getNewTodo();
 }
@@ -27,12 +23,12 @@ export function sortByDate (todoList: ITodoEntity[]): ITodoEntity[] {
     });
 }
 
-export function getTodos (): ITodoEntity[] {
-    return todoStorage.getTodos();
+export function getFailedRemoteStoredTodos (): ITodoEntity[] {
+    return todoStorage.getFailedRemoteStoredTodos();
 }
 
-export function storeTodos (todos: ITodoEntity[]): void {
-    todoStorage.saveTodos(todos);
+export function storeFailedRemoteStoredTodo (todo: ITodoEntity): void {
+    todoStorage.saveFailedRemoteStoredTodo(todo);
 }
 
 export function storeNewTodo (newTodo: ITodo): void {

@@ -6,18 +6,15 @@ import {
 	TodoActionType as Type,
 	selectTodoPage
 } from "../state";
-import { storeNewTodo, storeTodos } from "../../../service";
+import { storeNewTodo, storeFailedRemoteStoredTodo } from "../../../service";
 import { isDevelopment } from "../../../config";
 import { useTodoAPI } from "./useTodoAPI";
 
 export type TodoStateManager = ReturnType<typeof useTodoStateManager>
 
 /**
- * Used to synchronize state between local and remote
- * Current strategy is local first
- * @TODO 
- * 1) Implementation design need to be refined
- * 2) Optional! Refactor strategy to update and use server state first.
+ * Used to synchronize state between local and remote data.
+ * @TODO Design need to be refined or/and implemented.
  */
 export function useTodoStateManager () {
     const [
@@ -57,10 +54,16 @@ export function useTodoStateManager () {
 	}, []);
 
 	useEffect(() => {
+		/**
+		 * @TODO 
+		 * 1. Check if any failed stored, updated, patched, or deleted todo. 
+		 * 2. If so ask/recommend user if user want to try synchronize data.
+		 * 3. If user check ok try to synch with server.
+		 * 4. Display result to user.
+		 * 5. If synch ok delete data.  
+		 */
 		const page = selectTodoPage(todoState);
-		todoAPIHook.getTodos(page, todoList => {
-			storeTodos(todoList);
-		});
+		todoAPIHook.getTodos(page);
 	}, []);
 
 	useEffect(() => {
@@ -68,19 +71,15 @@ export function useTodoStateManager () {
 		const isTodo = todo != null
 		switch(actionTypeRef.current) {
 			case Type.addTodo:
-				storeTodos(todoState.todoList);
 				isTodo && todoAPIHook.createTodo(todo); break;
 			case Type.removeTodo:
-				storeTodos(todoState.todoList);
-				isTodo && todoAPIHook.deleteTodo(Number(todo.id)); break;
+				isTodo && todoAPIHook.deleteTodo(todo); break;
 			case Type.editTodo:
-				storeTodos(todoState.todoList);
 				isTodo && todoAPIHook.putTodo(todo); break;
 			case Type.toggleTodoDone:
-				storeTodos(todoState.todoList);
 				isTodo && todoAPIHook.patchTodoDone(todo); break;
-			case Type.swapTodoListItems:
-				storeTodos(todoState.todoList); break;
+			case Type.addFailedStoredTodos:
+				isTodo && storeFailedRemoteStoredTodo(todo); break;
 			case Type.updateNewTodo:
 				storeNewTodo(todoState.newTodo); break; 
 			default: break;

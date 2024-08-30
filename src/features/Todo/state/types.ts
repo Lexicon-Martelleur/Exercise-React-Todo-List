@@ -1,4 +1,4 @@
-import { IPaginationData, ITodo, ITodoEntity } from "../../../service";
+import { IPaginationData, ITodo, ITodoEntity, TodoOperationType } from "../../../service";
 import { TodoActionType } from "./constants";
 
 export type ITodoState = Readonly<{
@@ -6,6 +6,7 @@ export type ITodoState = Readonly<{
     latestHandledTodo: ITodoEntity | null
     todoPagination: IPaginationData | null
     todoList: Readonly<Readonly<ITodoEntity>>[]
+    failedStoredTodoList: Readonly<Readonly<ITodoEntity>>[]
     isError: boolean
     errorMessage: string 
 }>;
@@ -55,6 +56,11 @@ export interface UpdateTodoErroStateAction {
     payload: { isError: boolean, errorMsg: string };
 }
 
+export interface AddFailedStoredTodosAction {
+    type: typeof TodoActionType.addFailedStoredTodos;
+    payload: { entity: ITodoEntity, operation: TodoOperationType };
+}
+
 export type ITodoAction = (
     UpdateNewTodoAction |
     AddTodoAction |
@@ -64,5 +70,6 @@ export type ITodoAction = (
     EditTodoAction |
     SwapTodoListItems |
     UpdateTodoPaginationAction |
-    UpdateTodoErroStateAction
+    UpdateTodoErroStateAction |
+    AddFailedStoredTodosAction
 );
