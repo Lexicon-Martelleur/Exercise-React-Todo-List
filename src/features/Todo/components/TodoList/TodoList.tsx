@@ -9,10 +9,10 @@ import {
 import {
     editTodoAction,
     removeTodoAction,
-    selectNrOfTodoPage,
-    selecTotalNumberOfTodos,
+    selectNrOfTodoPages,
+    selectNrOfTodoItems,
     selectTodoPage,
-    selecUniqueTodosFilteredByLatestDate,
+    selectAllRemoteTodos,
     swapTodoListItemsAction,
     toggleTodoDoneAction
 } from "../../state";
@@ -60,7 +60,7 @@ export const TodoList = (): ReactElement => {
     }
 
     const getTodoList = (mode: SortModeType) => {
-        const todos = selecUniqueTodosFilteredByLatestDate(todoState)
+        const todos = selectAllRemoteTodos(todoState)
         switch (mode) {
             case sortMode.author: return sortByAuthor(todos);
             case sortMode.dateOldest: return sortByOldestDateFirst(todos);
@@ -101,11 +101,11 @@ export const TodoList = (): ReactElement => {
             <TodoSynchronizer />
             {todoState.todoPagination != null && <PageNavigation
                 page={selectTodoPage(todoState)}
-                nrOfPages={selectNrOfTodoPage(todoState)}
+                nrOfPages={selectNrOfTodoPages(todoState)}
                 onPrev={handlePrevPage}
                 onNext={handleNextPage} />
             }
-            <SelectMenu title={`${selecTotalNumberOfTodos(todoState)} Todos`}
+            <SelectMenu title={`${selectNrOfTodoItems(todoState)} Stored Todos`}
                 options={Object.values(sortMode)}
                 selectedOption={selectedSortMode}
                 onOptionChange={handleSelectSortMode} />
@@ -126,7 +126,7 @@ export const TodoList = (): ReactElement => {
             ))}
             {todoState.todoPagination != null && <PageNavigation
                 page={selectTodoPage(todoState)}
-                nrOfPages={selectNrOfTodoPage(todoState)}
+                nrOfPages={selectNrOfTodoPages(todoState)}
                 onPrev={handlePrevPage}
                 onNext={handleNextPage} />
             }

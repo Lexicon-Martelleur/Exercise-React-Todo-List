@@ -6,7 +6,6 @@ export type ITodoState = Readonly<{
     latestHandledTodo: ITodoEntity | null
     todoPagination: IPaginationData | null
     remoteTodos: Readonly<Readonly<ITodoEntity>>[]
-    remoteFailedTodos: Readonly<Readonly<ITodoEntity>>[]
     isError: boolean
     errorMessage: string 
 }>;
@@ -61,16 +60,6 @@ export interface UpdateTodoErroStateAction {
     payload: { isError: boolean, errorMsg: string };
 }
 
-export interface AddFailedStoredTodosAction {
-    type: typeof TodoActionType.addFailedStoredTodos;
-    payload: { entity: ITodoEntity, operation: TodoOperationType };
-}
-
-export interface RemoveAllFailedStoredTodosAction {
-    type: typeof TodoActionType.removeAllFailedStoredTodos;
-    payload: { emptyDodoList: ITodoEntity[] };
-}
-
 export type ITodoAction = (
     UpdateNewTodoAction |
     AddTodoAction |
@@ -81,7 +70,5 @@ export type ITodoAction = (
     EditTodoAction |
     SwapTodoListItems |
     UpdateTodoPaginationAction |
-    UpdateTodoErroStateAction |
-    AddFailedStoredTodosAction |
-    RemoveAllFailedStoredTodosAction
+    UpdateTodoErroStateAction
 );

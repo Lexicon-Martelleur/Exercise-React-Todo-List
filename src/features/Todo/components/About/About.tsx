@@ -5,8 +5,8 @@ import { images } from "../../../../assets";
 
 import styles from "./About.module.css";
 import {
-    selecTotalNumberOfTodos,
-    selecUniqueTodosFilteredByLatestDate
+    selectNrOfTodoItems,
+    selectAllRemoteTodos
 } from "../../state";
 
 export const About = (): ReactElement => {
@@ -22,7 +22,7 @@ export const About = (): ReactElement => {
 
     /**@TODO should be picked up from server */
     const getNrOfTodosDone = () => {
-        return selecUniqueTodosFilteredByLatestDate(todoState)
+        return selectAllRemoteTodos(todoState)
             .filter(item => item.todo.done === true)
             .length;
     }
@@ -40,7 +40,7 @@ export const About = (): ReactElement => {
     return (
         <>
             <div>
-                <p>Total nr of todos: {selecTotalNumberOfTodos(todoState)}</p>
+                <p>Total nr of todos: {selectNrOfTodoItems(todoState)}</p>
                 <p>Nr of todos done: {getNrOfTodosDone()}</p>
             </div>
             <section className={styles.aboutSectionImageCtr}>

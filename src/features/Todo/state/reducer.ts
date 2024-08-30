@@ -14,8 +14,6 @@ import {
     AddTodosEntitiesAction,
     UpdateTodoPaginationAction,
     UpdateTodoErroStateAction,
-    AddFailedStoredTodosAction,
-    RemoveAllFailedStoredTodosAction,
     UpdateTodoDoneAction
 } from "./types";
 
@@ -34,8 +32,6 @@ export function todoReducer (
         case Type.updateTodoDone: return handleUpdateTodoDone(action, state);
         case Type.updateTodoPagination: return handleUpdateTodoPagination(action, state);
         case Type.updateErrorState: return handleUpdateErrorState(action, state);
-        case Type.addFailedStoredTodos: return handleAddFailedStoredTodos(action, state);
-        case Type.removeAllFailedStoredTodos: return handleRemoveAllFailedStoredTodos(action, state);
         default: return state;
     }
 }
@@ -189,6 +185,7 @@ function handleUpdateTodoPagination (
     action: UpdateTodoPaginationAction,
     state: ITodoState
 ) {
+    console.log(action.payload)
     return { ...state, todoPagination: action.payload }
 }
 
@@ -200,36 +197,5 @@ function handleUpdateErrorState (
         ...state,
         isError: action.payload.isError,
         errorMessage: action.payload.errorMsg
-    }
-}
-
-function handleAddFailedStoredTodos (
-    action: AddFailedStoredTodosAction,
-    state: ITodoState
-) {
-    action.payload.entity
-    const failedTodo = {
-        ...action.payload.entity,
-        failedOperation: action.payload.operation
-    }
-
-    return {
-        ...state,
-        latestHandledTodo: failedTodo,
-        timestamp: getUNIXTimestampInSeconds(),
-        remoteFailedTodos: [
-            ...state.remoteFailedTodos,
-            failedTodo
-        ]
-    }
-}
-
-function handleRemoveAllFailedStoredTodos (
-    action: RemoveAllFailedStoredTodosAction,
-    state: ITodoState
-) {
-    return {
-        ...state,
-        remoteFailedTodos: action.payload.emptyDodoList
     }
 }

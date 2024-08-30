@@ -2,14 +2,13 @@ import { useCallback } from "react";
 
 import { todoApi } from "../../../data";
 import {
-    addFailedStoredTodosAction,
 	addTodoEntitiesAction,
 	ITodoAction,
 	updateTodoErrorStateAction,
 	updateTodoPaginationAction,
 } from "../state";
 import { getTodoAPI, isDevelopment } from "../../../config";
-import { ITodoEntity, todoOperation, TodoOperationType } from "../../../service";
+import { ITodoEntity, storeFailedRemoteStoredTodo, todoOperation, TodoOperationType } from "../../../service";
 
 export type TodoAPI = ReturnType<typeof useTodoAPI>
 
@@ -31,7 +30,8 @@ export function useTodoAPI (
         isDevelopment() && console.log(err);
         dispatchTodoAction(updateTodoErrorStateAction(true, errorMsg));
         if (todo != null && operation != null) {
-            dispatchTodoAction(addFailedStoredTodosAction(todo, operation));
+            todo.failedOperation = operation;
+            storeFailedRemoteStoredTodo(todo);
         }
     }, [dispatchTodoAction])
 
@@ -59,8 +59,8 @@ export function useTodoAPI (
                 await todoApi.createTodo(todo);
                 getTodos(page);
             }
-            catch (err) { handleError(
-                err, `Failed create todo on ${api}` , todo, todoOperation.CREATE); }
+            catch (err) {
+                handleError(err, `Failed create todo on ${api}`, todo, todoOperation.CREATE); }
         })()
     }, [todoApi, handleError])
 
@@ -73,8 +73,8 @@ export function useTodoAPI (
                 await todoApi.deleteTodo(Number(todo.id));
                 getTodos(page);
             }
-            catch (err) { handleError(
-                err, `Failed delete todo on ${api}`, todo, todoOperation.DELETE); }
+            catch (err) {
+                handleError(err, `Failed delete todo on ${api}`, todo, todoOperation.DELETE); }
         })()
     }, [todoApi, handleError])
 

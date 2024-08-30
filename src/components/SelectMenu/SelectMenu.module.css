@@ -1,8 +1,10 @@
 .select-menu {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
+    gap: 1rem;
     justify-content: space-between;
+    
     background-color: var(--BG_LIGHT);
     padding: 1rem;
 }
@@ -41,6 +43,12 @@
 .select-menu-select,
 .select-menu-select > option {
     font-size: 0.8rem;
+}
+
+@media (min-width: 700px) {
+    .select-menu {
+        flex-direction: row;
+    }
 }
 
 @media (min-width: 500px) {

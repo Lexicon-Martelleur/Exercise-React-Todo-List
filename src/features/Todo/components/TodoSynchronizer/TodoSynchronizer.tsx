@@ -2,18 +2,14 @@ import { ReactElement, useState } from "react";
 
 import { ErrorModal, InfoModal } from "../../../../components";
 import {
-    addTodoAction,
-    editTodoAction,
-    removeAllFailedStoredTodosAction,
-    removeTodoAction,
-    selecUniqueFailedTodosFilterstByLatestDate,
-    updateTodoDoneAction,
+    selectTodoPage,
     updateTodoErrorStateAction
 } from "../../state";
-import { todoOperation } from "../../../../service";
-
-import styles from "./TodoSynhronizer.module.css";
+import { emptyFailedRemoteStoredTodo, getFailedRemoteStoredTodos, todoOperation } from "../../../../service";
 import { useTodoContext } from "../../context";
+
+import styles from "./TodoSynchronizer.module.css";
+import { useTodoAPI } from "../../hooks";
 
 export const TodoSynchronizer = (): ReactElement => {
     const [
@@ -22,44 +18,52 @@ export const TodoSynchronizer = (): ReactElement => {
     ] = useState(true);
     
     const [dispatchTodoAction, todoState] = useTodoContext();
+    const todoAPIHook = useTodoAPI(dispatchTodoAction);
+    
+    const handleTryFailedTodoActions = () => {
+        const todos = getFailedRemoteStoredTodos();
+        const page = selectTodoPage(todoState);
+        emptyFailedRemoteStoredTodo();
+
+        todos.forEach(todo => {
+            switch (todo.failedOperation) {
+                case todoOperation.CREATE:
+                    todoAPIHook.createTodo(todo, page); break;
+                case todoOperation.DELETE:
+                    todoAPIHook.deleteTodo(todo, page); break;
+                case todoOperation.PUT:
+                    todoAPIHook.putTodo(todo); break;
+                case todoOperation.PATCH:
+                    todoAPIHook.patchTodoDone(todo); break;
+                default: break; 
+            }
+        })
+    }
+
+    const isFailedStoredTodos = () => {
+        return !todoState.isError &&
+        getFailedRemoteStoredTodos().length > 0 &&
+            displayFailedStorageInfo;
+    }
+
+    const isStillFailedStoredTodos = () => {
+        return getFailedRemoteStoredTodos().length > 0 &&
+            !displayFailedStorageInfo;
+    }
+
+    const getFailedStoredMessage = () => {
+        const nrOfFailedTodos = getFailedRemoteStoredTodos().length;
+        return `You have ${nrOfFailedTodos} todo items that is not synchronized with remote
+        storage, would you like to try synchronization?`;
+    }
 
     const handleCloseError = () => {
-        dispatchTodoAction(updateTodoErrorStateAction(false))        
+        dispatchTodoAction(updateTodoErrorStateAction(false));
+        setDisplayFailedStorageInfo(false);
     }
 
     const handleCloseFailedStorageInfo = () => {
         setDisplayFailedStorageInfo(false);        
-    }
-
-    const handleTryFailedTodoActions = () => {
-        const latestFailedTodos = selecUniqueFailedTodosFilterstByLatestDate(todoState);
-        dispatchTodoAction(removeAllFailedStoredTodosAction())
-        latestFailedTodos.forEach(todo => {
-            switch (todo.failedOperation) {
-                case todoOperation.CREATE: dispatchTodoAction(addTodoAction(todo.todo)); break;
-                case todoOperation.DELETE: dispatchTodoAction(removeTodoAction(todo.id)); break;
-                case todoOperation.PUT: dispatchTodoAction(editTodoAction(todo.id, todo.todo)); break;
-                case todoOperation.PATCH: dispatchTodoAction(updateTodoDoneAction(todo)); break;
-                default: break; 
-            }
-        })
-        setDisplayFailedStorageInfo(false);
-    }
-
-    const isFailedStoredTodos = () => {
-        return selecUniqueFailedTodosFilterstByLatestDate(todoState).length > 0 &&
-        displayFailedStorageInfo;
-    }
-
-    const isStillFailedStoredTodos = () => {
-        return selecUniqueFailedTodosFilterstByLatestDate(todoState).length > 0 &&
-        !displayFailedStorageInfo;
-    }
-
-    const getFailedStoredMessage = () => {
-        const nrOfFailedTodos = selecUniqueFailedTodosFilterstByLatestDate(todoState).length;
-        return `You have ${nrOfFailedTodos} todo items that is not synchronized with remote
-        storage, would you like to try synchronization?`;
     }
 
     return (

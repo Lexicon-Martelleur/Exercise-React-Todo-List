@@ -8,7 +8,5 @@ export const TodoActionType = {
     toggleTodoDone: "TOGGLE_TODO_DONE",
     updateTodoDone: "UPDATE_TODO_DONE",
     swapTodoListItems: "SWAP_TODO_LIST_ITEMS",
-    updateErrorState: "UPDATE_ERROR_STATE",
-    addFailedStoredTodos: "ADD_FAILED_STORED_TODOS",
-    removeAllFailedStoredTodos: "REMOVE_ALL_FAILED_STORED_TODOS"
+    updateErrorState: "UPDATE_ERROR_STATE"
 } as const

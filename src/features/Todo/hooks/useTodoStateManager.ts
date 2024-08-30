@@ -6,7 +6,7 @@ import {
 	TodoActionType as Type,
 	selectTodoPage
 } from "../state";
-import { storeNewTodo, storeFailedRemoteStoredTodo, emptyFailedRemoteStoredTodo } from "../../../service";
+import { storeNewTodo } from "../../../service";
 import { isDevelopment } from "../../../config";
 import { useTodoAPI } from "./useTodoAPI";
 
@@ -66,18 +66,13 @@ export function useTodoStateManager () {
 			case Type.addTodo:
 				isTodo && todoAPIHook.createTodo(todo, page); break;
 			case Type.removeTodo:
-				isTodo && todoAPIHook.deleteTodo(todo, page);
-				break;
+				isTodo && todoAPIHook.deleteTodo(todo, page); break;
 			case Type.editTodo:
 				isTodo && todoAPIHook.putTodo(todo); break;
 			case Type.toggleTodoDone:
 				isTodo && todoAPIHook.patchTodoDone(todo); break;
-			case Type.addFailedStoredTodos:
-				isTodo && storeFailedRemoteStoredTodo(todo); break;
 			case Type.updateNewTodo:
-				storeNewTodo(todoState.newTodo); break;
-			case Type.removeAllFailedStoredTodos:
-				emptyFailedRemoteStoredTodo(); break; 
+				storeNewTodo(todoState.newTodo); break; 
 			default: break;
 		}
 	}, [todoState]);
