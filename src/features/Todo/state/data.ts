@@ -5,8 +5,8 @@ export const todoInitData: ITodoState = {
     newTodo: getEmptyDodo(),
     latestHandledTodo: null,
     todoPagination: null,
-    todoList: [],
-    failedStoredTodoList: getFailedRemoteStoredTodos(),
+    remoteTodos: [],
+    remoteFailedTodos: getFailedRemoteStoredTodos(),
     isError: false,
     errorMessage: ""
 } as const;

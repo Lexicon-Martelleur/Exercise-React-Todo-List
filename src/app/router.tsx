@@ -9,11 +9,11 @@ import { App } from "./App";
 import { AboutPage, AddTodoPage, TodoListPage } from "../pages";
 import { ReactElement, useEffect } from "react";
 import { Path } from "../constants";
-import { Todo } from "../features";
+import { TodoProvider } from "../features";
 
 export const appRouter = createBrowserRouter(
 	createRoutesFromElements(
-		<Route path={Path.INDEX} element={<App><Todo /></App>}>
+		<Route path={Path.INDEX} element={<App><TodoProvider /></App>}>
 			<Route index element={<TodoListPage />} />
 			<Route path={Path.ADD_TODO} element={<AddTodoPage />} />
 			<Route path={Path.ABOUT} element={<AboutPage />} />

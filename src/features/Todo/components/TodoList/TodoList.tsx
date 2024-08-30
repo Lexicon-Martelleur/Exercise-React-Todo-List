@@ -54,10 +54,10 @@ export const TodoList = (): ReactElement => {
 
     const getTodoList = (mode: SortModeType) => {
         switch (mode) {
-            case sortMode.author: return sortByAuthor(todoState.todoList);
-            case sortMode.date: return sortByDate(todoState.todoList);
-            case sortMode.none: return todoState.todoList
-            default: return todoState.todoList;
+            case sortMode.author: return sortByAuthor(todoState.remoteTodos);
+            case sortMode.date: return sortByDate(todoState.remoteTodos);
+            case sortMode.none: return todoState.remoteTodos
+            default: return todoState.remoteTodos;
         }
     }
 
@@ -96,7 +96,7 @@ export const TodoList = (): ReactElement => {
                 onPrev={handlePrevPage}
                 onNext={handleNextPage} />
             }
-            <SelectMenu title={`${todoState.todoList.length} Todos`}
+            <SelectMenu title={`${todoState.remoteTodos.length} Todos`}
                 options={Object.values(sortMode)}
                 selectedOption={selectedSortMode}
                 onOptionChange={handleSelectSortMode} />

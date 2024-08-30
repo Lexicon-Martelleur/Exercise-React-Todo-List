@@ -50,7 +50,7 @@ function handleAddTodo (
     action: AddTodoAction,
     state: ITodoState
 ): ITodoState {
-    const newTodoEntity: ITodoEntity = {
+    const latestHandledTodo: ITodoEntity = {
         id: uuid(),
         todo: action.payload,
         timestamp: Date.now()
@@ -58,11 +58,7 @@ function handleAddTodo (
 
     return {
         ...state,
-        latestHandledTodo: { ...newTodoEntity },
-        todoList: [
-            ...state.todoList,
-            newTodoEntity
-        ]
+        latestHandledTodo: latestHandledTodo,
     };
 }
 
@@ -72,7 +68,7 @@ function handleAddTodoEntities (
 ): ITodoState {
     return {
         ...state,
-        todoList: [...action.payload]
+        remoteTodos: [...action.payload]
     };
 }
 
@@ -80,7 +76,7 @@ function handleRemoveTodo (
     action: RemoveTodoAction,
     state: ITodoState
 ): ITodoState {
-    let latestHandledTodo = state.todoList.find(entity => (
+    let latestHandledTodo = state.remoteTodos.find(entity => (
         entity.id === action.payload
     )) ?? null;
 
@@ -91,47 +87,49 @@ function handleRemoveTodo (
         };
     }
     
-    const todoList: ITodoEntity[] = state.todoList.filter(entity => (
-        entity.id !== action.payload
+    const remoteTodos: ITodoEntity[] = state.remoteTodos.filter(todo => (
+        todo.id !== action.payload
     ));
 
-    return { ...state, latestHandledTodo, todoList };
+    return { ...state, latestHandledTodo, remoteTodos };
 }
 
 function handleEditTodo (
     action: EditTodoAction,
     state: ITodoState
 ): ITodoState {
-    const todoList: ITodoEntity[] = state.todoList.map(entity => (
-        entity.id === action.payload.id
+    const remoteTodos: ITodoEntity[] = state.remoteTodos.map(todo => (
+        todo.id === action.payload.id
         ? {
-            ...entity,
+            ...todo,
             timestamp: Date.now(),
             todo: { ...action.payload.editedTodo }
         }
-        : entity
+        : todo
     ));
 
-    const latestHandledTodo = todoList.find(entity => (
-        entity.id === action.payload.id
+    const latestHandledTodo = remoteTodos.find(todo => (
+        todo.id === action.payload.id
     )) ?? null; 
 
-    console.log('latest', latestHandledTodo)
-
-    return { ...state, latestHandledTodo, todoList };
+    return { ...state, latestHandledTodo, remoteTodos };
 }
 
 function handleSwapTodoListItems (
     action: SwapTodoListItems,
     state: ITodoState
 ): ITodoState {
-    const todoAIndex = state.todoList.findIndex(entity => entity.id === action.payload.idTodoA);
-    const todoBIndex = state.todoList.findIndex(entity => entity.id === action.payload.idTodoB);
+    const todoAIndex = state.remoteTodos.findIndex(todo => (
+        todo.id === action.payload.idTodoA));
+
+    const todoBIndex = state.remoteTodos.findIndex(todo => (
+        todo.id === action.payload.idTodoB));
+    
     if (todoAIndex === -1 || todoBIndex === -1) { return state; }
     
     const newState = {
         ...state,
-        todoList: [...state.todoList]
+        todoList: [...state.remoteTodos]
     };
 
     [
@@ -146,21 +144,21 @@ function handleToggleTodoDone (
     action: ToggleTodoDoneAction,
     state: ITodoState
 ): ITodoState {
-    const todoList: ITodoEntity[] = state.todoList.map(entity => (
-        entity.id === action.payload
+    const remoteTodos: ITodoEntity[] = state.remoteTodos.map(todoEntity => (
+        todoEntity.id === action.payload
         ? {
-            ...entity,
+            ...todoEntity,
             timestamp: Date.now(),
-            todo: { ...entity.todo, done: !entity.todo.done }
+            todo: { ...todoEntity.todo, done: !todoEntity.todo.done }
         }
-        : entity
+        : todoEntity
     ));
 
-    const latestHandledTodo = todoList.find(entity => (
-        entity.id === action.payload
+    const latestHandledTodo = remoteTodos.find(todo => (
+        todo.id === action.payload
     )) ?? null; 
 
-    return { ...state, latestHandledTodo, todoList };
+    return { ...state, latestHandledTodo, remoteTodos };
 }
 
 function handleUpdateTodoPagination (
@@ -195,8 +193,8 @@ function handleAddFailedStoredTodos (
         ...state,
         latestHandledTodo: failedTodo,
         timestamp: Date.now(),
-        failedStoredTodoList: [
-            ...state.failedStoredTodoList,
+        remoteFailedTodos: [
+            ...state.remoteFailedTodos,
             failedTodo
         ]
     }

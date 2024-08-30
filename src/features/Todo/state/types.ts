@@ -5,8 +5,8 @@ export type ITodoState = Readonly<{
     newTodo: ITodo
     latestHandledTodo: ITodoEntity | null
     todoPagination: IPaginationData | null
-    todoList: Readonly<Readonly<ITodoEntity>>[]
-    failedStoredTodoList: Readonly<Readonly<ITodoEntity>>[]
+    remoteTodos: Readonly<Readonly<ITodoEntity>>[]
+    remoteFailedTodos: Readonly<Readonly<ITodoEntity>>[]
     isError: boolean
     errorMessage: string 
 }>;

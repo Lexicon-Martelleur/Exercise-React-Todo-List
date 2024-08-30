@@ -27,7 +27,7 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 1rem;
+    padding: 1rem;
 }
 
 .modal-body {
@@ -48,9 +48,19 @@
 }
 
 .close-button  {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 3rem;
+    height: 3rem;
     border: none;
     background-color: inherit;
     cursor: pointer;
+}
+
+.close-button:hover  {
+    border-radius: 50%;
+    background-color: var(--BG_DARK);
 }
 
 @media (min-width: 500px) {
