@@ -33,3 +33,17 @@ export function selectTodoPage (todoState: ITodoState): number {
 export function selectNrOfTodoPage (todoState: ITodoState): number {
     return todoState.todoPagination?.TotalPageCount ?? 1;
 }
+
+export function selecUniqueRemoteFailedTodos (
+    todoState: ITodoState
+): ITodoEntity[] {
+    return todoState.remoteFailedTodos.filter((item, index, array) => 
+        index === array.findIndex(arrayItem => arrayItem.id === item.id)
+    );
+}
+
+export function selecAllRemoteFailedTodos (
+    todoState: ITodoState
+): ITodoEntity[] {
+    return todoState.remoteFailedTodos;
+}

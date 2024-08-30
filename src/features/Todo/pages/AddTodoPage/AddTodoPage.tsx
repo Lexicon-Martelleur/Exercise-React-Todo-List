@@ -1,6 +1,7 @@
 import { ReactElement } from "react";
 
-import { AddTodo, TodoLayout } from "../../features";
+import { TodoLayout } from "../../layouts";
+import { AddTodo } from "../../components";
 
 export const AddTodoPage = (): ReactElement => {
     return (

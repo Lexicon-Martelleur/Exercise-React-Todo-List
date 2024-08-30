@@ -1,6 +1,7 @@
 import { ReactElement } from "react";
 
-import { About, TodoLayout } from "../../features";
+import { TodoLayout } from "../../layouts";
+import { About } from "../../components";
 
 export const AboutPage = (): ReactElement => {
     return (

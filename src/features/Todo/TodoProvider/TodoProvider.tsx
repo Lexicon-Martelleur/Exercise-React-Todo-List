@@ -3,7 +3,7 @@ import { Outlet } from "react-router-dom";
 
 import { useTodoStateManager } from "../hooks";
 import { ErrorModal, InfoModal } from "../../../components";
-import { updateTodoErrorStateAction } from "../state";
+import { selecUniqueRemoteFailedTodos, updateTodoErrorStateAction } from "../state";
 
 /**
  * @TODO 
@@ -40,14 +40,14 @@ export const TodoProvider = (): ReactElement => {
     }
 
     const isFailedStoredTodos = () => {
-        return todoState.remoteTodos.length > 0 &&
+        return selecUniqueRemoteFailedTodos(todoState).length > 0 &&
         displayFailedStorageInfo;
     }
 
     const getFailedStoredMessage = () => {
-        const nrOfFailedTodos = todoState.remoteTodos.length;
-        return `You have ${nrOfFailedTodos} failed stored todo actions,
-        would you like to try them again?`;
+        const nrOfFailedTodos = selecUniqueRemoteFailedTodos(todoState).length;
+        return `You have ${nrOfFailedTodos} failed updated, created or deleted todos
+        actions, would you like to try them again?`;
     }
 
     return (

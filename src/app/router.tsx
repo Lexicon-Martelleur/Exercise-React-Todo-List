@@ -6,17 +6,16 @@ import {
 } from "react-router-dom";
 
 import { App } from "./App";
-import { AboutPage, AddTodoPage, TodoListPage } from "../pages";
 import { ReactElement, useEffect } from "react";
 import { Path } from "../constants";
-import { TodoProvider } from "../features";
+import * as TodoFeature from "../features";
 
 export const appRouter = createBrowserRouter(
 	createRoutesFromElements(
-		<Route path={Path.INDEX} element={<App><TodoProvider /></App>}>
-			<Route index element={<TodoListPage />} />
-			<Route path={Path.ADD_TODO} element={<AddTodoPage />} />
-			<Route path={Path.ABOUT} element={<AboutPage />} />
+		<Route path={Path.INDEX} element={<App><TodoFeature.TodoProvider /></App>}>
+			<Route index element={<TodoFeature.TodoListPage />} />
+			<Route path={Path.ADD_TODO} element={<TodoFeature.AddTodoPage />} />
+			<Route path={Path.ABOUT} element={<TodoFeature.AboutPage />} />
 			<Route path={Path.UNKNOWN} element={<RouteToIndex />} />
 		</Route>
 	)
