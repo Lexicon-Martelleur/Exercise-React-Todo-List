@@ -1,6 +1,6 @@
 import { v4 as uuid } from "uuid";
 
-import { getEmptyDodo, ITodoEntity } from "../../../service";
+import { getEmptyDodo, getTodos, ITodoEntity } from "../../../service";
 import { TodoActionType as Type } from "./constants";
 import {
     ITodoState,
@@ -20,7 +20,7 @@ export const todoInitData: ITodoState = {
     newTodo: getEmptyDodo(),
     latestHandledTodo: null,
     todoPagination: null,
-    todoList: [],
+    todoList: getTodos(),
     isError: false,
     errorMessage: ""
 } as const;

@@ -6,7 +6,7 @@ import {
 	TodoActionType as Type,
 	selectTodoPage
 } from "../state";
-import { StoreNewTodo, StoreTodos } from "../../../service";
+import { storeNewTodo, storeTodos } from "../../../service";
 import { isDevelopment } from "../../../config";
 import { useTodoAPI } from "./useTodoAPI";
 
@@ -59,7 +59,7 @@ export function useTodoStateManager () {
 	useEffect(() => {
 		const page = selectTodoPage(todoState);
 		todoAPIHook.getTodos(page, todoList => {
-			StoreTodos(todoList);
+			storeTodos(todoList);
 		});
 	}, []);
 
@@ -68,21 +68,21 @@ export function useTodoStateManager () {
 		const isTodo = todo != null
 		switch(actionTypeRef.current) {
 			case Type.addTodo:
-				StoreTodos(todoState.todoList);
+				storeTodos(todoState.todoList);
 				isTodo && todoAPIHook.createTodo(todo); break;
 			case Type.removeTodo:
-				StoreTodos(todoState.todoList);
+				storeTodos(todoState.todoList);
 				isTodo && todoAPIHook.deleteTodo(Number(todo.id)); break;
 			case Type.editTodo:
-				StoreTodos(todoState.todoList);
+				storeTodos(todoState.todoList);
 				isTodo && todoAPIHook.putTodo(todo); break;
 			case Type.toggleTodoDone:
-				StoreTodos(todoState.todoList);
+				storeTodos(todoState.todoList);
 				isTodo && todoAPIHook.patchTodoDone(todo); break;
 			case Type.swapTodoListItems:
-				StoreTodos(todoState.todoList); break;
+				storeTodos(todoState.todoList); break;
 			case Type.updateNewTodo:
-				StoreNewTodo(todoState.newTodo); break; 
+				storeNewTodo(todoState.newTodo); break; 
 			default: break;
 		}
 	}, [todoState]);

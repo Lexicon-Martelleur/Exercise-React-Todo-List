@@ -38,7 +38,6 @@ export function useTodoAPI (dispatchTodoAction: React.Dispatch<ITodoAction>) {
                 cb && cb(todoList);
             } catch (err) {
                 dispatchTodoAction(updateTodoPaginationAction(null));
-                dispatchTodoAction(addTodoEntitiesAction([]));
                 handleError(err, "Failed fetching todos from server.");
             }
         })()
@@ -48,28 +47,28 @@ export function useTodoAPI (dispatchTodoAction: React.Dispatch<ITodoAction>) {
         todo: ITodoEntity
     ) => {
         (async () => {
-            try { todoApi.createTodo(todo); }
+            try { await todoApi.createTodo(todo); }
             catch (err) { handleError(err, "Failed create todo on server."); }
         })()
     }, [todoApi, handleError])
 
     const deleteTodo = useCallback((todoId: number) => {
         (async () => {
-            try { todoApi.deleteTodo(todoId); }
+            try { await todoApi.deleteTodo(todoId); }
             catch (err) { handleError(err, "Failed delete todo on server."); }
         })()
     }, [todoApi, handleError])
 
     const putTodo = useCallback((todo: ITodoEntity) => {
         (async () => {
-            try { todoApi.putTodo(todo); }
+            try { await todoApi.putTodo(todo); }
             catch (err) { handleError(err, "Failed update todo on server."); }
         })()
     }, [todoApi, handleError])
 
     const patchTodoDone = useCallback((todo: ITodoEntity) => {
         (async () => {
-            try { todoApi.patchTodoDone(todo); }
+            try { await todoApi.patchTodoDone(todo); }
             catch (err) { handleError(err, "Failed updated todo done on server."); }
         })()
     }, [todoApi, handleError])

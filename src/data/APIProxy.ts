@@ -40,7 +40,7 @@ export function createAPIProxy<ApiTarget extends object>(
     });
 }
 
-function getTimoutSignal (timeout = 10000): [NodeJS.Timeout, AbortSignal] {
+function getTimoutSignal (timeout = 1000): [NodeJS.Timeout, AbortSignal] {
     const controller = new AbortController();
     const { signal } = controller;
     const reason = `The request was aborted due delay extended ${timeout}.`;

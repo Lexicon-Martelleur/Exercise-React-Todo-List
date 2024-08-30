@@ -27,10 +27,14 @@ export function sortByDate (todoList: ITodoEntity[]): ITodoEntity[] {
     });
 }
 
-export function StoreTodos (todos: ITodoEntity[]): void {
+export function getTodos (): ITodoEntity[] {
+    return todoStorage.getTodos();
+}
+
+export function storeTodos (todos: ITodoEntity[]): void {
     todoStorage.saveTodos(todos);
 }
 
-export function StoreNewTodo (newTodo: ITodo): void {
+export function storeNewTodo (newTodo: ITodo): void {
     todoStorage.saveNewTodo(newTodo);
 }

@@ -26,7 +26,9 @@ export function addTodoAction (todo: ITodo): AddTodoAction {
     };
 }
 
-export function addTodoEntitiesAction (todos: ITodoEntity[]): AddTodosEntitiesAction {
+export function addTodoEntitiesAction (
+    todos: ITodoEntity[]
+): AddTodosEntitiesAction {
     return {
         type: Type.addTodoEntities,
         payload: todos
@@ -47,23 +49,28 @@ export function removeTodoAction (id: string): RemoveTodoAction {
     };
 }
 
-export function editTodoAction (id: string, editedTodo: ITodo): EditTodoAction {
+export function editTodoAction (
+    id: string, editedTodo: ITodo
+): EditTodoAction {
     return {
         type: Type.editTodo,
         payload: { id, editedTodo }
     };
 }
 
-export function swapTodoListItemsAction (idTodoA: string, idTodoB: string):
-SwapTodoListItems {
+export function swapTodoListItemsAction (
+    idTodoA: string,
+    idTodoB: string
+): SwapTodoListItems {
     return {
         type: Type.swapTodoListItems,
         payload: { idTodoA, idTodoB }
     };
 }
 
-export function updateTodoPaginationAction (paginationTodoData: IPaginationData | null):
-UpdateTodoPaginationAction {
+export function updateTodoPaginationAction (
+    paginationTodoData: IPaginationData | null
+): UpdateTodoPaginationAction {
     return {
         type: Type.updateTodoPagination,
         payload: paginationTodoData

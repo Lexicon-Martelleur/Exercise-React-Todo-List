@@ -1,4 +1,4 @@
 export * from "./types";
-export * from "./service-todo";
+export * from "./serviceTodo";
 export * from "./constants";
-export * from "./pagination-data";
+export * from "./paginationData";
