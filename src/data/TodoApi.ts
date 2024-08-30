@@ -1,8 +1,8 @@
 import {
     isTodoEntity,
     ITodoEntity,
-    IPaginationMetaData,
-    isPaginationMetaData
+    IPaginationData,
+    isPaginationData
 } from "../service";
 import { getTodoAPI } from "../config";
 import { ITodoAPI } from "./ITodoApi";
@@ -20,7 +20,7 @@ class TodoAPI implements ITodoAPI {
     async getTodos (
         pageNr: number,
         signal?: AbortSignal
-    ): Promise<[ITodoEntity[], IPaginationMetaData]> {
+    ): Promise<[ITodoEntity[], IPaginationData]> {
         const url = `${this.API}/todo?pageSize=${this.nrOfTodos}&pageNr=${pageNr}`
         const res = await fetch(url, {
             signal
@@ -33,10 +33,12 @@ class TodoAPI implements ITodoAPI {
                 id: `${item.id}`,
                 timestamp: Number(item.timestamp),
         }})
-        const paginationMetaData = JSON.parse(res.headers.get("X-Pagination") ?? "");
+        
+        
+        const paginationData = JSON.parse(res.headers.get("X-Pagination") ?? "");
         if (todoList.every(isTodoEntity) &&
-            isPaginationMetaData(paginationMetaData)) {
-                return [todoList, paginationMetaData];
+            isPaginationData(paginationData)) {
+                return [todoList, paginationData];
         } else {
             throw new APIError();
         }

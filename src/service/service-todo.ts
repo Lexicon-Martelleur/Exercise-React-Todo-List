@@ -1,5 +1,5 @@
 import { ITodo, ITodoEntity } from "./types";
-import { todoStorage } from "./todoStorage";
+import { todoStorage } from "../data/todoStorage";
 
 export function getInitialTodos (): ITodoEntity[] {
     return todoStorage.getTodos();

@@ -27,7 +27,7 @@ export function selectDate (todoEntity: ITodoEntity): string {
 }
 
 export function selectTodoPage (todoState: ITodoState): number {
-    return todoState.todoPagination?.CurrentPage ?? 1;
+    return todoState.todoPagination?.PageNr ?? 1;
 }
 
 export function selectNrOfTodoPage (todoState: ITodoState): number {

@@ -1,4 +1,4 @@
-import { isTodo, isTodoEntity, ITodo, ITodoEntity } from "./types";
+import { isTodo, isTodoEntity, ITodo, ITodoEntity } from "../service";
 
 class TodoStorage {
     private readonly _todosKey = "todos";

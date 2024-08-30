@@ -1,21 +1,21 @@
-export interface IPaginationMetaData {
+export interface IPaginationData {
     TotalItemCount: number;
     TotalPageCount: number;
     PageSize: number;
-    CurrentPage: number;
+    PageNr: number;
 }
 
-export function isPaginationMetaData(obj: unknown): obj is IPaginationMetaData {
+export function isPaginationData(obj: unknown): obj is IPaginationData {
     if (obj == null || typeof obj !== "object") {
         return false
     }
 
-    const castedObj = obj as IPaginationMetaData
+    const castedObj = obj as IPaginationData
 
     return (
         typeof castedObj.TotalItemCount === "number" &&
         typeof castedObj.TotalPageCount === "number" &&
         typeof castedObj.PageSize === "number" &&
-        typeof castedObj.CurrentPage === "number"
+        typeof castedObj.PageNr === "number"
     );
 } 

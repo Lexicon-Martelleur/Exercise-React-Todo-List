@@ -58,7 +58,9 @@ export function useTodoStateManager () {
 
 	useEffect(() => {
 		const page = selectTodoPage(todoState);
-		todoAPIHook.getTodos(page);
+		todoAPIHook.getTodos(page, todoList => {
+			StoreTodos(todoList);
+		});
 	}, []);
 
 	useEffect(() => {
@@ -66,12 +68,16 @@ export function useTodoStateManager () {
 		const isTodo = todo != null
 		switch(actionTypeRef.current) {
 			case Type.addTodo:
+				StoreTodos(todoState.todoList);
 				isTodo && todoAPIHook.createTodo(todo); break;
 			case Type.removeTodo:
+				StoreTodos(todoState.todoList);
 				isTodo && todoAPIHook.deleteTodo(Number(todo.id)); break;
 			case Type.editTodo:
+				StoreTodos(todoState.todoList);
 				isTodo && todoAPIHook.putTodo(todo); break;
 			case Type.toggleTodoDone:
+				StoreTodos(todoState.todoList);
 				isTodo && todoAPIHook.patchTodoDone(todo); break;
 			case Type.swapTodoListItems:
 				StoreTodos(todoState.todoList); break;

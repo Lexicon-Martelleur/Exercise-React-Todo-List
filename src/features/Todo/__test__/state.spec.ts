@@ -1,4 +1,4 @@
-import { IPaginationMetaData, ITodo, ITodoEntity } from "../../../service"
+import { IPaginationMetaData, ITodo, ITodoEntity } from "../../../service";
 import {
     addTodoAction,
     editTodoAction,
