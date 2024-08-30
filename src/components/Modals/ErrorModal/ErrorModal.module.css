@@ -19,7 +19,7 @@
     height: 80%;
     width: 90%;
     border-radius: 1rem;
-    background-color: #a31818;
+    background-color: var(--BG_WARNING);
 }
 
 .modal-header {

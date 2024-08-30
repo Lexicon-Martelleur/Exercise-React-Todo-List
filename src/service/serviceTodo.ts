@@ -13,12 +13,22 @@ export function sortByAuthor (todoList: ITodoEntity[]): ITodoEntity[] {
     });
 }
 
-export function sortByDate (todoList: ITodoEntity[]): ITodoEntity[] {
+export function sortByOldestDateFirst (todoList: ITodoEntity[]): ITodoEntity[] {
     return todoList.slice().sort((a, b) => {
         const dateA = a.timestamp;
         const dateB = b.timestamp;
         if (dateA < dateB) { return -1; }
         else if (dateA > dateB) { return 1; }
+        else { return 0; }
+    });
+}
+
+export function sortByLatestDateFirst (todoList: ITodoEntity[]): ITodoEntity[] {
+    return todoList.slice().sort((a, b) => {
+        const dateA = a.timestamp;
+        const dateB = b.timestamp;
+        if (dateA > dateB) { return -1; }
+        else if (dateA < dateB) { return 1; }
         else { return 0; }
     });
 }
@@ -31,10 +41,18 @@ export function storeFailedRemoteStoredTodo (todo: ITodoEntity): void {
     todoStorage.saveFailedRemoteStoredTodo(todo);
 }
 
+export function emptyFailedRemoteStoredTodo (): void {
+    todoStorage.emptyFailedRemoteStoredTodo();
+}
+
 export function storeNewTodo (newTodo: ITodo): void {
     todoStorage.saveNewTodo(newTodo);
 }
 
 export function getUNIXTimestampInSeconds (): number {
     return Math.floor(Date.now() / 1000);
+}
+
+export function getLocalDateFromUNIXTimestampInSeconds (timestamp: number): Date {
+    return new Date(timestamp * 1000);
 }

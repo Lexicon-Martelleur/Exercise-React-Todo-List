@@ -5,7 +5,7 @@
     align-items: center;
     gap: 1rem;
     background-color: var(--BG_LIGHT);
-    border: var(--BORDER_MEDIUM_FAT);
+    border: var(--BORDER_DARK_FAT);
     width: 100%;
     min-height: 120px;
     cursor: pointer;

@@ -1,4 +1,4 @@
-import { ITodoEntity, sortByDate } from "../../../service";
+import { getLocalDateFromUNIXTimestampInSeconds, ITodoEntity, sortByLatestDateFirst } from "../../../service";
 import { ITodoState } from "./types";
 
 export function selectID (todoEntity: ITodoEntity): string {
@@ -22,7 +22,7 @@ export function selectDone (todoEntity: ITodoEntity): boolean {
 }
 
 export function selectDate (todoEntity: ITodoEntity): string {
-    const date = new Date(todoEntity.timestamp)
+    const date = getLocalDateFromUNIXTimestampInSeconds(todoEntity.timestamp)
     return date.toLocaleString();
 }
 
@@ -34,10 +34,10 @@ export function selectNrOfTodoPage (todoState: ITodoState): number {
     return todoState.todoPagination?.TotalPageCount ?? 1;
 }
 
-export function selecUniqueRemoteFailedTodos (
+export function selecUniqueFailedTodosFilterstByLatestDate (
     todoState: ITodoState
 ): ITodoEntity[] {
-    return todoState.remoteFailedTodos.filter((item, index, array) => 
+    return sortByLatestDateFirst([...todoState.remoteFailedTodos]).filter((item, index, array) => 
         index === array.findIndex(arrayItem => arrayItem.id === item.id)
     );
 }
@@ -48,14 +48,26 @@ export function selecAllRemoteFailedTodos (
     return todoState.remoteFailedTodos;
 }
 
-export function selecUniqueTodosFilteredByLatest (
+export function selecUniqueTodosFilteredByLatestDate (
     todoState: ITodoState
 ): ITodoEntity[] {
-    return [
+    return sortByLatestDateFirst([
         ...todoState.remoteFailedTodos,
         ...todoState.remoteTodos
-    ].filter((item, index, array) => 
-        index === sortByDate(array).findIndex(arrayItem =>
+    ]).filter((item, index, array) => 
+        index === array.findIndex(arrayItem =>
             arrayItem.id === item.id)
     );
+}
+
+export function selecTotalNumberOfTodos (
+    todoState: ITodoState
+): number {
+    const tottalItems = todoState.todoPagination?.TotalItemCount;
+    return tottalItems
+        ? tottalItems
+        : [
+            ...todoState.remoteFailedTodos,
+            ...todoState.remoteTodos
+        ].length
 }

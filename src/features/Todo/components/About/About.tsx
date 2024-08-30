@@ -4,6 +4,10 @@ import { useTodoContext } from "../../context";
 import { images } from "../../../../assets";
 
 import styles from "./About.module.css";
+import {
+    selecTotalNumberOfTodos,
+    selecUniqueTodosFilteredByLatestDate
+} from "../../state";
 
 export const About = (): ReactElement => {
     const [_, todoState] = useTodoContext();    
@@ -16,8 +20,9 @@ export const About = (): ReactElement => {
         images.calm5.src
     ];
 
-    const getNrOfTodosNotDone = () => {
-        return todoState.todoList
+    /**@TODO should be picked up from server */
+    const getNrOfTodosDone = () => {
+        return selecUniqueTodosFilteredByLatestDate(todoState)
             .filter(item => item.todo.done === true)
             .length;
     }
@@ -35,8 +40,8 @@ export const About = (): ReactElement => {
     return (
         <>
             <div>
-                <p>Total nr of todos: {todoState.todoList.length}</p>
-                <p>Nr of todos done: {getNrOfTodosNotDone()}</p>
+                <p>Total nr of todos: {selecTotalNumberOfTodos(todoState)}</p>
+                <p>Nr of todos done: {getNrOfTodosDone()}</p>
             </div>
             <section className={styles.aboutSectionImageCtr}>
                 {imageSources.map((_, index) => (

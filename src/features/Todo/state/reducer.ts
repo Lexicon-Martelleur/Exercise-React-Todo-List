@@ -14,7 +14,8 @@ import {
     AddTodosEntitiesAction,
     UpdateTodoPaginationAction,
     UpdateTodoErroStateAction,
-    AddFailedStoredTodosAction
+    AddFailedStoredTodosAction,
+    RemoveAllFailedStoredTodosAction
 } from "./types";
 
 export function todoReducer (
@@ -32,6 +33,7 @@ export function todoReducer (
         case Type.updateTodoPagination: return handleUpdateTodoPagination(action, state);
         case Type.updateErrorState: return handleUpdateErrorState(action, state);
         case Type.addFailedStoredTodos: return handleAddFailedStoredTodos(action, state);
+        case Type.removeAllFailedStoredTodos: return handleRemoveAllFailedStoredTodos(action, state);
         default: return state;
     }
 }
@@ -197,5 +199,15 @@ function handleAddFailedStoredTodos (
             ...state.remoteFailedTodos,
             failedTodo
         ]
+    }
+}
+
+function handleRemoveAllFailedStoredTodos (
+    action: RemoveAllFailedStoredTodosAction,
+    state: ITodoState
+) {
+    return {
+        ...state,
+        remoteFailedTodos: action.payload.emptyDodoList
     }
 }

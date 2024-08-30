@@ -61,6 +61,11 @@ export interface AddFailedStoredTodosAction {
     payload: { entity: ITodoEntity, operation: TodoOperationType };
 }
 
+export interface RemoveAllFailedStoredTodosAction {
+    type: typeof TodoActionType.removeAllFailedStoredTodos;
+    payload: { emptyDodoList: ITodoEntity[] };
+}
+
 export type ITodoAction = (
     UpdateNewTodoAction |
     AddTodoAction |
@@ -71,5 +76,6 @@ export type ITodoAction = (
     SwapTodoListItems |
     UpdateTodoPaginationAction |
     UpdateTodoErroStateAction |
-    AddFailedStoredTodosAction
+    AddFailedStoredTodosAction |
+    RemoveAllFailedStoredTodosAction
 );

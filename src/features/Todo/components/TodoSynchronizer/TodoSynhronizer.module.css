@@ -1,0 +1,13 @@
+.still-failed-todo-article > button {
+    display: block;
+    width: 100%;
+    border: none;
+    cursor: pointer;
+    background-color:  var(--BG_WARNING);
+    padding: 0.5rem;
+    border: var(--BORDER_DARK_FAT);
+}
+
+.still-failed-todo-article > button:hover {
+    outline: var(--BORDER_LIGHT);
+}

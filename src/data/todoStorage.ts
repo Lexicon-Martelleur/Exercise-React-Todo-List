@@ -1,13 +1,17 @@
 import { isTodo, isTodoEntity, ITodo, ITodoEntity } from "../service";
 
 class TodoStorage {
-    private readonly _todosKey = "failedStoredTodos";
+    private readonly _failedTodosKey = "failedStoredTodos";
     private readonly _newTodoKey = "newTodo";
 
     saveFailedRemoteStoredTodo (todo: ITodoEntity): void {
         const todos = this.getFailedRemoteStoredTodos();
         todos.push(todo);
-        localStorage.setItem(this._todosKey, JSON.stringify(todos));
+        localStorage.setItem(this._failedTodosKey, JSON.stringify(todos));
+    }
+
+    emptyFailedRemoteStoredTodo (): void {
+        localStorage.setItem(this._failedTodosKey, JSON.stringify([]));
     }
 
     saveNewTodo (todos: ITodo): void {
@@ -15,7 +19,7 @@ class TodoStorage {
     }
 
     getFailedRemoteStoredTodos (): ITodoEntity[] {
-        const obj = localStorage.getItem(this._todosKey);
+        const obj = localStorage.getItem(this._failedTodosKey);
         if (obj === null) { return []; };
         const parsedObj = JSON.parse(obj);
         if (!Array.isArray(parsedObj) ||

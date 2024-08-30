@@ -1,13 +1,18 @@
 import React, { ReactElement, useState } from "react";
 
 import { useTodoContext } from "../../context";
-import { ITodo, sortByAuthor, sortByDate } from "../../../../service";
+import {
+    ITodo,
+    sortByAuthor,
+    sortByOldestDateFirst
+} from "../../../../service";
 import {
     editTodoAction,
     removeTodoAction,
     selectNrOfTodoPage,
+    selecTotalNumberOfTodos,
     selectTodoPage,
-    selecUniqueTodosFilteredByLatest,
+    selecUniqueTodosFilteredByLatestDate,
     swapTodoListItemsAction,
     toggleTodoDoneAction
 } from "../../state";
@@ -17,14 +22,15 @@ import {
     PageNavigation
 } from "../../../../components";
 import { TodoItem } from "../TodoItem";
+import { TodoSynchronizer } from "../TodoSynchronizer";
 
 import styles from "./TodoList.module.css";
 import { useTodoAPI } from "../../hooks";
 
 const sortMode = {
     author: "Sort by author",
-    date: "Sort by date",
-    none: "Not sorted"
+    dateOldest: "Sort by oldest date",
+    dateLatest: "Sort by latest date"
 } as const;
 
 type SortModeType = typeof sortMode[
@@ -35,7 +41,7 @@ export const TodoList = (): ReactElement => {
     const [
         selectedSortMode,
         setSelectedSortMode
-    ] = useState<SortModeType>(sortMode.none);
+    ] = useState<SortModeType>(sortMode.dateLatest);
     const [dispatchTodoAction, todoState] = useTodoContext();
     const [draggedId, setDraggedId] = useState<string | undefined>(undefined);
     const [draggedOverId, setDraggedOverId] = useState<string | undefined>(undefined);
@@ -54,11 +60,12 @@ export const TodoList = (): ReactElement => {
     }
 
     const getTodoList = (mode: SortModeType) => {
+        const todos = selecUniqueTodosFilteredByLatestDate(todoState)
         switch (mode) {
-            case sortMode.author: return sortByAuthor(todoState.remoteTodos);
-            case sortMode.date: return sortByDate(todoState.remoteTodos);
-            case sortMode.none: return todoState.remoteTodos
-            default: return selecUniqueTodosFilteredByLatest(todoState);
+            case sortMode.author: return sortByAuthor(todos);
+            case sortMode.dateOldest: return sortByOldestDateFirst(todos);
+            case sortMode.dateLatest: return todos
+            default: return todos;
         }
     }
 
@@ -91,13 +98,14 @@ export const TodoList = (): ReactElement => {
 
     return (
         <section className={styles.todoList}>
+            <TodoSynchronizer />
             {todoState.todoPagination != null && <PageNavigation
                 page={selectTodoPage(todoState)}
                 nrOfPages={selectNrOfTodoPage(todoState)}
                 onPrev={handlePrevPage}
                 onNext={handleNextPage} />
             }
-            <SelectMenu title={`${todoState.remoteTodos.length} Todos`}
+            <SelectMenu title={`${selecTotalNumberOfTodos(todoState)} Todos`}
                 options={Object.values(sortMode)}
                 selectedOption={selectedSortMode}
                 onOptionChange={handleSelectSortMode} />

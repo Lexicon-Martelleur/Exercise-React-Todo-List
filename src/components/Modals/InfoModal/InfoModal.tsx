@@ -9,6 +9,7 @@ import styles from "./InfoModal.module.css";
 interface Props {
     title?: string;
     message: string;
+    okText?: string
     onClose?: () => void
     onOk?: () => void
 }
@@ -21,6 +22,7 @@ interface Props {
 export const InfoModal: React.FC<Props> = ({
     title,
     message,
+    okText,
     onClose,
     onOk
 }): ReactElement => {
@@ -46,7 +48,7 @@ export const InfoModal: React.FC<Props> = ({
                         Close
                     </SelectButton>
                     <SelectButton onSelect={onOk}>
-                        OK
+                        {okText ? okText : "OK"}
                     </SelectButton>
                 </div>
             </div>

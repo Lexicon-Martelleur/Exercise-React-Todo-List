@@ -10,7 +10,8 @@ import {
     AddFailedStoredTodosAction,
     UpdateNewTodoAction,
     UpdateTodoErroStateAction,
-    UpdateTodoPaginationAction
+    UpdateTodoPaginationAction,
+    RemoveAllFailedStoredTodosAction
 } from "./types";
 
 export function updateNewTodoAction (todo: ITodo): UpdateNewTodoAction {
@@ -95,5 +96,13 @@ export function addFailedStoredTodosAction (
     return {
         type: Type.addFailedStoredTodos,
         payload: { entity, operation }
+    };
+}
+
+export function removeAllFailedStoredTodosAction ():
+RemoveAllFailedStoredTodosAction {
+    return {
+        type: Type.removeAllFailedStoredTodos,
+        payload: { emptyDodoList: [] }
     };
 }
