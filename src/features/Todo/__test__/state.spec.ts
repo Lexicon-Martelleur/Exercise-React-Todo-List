@@ -43,8 +43,7 @@ describe("Todo State", () => {
         newTodo: mockPrevTodo,
         latestHandledTodo: null,
         todoPagination: null,
-        serverFetchedTodoList: [mockInitTodoEntity],
-        serverFailedTodoList: [],
+        remoteTodos: [],
         isError: false,
         errorMessage: "Error message"
     };
@@ -60,7 +59,7 @@ describe("Todo State", () => {
         it("return state with added todo entity to the list of todos", () => {
             const action = addTodoAction(mockNextTodo);
             const nextState = todoReducer(mockTodoState, action);
-            expect(nextState.serverFetchedTodoList.map(entity => (
+            expect(nextState.remoteTodos.map(entity => (
                 entity.todo
             ))).toContain(mockNextTodo);
         });
@@ -68,34 +67,34 @@ describe("Todo State", () => {
         it(`return state with toggled todo done value
             for specified todo entity`, () => {
             const indexTodo = 0;
-            const startDoneValue = mockTodoState.serverFetchedTodoList[indexTodo].todo.done
-            const action = toggleTodoDoneAction(mockTodoState.serverFetchedTodoList[indexTodo].id);
+            const startDoneValue = mockTodoState.remoteTodos[indexTodo].todo.done
+            const action = toggleTodoDoneAction(mockTodoState.remoteTodos[indexTodo].id);
             const nextState = todoReducer(mockTodoState, action);
-            expect(nextState.serverFetchedTodoList[indexTodo].todo.done).toBe(!startDoneValue);
+            expect(nextState.remoteTodos[indexTodo].todo.done).toBe(!startDoneValue);
         });
 
         it("return state with removed specified todo", () => {
             const indexTodo = 0;
-            const action = removeTodoAction(mockTodoState.serverFetchedTodoList[indexTodo].id);
-            expect(mockTodoState.serverFetchedTodoList).toContain(mockInitTodoEntity);
+            const action = removeTodoAction(mockTodoState.remoteTodos[indexTodo].id);
+            expect(mockTodoState.remoteTodos).toContain(mockInitTodoEntity);
             const nextState = todoReducer(mockTodoState, action);
-            expect(nextState.serverFetchedTodoList).not.toContain(mockInitTodoEntity);
+            expect(nextState.remoteTodos).not.toContain(mockInitTodoEntity);
         });
 
         it("return state with swaped todo items in the todo list", () => {
-            const todoAIndex = mockTodoState.serverFetchedTodoList.length - 1;
+            const todoAIndex = mockTodoState.remoteTodos.length - 1;
             const todoBIndex = todoAIndex + 1;
 
             const actionAdd = addTodoAction(mockNextTodo);
             const nextState = todoReducer(mockTodoState, actionAdd);
-            const idTodoA = nextState.serverFetchedTodoList[todoAIndex].id;
-            const idTodoB = nextState.serverFetchedTodoList[todoBIndex].id;
+            const idTodoA = nextState.remoteTodos[todoAIndex].id;
+            const idTodoB = nextState.remoteTodos[todoBIndex].id;
             
             const actionSwap = swapTodoListItemsAction(idTodoA, idTodoB);
             const nextNextState = todoReducer(nextState, actionSwap);
             
-            expect(nextNextState.serverFetchedTodoList[todoAIndex].id).toBe(idTodoB);
-            expect(nextNextState.serverFetchedTodoList[todoBIndex].id).toBe(idTodoA);
+            expect(nextNextState.remoteTodos[todoAIndex].id).toBe(idTodoB);
+            expect(nextNextState.remoteTodos[todoBIndex].id).toBe(idTodoA);
         });
 
         it("return state with edited specified todo", () => {
@@ -107,11 +106,11 @@ describe("Todo State", () => {
                 done: false
             };
             const action = editTodoAction(
-                mockTodoState.serverFetchedTodoList[indexTodo].id,
+                mockTodoState.remoteTodos[indexTodo].id,
                 editedTodo);
-            expect(mockTodoState.serverFetchedTodoList).toContain(mockInitTodoEntity);
+            expect(mockTodoState.remoteTodos).toContain(mockInitTodoEntity);
             const nextState = todoReducer(mockTodoState, action);
-            expect(nextState.serverFetchedTodoList[indexTodo].todo).toStrictEqual(editedTodo);
+            expect(nextState.remoteTodos[indexTodo].todo).toStrictEqual(editedTodo);
         });
 
         it("return state with updated pagination state", () => {

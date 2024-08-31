@@ -1,9 +1,10 @@
-import React, { ReactElement, useState } from "react";
+import { ReactElement, useState } from "react";
 
 import { useTodoContext } from "../../context";
 import {
     ITodo,
     sortByAuthor,
+    sortByLatestDateFirst,
     sortByOldestDateFirst
 } from "../../../../service";
 import {
@@ -60,17 +61,23 @@ export const TodoList = (): ReactElement => {
     }
 
     const getTodoList = (mode: SortModeType) => {
-        const todos = selectAllRemoteTodos(todoState)
+        const todos = selectAllRemoteTodos(todoState);
         switch (mode) {
             case sortMode.author: return sortByAuthor(todos);
             case sortMode.dateOldest: return sortByOldestDateFirst(todos);
-            case sortMode.dateLatest: return todos
+            case sortMode.dateLatest: return sortByLatestDateFirst(todos)
             default: return todos;
         }
     }
 
-    const handleSelectSortMode: React.ChangeEventHandler<HTMLSelectElement> = (event) => {
-        setSelectedSortMode(event.target.value as SortModeType)
+    const handleSelectSortMode = (option: string) => {
+        console.log(Object.values(sortMode).includes(option as SortModeType))
+        console.log(option)
+        if (Object.values(sortMode).includes(option as SortModeType)) {
+            setSelectedSortMode(option as SortModeType)
+        } else {
+            setSelectedSortMode(option as SortModeType)
+        }
     }
 
     const updateDraggedId = (id: string | undefined) => {
@@ -108,7 +115,7 @@ export const TodoList = (): ReactElement => {
             <SelectMenu title={`${selectNrOfTodoItems(todoState)} Stored Todos`}
                 options={Object.values(sortMode)}
                 selectedOption={selectedSortMode}
-                onOptionChange={handleSelectSortMode} />
+                onSelect={handleSelectSortMode} />
             {getTodoList(selectedSortMode).map(entity => (
                 <DraggableContainer
                     key={entity.id}

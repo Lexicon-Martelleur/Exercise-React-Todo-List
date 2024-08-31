@@ -1,60 +1,79 @@
-.select-menu {
+.select-article {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 1rem;
     justify-content: space-between;
-    
     background-color: var(--BG_LIGHT);
     padding: 1rem;
 }
 
-.select-menu-select-ctr {
+.select-button {
+    position: relative;
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
     gap: 0;
-}
-
-.select-menu-select,
-.select-menu-select-icon {
+    width: 80%;
+    padding: 0.2rem;
     background-color: var(--BG_LIGHT_X);
-    outline: none;
     border: none;
-    color: #000F1F;
-    padding: 0.5rem;
-}
-
-.select-menu-select {
-    border-radius: 0 0.5rem 0.5rem 0;
+    border-radius: 0.5rem;
     cursor: pointer;
+    max-width: 250px;
 }
 
-.select-menu-select-icon {
-    border-radius: 0.5rem 0rem 0rem 0.5rem;
+.select-open {
+    border-radius: 0.5rem 0.5rem 0 0;
 }
 
-.select-menu-select > option {
-    position: relative;
-    right: 20px;
+.select-label {
+    background-color: inherit;
+    padding: 0.5rem;
     color: #000F1F;
     font-size: 1rem;
 }
 
-.select-menu-select,
-.select-menu-select > option {
-    font-size: 0.8rem;
+.select-icon {
+    background-color: var(--BG_LIGHT_X);
+    outline: none;
+    border: none;
+    padding: 0.5rem;
 }
 
-@media (min-width: 700px) {
-    .select-menu {
+.option-ctr {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: var(--BG_LIGHT_X);
+    padding-inline: 4px;
+    padding-block: 4px;
+    border-radius: 0 0 0.5rem 0.5rem;
+}
+
+.option-item {
+    padding: 1rem;
+    font-size: 1rem;
+    background-color: inherit;
+    border: none;
+    color: #000F1F;
+    cursor: pointer;
+}
+
+.option-item:hover {
+    background-color: var(--BG_LIGHT);
+}
+
+@media (min-width: 600px) {
+    .select-article {
         flex-direction: row;
     }
-}
 
-@media (min-width: 500px) {
-    .select-menu-select,
-    .select-menu-select > option,
-    .select-menu-title {
-        font-size: 1rem;
+    .select-button {
+        width: 50%;
     }
 }

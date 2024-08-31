@@ -1,4 +1,4 @@
-import { ReactElement } from "react";
+import { ReactElement, useState } from "react";
 
 import styles from "./SelectMenu.module.css";
 import { Icon } from "../Icon";
@@ -8,32 +8,53 @@ interface Props {
     title: string;
     options: string[];
     selectedOption: string;
-    onOptionChange: React.ChangeEventHandler<HTMLSelectElement>;
+    onSelect: (option: string) => void;
 }
 
 export const SelectMenu: React.FC<Props> = ({
     title,
     options,
     selectedOption,
-    onOptionChange
+    onSelect
 }): ReactElement => {
+    const [isOpen, setIsOpen] = useState(false);
+
+    const handleSelect = (option: string) => {
+        onSelect(option);
+    }
+
+    const getSelectButtonClassNames = () => {
+        return `${styles.selectButton} ${isOpen ? styles.selectOpen : ""}`
+    }
+
+    const toggleOpen: React.MouseEventHandler<HTMLButtonElement> = (_) => {
+        setIsOpen(!isOpen);
+    }
+
     return (
-        <div title="Select sort mode" className={styles.selectMenu}>
+        <article title="Select sort mode" className={styles.selectArticle}>
             <h3 className={styles.selectMenuTitle}>{title}</h3>
-            <div className={styles.selectMenuSelectCtr}>
-                <Icon className={styles.selectMenuSelectIcon} icon={Icons.sort}/>
-                <select className={styles.selectMenuSelect} 
-                    value={selectedOption}
-                    onChange={onOptionChange}>
-                    {options.map(value => (
-                    <option 
-                        key={value}
-                        value={value}>
-                        {value}
-                    </option>
+            <button className={getSelectButtonClassNames()}
+                onClick={toggleOpen}>
+                <Icon className={styles.selectIcon} icon={Icons.sort}/>
+                <p className={styles.selectLabel}
+                    onClick={() => setIsOpen(!isOpen)}>
+                    {selectedOption}
+                </p>
+                {isOpen && (
+                <div className={styles.optionCtr}>
+                    {options.map((option, index) => (
+                        <button
+                            key={index}
+                            className={styles.optionItem}
+                            onClick={() => handleSelect(option)}
+                        >
+                            {option}
+                        </button>
                     ))}
-                </select>
-            </div>
-        </div>
+                </div>
+                )}
+            </button>
+        </article>
     );
 }
