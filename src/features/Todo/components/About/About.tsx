@@ -4,13 +4,10 @@ import { useTodoContext } from "../../context";
 import { images } from "../../../../assets";
 
 import styles from "./About.module.css";
-import {
-    selectNrOfTodoItems,
-    selectAllRemoteTodos
-} from "../../state";
+import * as TodoState from "../../state";
 
 export const About = (): ReactElement => {
-    const [_, todoState] = useTodoContext();    
+    const [_, todoState] = useTodoContext();
     const imageRefs = useRef<(HTMLDivElement)[]>([]);
     const imageSources = [
         images.calm1.src,
@@ -20,9 +17,14 @@ export const About = (): ReactElement => {
         images.calm5.src
     ];
 
-    /**@TODO should be picked up from server */
+    /**
+     * @TODO Currently just show done from current page 
+     * should be picked up from server to get all todos
+     * that is done.
+     *
+     * */
     const getNrOfTodosDone = () => {
-        return selectAllRemoteTodos(todoState)
+        return TodoState.selectRemoteTodos(todoState)
             .filter(item => item.todo.done === true)
             .length;
     }
@@ -37,11 +39,20 @@ export const About = (): ReactElement => {
         imageRefs.current[imageIndex] = element;
     }, [imageSources])
 
+    const writeNrOfTodos = () => {
+        return `Total nr of todos: ${TodoState.selectNrOfTodoItems(todoState)}`
+    } 
+
+    const writeNrOfTodosDone = () => {
+        return `Nr of todos done on page
+        ${TodoState.selectTodoPage(todoState)}: ${getNrOfTodosDone()}`
+    } 
+
     return (
         <>
             <div>
-                <p>Total nr of todos: {selectNrOfTodoItems(todoState)}</p>
-                <p>Nr of todos done: {getNrOfTodosDone()}</p>
+                <p>{writeNrOfTodos()}</p>
+                <p>{writeNrOfTodosDone()}</p>
             </div>
             <section className={styles.aboutSectionImageCtr}>
                 {imageSources.map((_, index) => (

@@ -20,7 +20,7 @@ export const PageNavigation: React.FC<Props> = ({
     }
 
     const isLastPage = () => {
-        return page === nrOfPages
+        return page >= nrOfPages
     }
 
     return (

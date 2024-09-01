@@ -6,7 +6,7 @@ import { useTodoContext } from "../../context";
 import * as TodoState from "../../state";
 import { useTodoQuery } from "../../hooks";
 import { TodoForm } from "../TodoForm";
-import { Loader } from "../../../../components";
+import { ErrorModal, Loader } from "../../../../components";
 
 export const AddTodo = (): ReactElement => {
     const [dispatchTodoAction, todoState] = useTodoContext();
@@ -31,12 +31,23 @@ export const AddTodo = (): ReactElement => {
         return <Loader />
     }
 
+    const handleCloseError = () => {
+        todoQueryHook.clearErrorState();
+    }
+
     return (
-        <TodoForm
-            todo={todoState.newTodo}
-            submitLabel="Add Task"
-            onSubmit={handleSubmitAddTodo}
-            onValueChange={handleValueChange}>
-        </TodoForm>
+        <>
+            {todoState.isError && <ErrorModal
+                title={"Error"}
+                message={todoState.errorMessage}
+                onClose={handleCloseError} />
+            }
+            <TodoForm
+                todo={todoState.newTodo}
+                submitLabel="Add Task"
+                onSubmit={handleSubmitAddTodo}
+                onValueChange={handleValueChange}>
+            </TodoForm>
+        </>
     );
 }

@@ -47,9 +47,7 @@ export function useTodoQuery (
                 handleError(err, `Failed fetching todos from from ${api}`);
             }
         })()
-        setTimeout(() => {
-            setPending(false);
-        }, 5000)
+        setPending(false);
     }, [todoApi, dispatchTodoAction, handleError])
 
     const createTodo = useCallback((

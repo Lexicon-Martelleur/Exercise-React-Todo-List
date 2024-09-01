@@ -44,13 +44,13 @@ export const SelectMenu: React.FC<Props> = ({
                 {isOpen && (
                 <div className={styles.optionCtr}>
                     {options.map((option, index) => (
-                        <button
+                        <div
                             key={index}
                             className={styles.optionItem}
                             onClick={() => handleSelect(option)}
                         >
                             {option}
-                        </button>
+                        </div>
                     ))}
                 </div>
                 )}

@@ -1,7 +1,7 @@
 import { ReactElement, useState } from "react";
 
 import { ErrorModal, InfoModal } from "../../../../components";
-import { selectTodoPage } from "../../state";
+import * as TodoState from "../../state";
 import * as TodoService from "../../../../service";
 import { useTodoContext } from "../../context";
 
@@ -17,8 +17,8 @@ export const TodoSynchronizer = (): ReactElement => {
     const todoQueryHook = useTodoQuery(dispatchTodoAction);
     
     const handleTryFailedTodoActions = () => {
-        const todos = TodoService.getFailedRemoteStoredTodos();
-        const page = selectTodoPage(todoState);
+        const todos = TodoService.getUniqueFailedTodos();
+        const page = TodoState.selectTodoPage(todoState);
         TodoService.emptyFailedRemoteStoredTodo();
 
         todos.forEach(todo => {
@@ -37,19 +37,23 @@ export const TodoSynchronizer = (): ReactElement => {
     }
 
     const isFailedStoredTodos = () => {
+        const failedTodos = TodoService.getFailedTodos();
+
         return !todoState.isError &&
-        TodoService.getFailedRemoteStoredTodos().length > 0 &&
+            failedTodos.length > 0 &&
             displayFailedStorageInfo;
     }
 
     const isStillFailedStoredTodos = () => {
-        return TodoService.getFailedRemoteStoredTodos().length > 0 &&
+        const failedTodos = TodoService.getFailedTodos();
+
+        return failedTodos.length > 0 &&
             !displayFailedStorageInfo;
     }
 
     const getFailedStoredMessage = () => {
-        const nrOfFailedTodos = TodoService.getFailedRemoteStoredTodos().length;
-        return `You have ${nrOfFailedTodos} todo items that is not synchronized with remote
+        const nrOfFailedTodos = TodoService.getUniqueFailedTodos().length;
+        return `${nrOfFailedTodos} todo items is not synchronized with remote
         storage, would you like to try synchronization?`;
     }
 

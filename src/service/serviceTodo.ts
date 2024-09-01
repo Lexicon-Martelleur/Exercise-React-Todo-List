@@ -1,6 +1,7 @@
 import { ITodo, ITodoEntity } from "./types";
 import { todoStorage } from "../data/todoStorage";
 import { isDevelopment } from "../config";
+import { todoOperation } from "./constants";
 
 export function getEmptyTodo (): ITodo {
     return {
@@ -43,8 +44,23 @@ export function getNewTodo (): ITodo {
     return todoStorage.getNewTodo();
 }
 
-export function getFailedRemoteStoredTodos (): ITodoEntity[] {
+export function getFailedTodos (): ITodoEntity[] {
     return todoStorage.getFailedRemoteStoredTodos();
+}
+
+export function getUniqueFailedTodos (): ITodoEntity[] {
+    return sortByLatestDateFirst(todoStorage.getFailedRemoteStoredTodos())
+        .filter((item, index, array) => {
+            return index === array.findIndex(itemArray => item.id === itemArray.id);
+        })
+}
+
+export function getUniqueFailedDeletedTodos (): ITodoEntity[] {
+    return sortByLatestDateFirst(todoStorage.getFailedRemoteStoredTodos())
+        .filter(item => item.failedOperation === todoOperation.DELETE)
+        .filter((item, index, array) => {
+            return index === array.findIndex(itemArray => item.id === itemArray.id);
+        })
 }
 
 export function storeFailedRemoteStoredTodo (todo: ITodoEntity): void {

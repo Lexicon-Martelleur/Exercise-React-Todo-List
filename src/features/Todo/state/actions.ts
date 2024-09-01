@@ -1,19 +1,10 @@
 import { IPaginationData, ITodo, ITodoEntity } from "../../../service";
 import { TodoActionType as Type} from "./constants";
-import {
-    AddTodoAction,
-    AddTodosEntitiesAction,
-    EditTodoAction,
-    RemoveTodoAction,
-    SwapTodoListItems,
-    ToggleTodoDoneAction,
-    UpdateNewTodoAction,
-    UpdateTodoErroStateAction,
-    UpdateTodoPaginationAction,
-    UpdateTodoDoneAction
-} from "./types";
+import * as TodoState from "./types";
 
-export function updateNewTodoAction (todo: ITodo): UpdateNewTodoAction {
+export function updateNewTodoAction (
+    todo: ITodo
+): TodoState.UpdateNewTodoAction {
     return {
         type: Type.updateNewTodo,
         payload: todo
@@ -24,7 +15,7 @@ export function addTodoAction (
     id: string,
     timestamp: number,
     todo: ITodo,
-): AddTodoAction {
+): TodoState.AddTodoAction {
     return {
         type: Type.addTodo,
         payload: { id, timestamp, todo }
@@ -33,14 +24,16 @@ export function addTodoAction (
 
 export function addTodoEntitiesAction (
     todos: ITodoEntity[]
-): AddTodosEntitiesAction {
+): TodoState.AddTodosEntitiesAction {
     return {
         type: Type.addTodoEntities,
         payload: todos
     };
 }
 
-export function toggleTodoDoneAction (id: string): ToggleTodoDoneAction {
+export function toggleTodoDoneAction (
+    id: string
+): TodoState.ToggleTodoDoneAction {
     return {
         type: Type.toggleTodoDone,
         payload: id
@@ -49,14 +42,16 @@ export function toggleTodoDoneAction (id: string): ToggleTodoDoneAction {
 
 export function updateTodoDoneAction (
     todo: ITodoEntity
-): UpdateTodoDoneAction {
+): TodoState.UpdateTodoDoneAction {
     return {
         type: Type.updateTodoDone,
         payload: todo
     };
 }
 
-export function removeTodoAction (id: string): RemoveTodoAction {
+export function removeTodoAction (
+    id: string
+): TodoState.RemoveTodoAction {
     return {
         type: Type.removeTodo,
         payload: id
@@ -65,7 +60,7 @@ export function removeTodoAction (id: string): RemoveTodoAction {
 
 export function editTodoAction (
     id: string, editedTodo: ITodo
-): EditTodoAction {
+): TodoState.EditTodoAction {
     return {
         type: Type.editTodo,
         payload: { id, editedTodo }
@@ -75,7 +70,7 @@ export function editTodoAction (
 export function swapTodoListItemsAction (
     idTodoA: string,
     idTodoB: string
-): SwapTodoListItems {
+): TodoState.SwapTodoListItems {
     return {
         type: Type.swapTodoListItems,
         payload: { idTodoA, idTodoB }
@@ -84,7 +79,7 @@ export function swapTodoListItemsAction (
 
 export function updateTodoPaginationAction (
     paginationTodoData: IPaginationData | null
-): UpdateTodoPaginationAction {
+): TodoState.UpdateTodoPaginationAction {
     return {
         type: Type.updateTodoPagination,
         payload: paginationTodoData
@@ -94,7 +89,7 @@ export function updateTodoPaginationAction (
 export function updateTodoErrorStateAction (
     isError: boolean,
     errorMsg = ""
-): UpdateTodoErroStateAction {
+): TodoState.UpdateTodoErroStateAction {
     return {
         type: Type.updateErrorState,
         payload: { isError, errorMsg }

@@ -40,8 +40,7 @@ export const TodoList = (): ReactElement => {
         latestEditedtTodoRef.current?.scrollIntoView({
             behavior: "smooth",
             block: "center"
-        })
-        console.log("SCrolling")
+        });
     }, [todoState])
 
     const handleToggleDone = (todo: TodoService.ITodoEntity) => {
@@ -60,7 +59,7 @@ export const TodoList = (): ReactElement => {
     }
 
     const getTodoList = (mode: SortModeType) => {
-        const todos = TodoState.selectAllRemoteTodos(todoState);
+        const todos = TodoState.selectRemoteTodos(todoState);
         switch (mode) {
             case sortMode.author: return TodoService.sortByAuthor(todos);
             case sortMode.dateOldest: return TodoService.sortByOldestDateFirst(todos);

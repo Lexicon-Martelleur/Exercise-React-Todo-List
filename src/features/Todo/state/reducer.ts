@@ -1,24 +1,11 @@
 import { getUNIXTimestampInSeconds, ITodoEntity } from "../../../service";
 import { TodoActionType as Type } from "./constants";
-import {
-    ITodoState,
-    ITodoAction,
-    UpdateNewTodoAction,
-    AddTodoAction,
-    ToggleTodoDoneAction,
-    RemoveTodoAction,
-    EditTodoAction,
-    SwapTodoListItems,
-    AddTodosEntitiesAction,
-    UpdateTodoPaginationAction,
-    UpdateTodoErroStateAction,
-    UpdateTodoDoneAction
-} from "./types";
+import * as TodoState from "./types";
 
 export function todoReducer (
-    state: ITodoState,
-    action: ITodoAction
-): ITodoState {
+    state: TodoState.ITodoState,
+    action: TodoState.ITodoAction
+): TodoState.ITodoState {
     switch(action.type) {
         case Type.updateNewTodo: return handleNewTodoAction(action, state);
         case Type.addTodo: return handleAddTodo(action, state);
@@ -35,9 +22,9 @@ export function todoReducer (
 }
 
 function handleNewTodoAction (
-    action: UpdateNewTodoAction,
-    state: ITodoState
-): ITodoState {
+    action: TodoState.UpdateNewTodoAction,
+    state: TodoState.ITodoState
+): TodoState.ITodoState {
     return {
         ...state,
         newTodo: action.payload
@@ -45,9 +32,9 @@ function handleNewTodoAction (
 }
 
 function handleAddTodo (
-    action: AddTodoAction,
-    state: ITodoState
-): ITodoState {
+    action: TodoState.AddTodoAction,
+    state: TodoState.ITodoState
+): TodoState.ITodoState {
     const latestHandledTodo: ITodoEntity = {
         id: action.payload.id,
         todo: action.payload.todo,
@@ -61,9 +48,9 @@ function handleAddTodo (
 }
 
 function handleAddTodoEntities (
-    action: AddTodosEntitiesAction,
-    state: ITodoState
-): ITodoState {
+    action: TodoState.AddTodosEntitiesAction,
+    state: TodoState.ITodoState
+): TodoState.ITodoState {
     return {
         ...state,
         remoteTodos: [...action.payload]
@@ -71,9 +58,9 @@ function handleAddTodoEntities (
 }
 
 function handleRemoveTodo (
-    action: RemoveTodoAction,
-    state: ITodoState
-): ITodoState {
+    action: TodoState.RemoveTodoAction,
+    state: TodoState.ITodoState
+): TodoState.ITodoState {
     let latestHandledTodo = state.remoteTodos.find(entity => (
         entity.id === action.payload
     )) ?? null;
@@ -93,9 +80,9 @@ function handleRemoveTodo (
 }
 
 function handleEditTodo (
-    action: EditTodoAction,
-    state: ITodoState
-): ITodoState {
+    action: TodoState.EditTodoAction,
+    state: TodoState.ITodoState
+): TodoState.ITodoState {
     const remoteTodos: ITodoEntity[] = state.remoteTodos.map(todo => (
         todo.id === action.payload.id
         ? {
@@ -113,9 +100,9 @@ function handleEditTodo (
 }
 
 function handleSwapTodoListItems (
-    action: SwapTodoListItems,
-    state: ITodoState
-): ITodoState {
+    action: TodoState.SwapTodoListItems,
+    state: TodoState.ITodoState
+): TodoState.ITodoState {
     const todoAIndex = state.remoteTodos.findIndex(todo => (
         todo.id === action.payload.idTodoA));
 
@@ -130,17 +117,17 @@ function handleSwapTodoListItems (
     };
 
     [
-        newState.todoList[todoAIndex],
-        newState.todoList[todoBIndex]
-    ] = [newState.todoList[todoBIndex], newState.todoList[todoAIndex]];
+        newState.remoteTodos[todoAIndex],
+        newState.remoteTodos[todoBIndex]
+    ] = [newState.remoteTodos[todoBIndex], newState.remoteTodos[todoAIndex]];
 
     return newState;
 }
 
 function handleToggleTodoDone (
-    action: ToggleTodoDoneAction,
-    state: ITodoState
-): ITodoState {
+    action: TodoState.ToggleTodoDoneAction,
+    state: TodoState.ITodoState
+): TodoState.ITodoState {
     const remoteTodos: ITodoEntity[] = state.remoteTodos.map(todoEntity => (
         todoEntity.id === action.payload
         ? {
@@ -158,9 +145,9 @@ function handleToggleTodoDone (
 }
 
 function handleUpdateTodoDone (
-    action: UpdateTodoDoneAction,
-    state: ITodoState
-): ITodoState {
+    action: TodoState.UpdateTodoDoneAction,
+    state: TodoState.ITodoState
+): TodoState.ITodoState {
     const remoteTodos: ITodoEntity[] = state.remoteTodos.map(todoEntity => (
         todoEntity.id === action.payload.id
         ? {
@@ -178,15 +165,15 @@ function handleUpdateTodoDone (
 }
 
 function handleUpdateTodoPagination (
-    action: UpdateTodoPaginationAction,
-    state: ITodoState
+    action: TodoState.UpdateTodoPaginationAction,
+    state: TodoState.ITodoState
 ) {
     return { ...state, todoPagination: action.payload }
 }
 
 function handleUpdateErrorState (
-    action: UpdateTodoErroStateAction,
-    state: ITodoState
+    action: TodoState.UpdateTodoErroStateAction,
+    state: TodoState.ITodoState
 ) {
     return {
         ...state,

@@ -1,9 +1,6 @@
 import { useEffect, useReducer } from "react";
 
 import * as TodoState from "../state";
-import {
-	ITodoAction,
-} from "../state";
 import { isDevelopment } from "../../../config";
 
 export type TodoStateManager = ReturnType<typeof useTodoStateProvider>
@@ -14,7 +11,7 @@ export function useTodoStateProvider () {
 		dispatchTodoAction
 	] = useReducer(TodoState.todoReducer, TodoState.todoInitData);
     
-	const dispatchTodoActionWrapper = (action: ITodoAction) => {
+	const dispatchTodoActionWrapper = (action: TodoState.ITodoAction) => {
 		dispatchTodoAction(action);
 		if (isDevelopment()) {
 			console.log("action", action);
