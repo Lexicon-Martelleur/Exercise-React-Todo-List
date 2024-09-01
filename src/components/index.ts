@@ -5,3 +5,4 @@ export * from "./SelectMenu";
 export * from "./Container";
 export * from "./PageNavigation";
 export * from "./Modals";
+export * from "./Loader";

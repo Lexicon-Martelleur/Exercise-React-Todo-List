@@ -7,3 +7,8 @@
 .dragged-todo-item {
     border: var(--BORDER_LIGHT_FAT);
 }
+
+.todo-item-latest {
+    background-color: var(--BG_MEDIUM);
+    outline: var(--BORDER_LIGHT);
+}

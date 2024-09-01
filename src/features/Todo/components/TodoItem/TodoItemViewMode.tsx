@@ -8,7 +8,6 @@ import {
     selectDate,
     selectDescription,
     selectDone,
-    selectID,
     selectTitle
 } from "../../state";
 
@@ -19,7 +18,7 @@ interface Props {
     className: string;
     onToggleEditMode: () => void;
     onToggleDone: React.MouseEventHandler<HTMLButtonElement>
-    onRemoveTodoItem: (id: string) => void;
+    onRemoveTodoItem: (todo: ITodoEntity) => void;
 }
 
 export const TodoItemViewMode: React.FC<Props> = ({
@@ -45,13 +44,15 @@ export const TodoItemViewMode: React.FC<Props> = ({
 
     const handleRemoveTodo: React.MouseEventHandler<HTMLButtonElement> = (event) => {
         event.stopPropagation();
-        onRemoveTodoItem(selectID(todoEntity))
+        onRemoveTodoItem(todoEntity)
     }
  
     return (
-        <article draggable className={derivedClass}
+        <article draggable
+            className={derivedClass}
             onClick={handleToggleViewDescription}>
             <button title={getToggleDoneTitle()}
+                type="button"
                 className={styles.checkBoxBtn}
                 onClick={onToggleDone}>
                 <Icon icon={{...Icons.check, title: getToggleDoneTitle()}}

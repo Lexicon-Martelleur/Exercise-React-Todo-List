@@ -1,4 +1,4 @@
-import { IPaginationData, ITodo, ITodoEntity, TodoOperationType } from "../../../service";
+import { IPaginationData, ITodo, ITodoEntity } from "../../../service";
 import { TodoActionType } from "./constants";
 
 export type ITodoState = Readonly<{
@@ -10,6 +10,10 @@ export type ITodoState = Readonly<{
     errorMessage: string 
 }>;
 
+export type ITodoActionType = typeof TodoActionType[
+    keyof typeof TodoActionType
+]
+
 export interface UpdateNewTodoAction {
     type: typeof TodoActionType.updateNewTodo;
     payload: ITodo;
@@ -17,7 +21,7 @@ export interface UpdateNewTodoAction {
 
 export interface AddTodoAction {
     type: typeof TodoActionType.addTodo;
-    payload: ITodo;
+    payload: { id: string, timestamp: number, todo: ITodo };
 }
 
 export interface AddTodosEntitiesAction {

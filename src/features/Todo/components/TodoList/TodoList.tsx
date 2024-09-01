@@ -1,32 +1,14 @@
-import { ReactElement, useState } from "react";
+import { ReactElement, useEffect, useRef, useState } from "react";
 
 import { useTodoContext } from "../../context";
-import {
-    ITodo,
-    sortByAuthor,
-    sortByLatestDateFirst,
-    sortByOldestDateFirst
-} from "../../../../service";
-import {
-    editTodoAction,
-    removeTodoAction,
-    selectNrOfTodoPages,
-    selectNrOfTodoItems,
-    selectTodoPage,
-    selectAllRemoteTodos,
-    swapTodoListItemsAction,
-    toggleTodoDoneAction
-} from "../../state";
-import {
-    DraggableContainer,
-    SelectMenu,
-    PageNavigation
-} from "../../../../components";
+import * as TodoService from "../../../../service";
+import * as TodoState from "../../state";
+import * as Components from "../../../../components";
 import { TodoItem } from "../TodoItem";
 import { TodoSynchronizer } from "../TodoSynchronizer";
+import { useTodoQuery } from "../../hooks";
 
 import styles from "./TodoList.module.css";
-import { useTodoAPI } from "../../hooks";
 
 const sortMode = {
     author: "Sort by author",
@@ -46,33 +28,48 @@ export const TodoList = (): ReactElement => {
     const [dispatchTodoAction, todoState] = useTodoContext();
     const [draggedId, setDraggedId] = useState<string | undefined>(undefined);
     const [draggedOverId, setDraggedOverId] = useState<string | undefined>(undefined);
-    const todoAPIHook = useTodoAPI(dispatchTodoAction);
+    const todoQueryHook = useTodoQuery(dispatchTodoAction);
+    const latestEditedtTodoRef = useRef<HTMLDivElement | null>(null);
 
-    const handleToggleDone = (id: string) => {
-        dispatchTodoAction(toggleTodoDoneAction(id));
+    useEffect(() => {
+		const page = TodoState.selectTodoPage(todoState);
+		todoQueryHook.getTodos(page);
+	}, []);
+
+    useEffect(() => {
+        latestEditedtTodoRef.current?.scrollIntoView({
+            behavior: "smooth",
+            block: "center"
+        })
+        console.log("SCrolling")
+    }, [todoState])
+
+    const handleToggleDone = (todo: TodoService.ITodoEntity) => {
+        dispatchTodoAction(TodoState.toggleTodoDoneAction(todo.id));
+        todoQueryHook.patchTodoDone(todo);
     }
 
-    const handleRemoveTodo = (id: string) => {
-        dispatchTodoAction(removeTodoAction(id));
+    const handleRemoveTodo = (todo: TodoService.ITodoEntity) => {
+        dispatchTodoAction(TodoState.removeTodoAction(todo.id));
+        todoQueryHook.deleteTodo(todo, TodoState.selectTodoPage(todoState));
     }
 
-    const handleEditTodo = (id: string, editedTodo: ITodo) => {
-        dispatchTodoAction(editTodoAction(id, editedTodo));
+    const handleEditTodo = (todo: TodoService.ITodoEntity) => {
+        dispatchTodoAction(TodoState.editTodoAction(todo.id, todo.todo));
+        todoQueryHook.putTodo(todo);
     }
 
     const getTodoList = (mode: SortModeType) => {
-        const todos = selectAllRemoteTodos(todoState);
+        const todos = TodoState.selectAllRemoteTodos(todoState);
         switch (mode) {
-            case sortMode.author: return sortByAuthor(todos);
-            case sortMode.dateOldest: return sortByOldestDateFirst(todos);
-            case sortMode.dateLatest: return sortByLatestDateFirst(todos)
+            case sortMode.author: return TodoService.sortByAuthor(todos);
+            case sortMode.dateOldest: return TodoService.sortByOldestDateFirst(todos);
+            case sortMode.dateLatest: return TodoService.sortByLatestDateFirst(todos)
             default: return todos;
         }
     }
 
     const handleSelectSortMode = (option: string) => {
-        console.log(Object.values(sortMode).includes(option as SortModeType))
-        console.log(option)
         if (Object.values(sortMode).includes(option as SortModeType)) {
             setSelectedSortMode(option as SortModeType)
         } else {
@@ -90,34 +87,45 @@ export const TodoList = (): ReactElement => {
 
     const handleDrop = () => {
         if (draggedId == null || draggedOverId == null) { return; }
-        dispatchTodoAction(swapTodoListItemsAction(draggedId, draggedOverId));
+        dispatchTodoAction(TodoState.swapTodoListItemsAction(draggedId, draggedOverId));
     }
 
     const handleNextPage = () => {
-        const page = selectTodoPage(todoState) + 1
-		todoAPIHook.getTodos(page);
+        const page = TodoState.selectTodoPage(todoState) + 1
+		todoQueryHook.getTodos(page);
     }
 
     const handlePrevPage = () => {
-        const page = selectTodoPage(todoState) - 1			
-		todoAPIHook.getTodos(page);
+        const page = TodoState.selectTodoPage(todoState) - 1			
+		todoQueryHook.getTodos(page);
+    }
+
+    const isLatestEditedTodo = (todo: TodoService.ITodoEntity) => {
+        const latestTodoId = TodoState.selectLatestTodo(todoState)?.id
+        if (latestTodoId == null) { return false; }
+        return todo.id === latestTodoId;
+    }
+
+    if (todoQueryHook.pending) {
+        return <Components.Loader />
     }
 
     return (
         <section className={styles.todoList}>
             <TodoSynchronizer />
-            {todoState.todoPagination != null && <PageNavigation
-                page={selectTodoPage(todoState)}
-                nrOfPages={selectNrOfTodoPages(todoState)}
+            {todoState.todoPagination != null && <Components.PageNavigation
+                page={TodoState.selectTodoPage(todoState)}
+                nrOfPages={TodoState.selectNrOfTodoPages(todoState)}
                 onPrev={handlePrevPage}
                 onNext={handleNextPage} />
             }
-            <SelectMenu title={`${selectNrOfTodoItems(todoState)} Stored Todos`}
+            <Components.SelectMenu
+                title={`${TodoState.selectNrOfTodoItems(todoState)} Stored Todos`}
                 options={Object.values(sortMode)}
                 selectedOption={selectedSortMode}
                 onSelect={handleSelectSortMode} />
             {getTodoList(selectedSortMode).map(entity => (
-                <DraggableContainer
+                <Components.DraggableContainer
                     key={entity.id}
                     childId={entity.id}
                     className={styles.draggedTodoItem}
@@ -126,14 +134,16 @@ export const TodoList = (): ReactElement => {
                     onDrop={handleDrop}>
                     <TodoItem
                         todoEntity={entity}
+                        className={isLatestEditedTodo(entity) ? styles.todoItemLatest : ""}
                         onToggleDone={handleToggleDone}
                         onRemoveTodoItem={handleRemoveTodo}
                         onEditTodoItem={handleEditTodo} />
-                </DraggableContainer>
+                    {isLatestEditedTodo(entity) && <div ref={latestEditedtTodoRef}></div>}
+                </Components.DraggableContainer>
             ))}
-            {todoState.todoPagination != null && <PageNavigation
-                page={selectTodoPage(todoState)}
-                nrOfPages={selectNrOfTodoPages(todoState)}
+            {todoState.todoPagination != null && <Components.PageNavigation
+                page={TodoState.selectTodoPage(todoState)}
+                nrOfPages={TodoState.selectNrOfTodoPages(todoState)}
                 onPrev={handlePrevPage}
                 onNext={handleNextPage} />
             }

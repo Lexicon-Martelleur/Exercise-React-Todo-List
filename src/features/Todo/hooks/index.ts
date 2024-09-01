@@ -1,2 +1,1 @@
-export { useTodoStateManager } from "./useTodoStateManager";
-export { useTodoAPI } from "./useTodoAPI";
+export { useTodoQuery } from "./useTodoQuery";

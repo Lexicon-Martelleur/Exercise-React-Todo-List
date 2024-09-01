@@ -20,10 +20,14 @@ export function updateNewTodoAction (todo: ITodo): UpdateNewTodoAction {
     };
 }
 
-export function addTodoAction (todo: ITodo): AddTodoAction {
+export function addTodoAction (
+    id: string,
+    timestamp: number,
+    todo: ITodo,
+): AddTodoAction {
     return {
         type: Type.addTodo,
-        payload: todo
+        payload: { id, timestamp, todo }
     };
 }
 

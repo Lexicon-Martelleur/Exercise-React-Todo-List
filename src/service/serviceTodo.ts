@@ -1,8 +1,14 @@
 import { ITodo, ITodoEntity } from "./types";
 import { todoStorage } from "../data/todoStorage";
+import { isDevelopment } from "../config";
 
-export function getEmptyDodo (): ITodo {
-    return todoStorage.getNewTodo();
+export function getEmptyTodo (): ITodo {
+    return {
+        title: isDevelopment() ? "Task Title" : "",
+        author: isDevelopment() ? "Author" : "",
+        description: isDevelopment() ? "Description" : "",
+        done: false
+    };
 }
 
 export function sortByAuthor (todoList: ITodoEntity[]): ITodoEntity[] {
@@ -31,6 +37,10 @@ export function sortByLatestDateFirst (todoList: ITodoEntity[]): ITodoEntity[] {
         else if (dateA < dateB) { return 1; }
         else { return 0; }
     });
+}
+
+export function getNewTodo (): ITodo {
+    return todoStorage.getNewTodo();
 }
 
 export function getFailedRemoteStoredTodos (): ITodoEntity[] {

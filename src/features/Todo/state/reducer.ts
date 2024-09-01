@@ -1,5 +1,3 @@
-import { v4 as uuid } from "uuid";
-
 import { getUNIXTimestampInSeconds, ITodoEntity } from "../../../service";
 import { TodoActionType as Type } from "./constants";
 import {
@@ -51,9 +49,9 @@ function handleAddTodo (
     state: ITodoState
 ): ITodoState {
     const latestHandledTodo: ITodoEntity = {
-        id: uuid(),
-        todo: action.payload,
-        timestamp: getUNIXTimestampInSeconds()
+        id: action.payload.id,
+        todo: action.payload.todo,
+        timestamp: action.payload.timestamp
     };
 
     return {
@@ -102,7 +100,6 @@ function handleEditTodo (
         todo.id === action.payload.id
         ? {
             ...todo,
-            timestamp: getUNIXTimestampInSeconds(),
             todo: { ...action.payload.editedTodo }
         }
         : todo
@@ -148,7 +145,6 @@ function handleToggleTodoDone (
         todoEntity.id === action.payload
         ? {
             ...todoEntity,
-            timestamp: getUNIXTimestampInSeconds(),
             todo: { ...todoEntity.todo, done: !todoEntity.todo.done }
         }
         : todoEntity
@@ -185,7 +181,6 @@ function handleUpdateTodoPagination (
     action: UpdateTodoPaginationAction,
     state: ITodoState
 ) {
-    console.log(action.payload)
     return { ...state, todoPagination: action.payload }
 }
 

@@ -1,7 +1,7 @@
-import { ReactElement, useState } from "react";
+import { ReactElement, ReactNode, useState } from "react";
 
 import { RequiredInput, SubmitButton } from "../../../../components";
-import { getEmptyDodo, ITodo, todoConstants } from "../../../../service";
+import { getEmptyTodo, ITodo, todoConstants } from "../../../../service";
 
 import styles from "./TodoForm.module.css";
 
@@ -14,6 +14,7 @@ const inputFieldName = {
 interface Props {
     todo: ITodo;
     submitLabel: string;
+    children?: ReactNode;
     onSubmit: (newTodo: ITodo) => void;
     onValueChange?: (newTodo: ITodo) => void;
 }
@@ -21,6 +22,7 @@ interface Props {
 export const TodoForm: React.FC<Props> = ({
     todo,
     submitLabel,
+    children,
     onSubmit,
     onValueChange
 }): ReactElement => {
@@ -30,7 +32,7 @@ export const TodoForm: React.FC<Props> = ({
 
     const handleSubmit: React.FormEventHandler<HTMLFormElement> = (event) => {
         event.preventDefault();
-        const emptyTodo = getEmptyDodo();
+        const emptyTodo = getEmptyTodo();
         setAuthor(emptyTodo.author);
         setTitle(emptyTodo.title);
         setDescription(emptyTodo.description);
@@ -73,6 +75,7 @@ export const TodoForm: React.FC<Props> = ({
                 className={styles.inputCtr}
                 type="textarea"
                 onChange={e => handleValueChange(setDescription, e.target.value)} />
+            {children}
             <SubmitButton>{submitLabel}</SubmitButton>
         </form>
     );

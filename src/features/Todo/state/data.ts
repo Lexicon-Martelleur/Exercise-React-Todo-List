@@ -1,8 +1,8 @@
-import { getEmptyDodo } from "../../../service";
+import { getNewTodo } from "../../../service";
 import { ITodoState } from "./types";
 
 export const todoInitData: ITodoState = {
-    newTodo: getEmptyDodo(),
+    newTodo: getNewTodo(),
     latestHandledTodo: null,
     todoPagination: null,
     remoteTodos: [],

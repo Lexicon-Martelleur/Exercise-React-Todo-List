@@ -1,25 +1,34 @@
 import { ReactElement } from "react";
+import { v4 as uuid } from "uuid";
 
-import { getEmptyDodo, ITodo } from "../../../../service";
+import * as TodoService from "../../../../service";
 import { useTodoContext } from "../../context";
-import {
-    addTodoAction,
-    updateNewTodoAction
-} from "../../state";
-
+import * as TodoState from "../../state";
+import { useTodoQuery } from "../../hooks";
 import { TodoForm } from "../TodoForm";
+import { Loader } from "../../../../components";
 
 export const AddTodo = (): ReactElement => {
     const [dispatchTodoAction, todoState] = useTodoContext();
+    const todoQueryHook = useTodoQuery(dispatchTodoAction);
  
-    const handleSubmitAddTodo = (todo: ITodo) => {
-        const emptyTodo = getEmptyDodo();
-        dispatchTodoAction(updateNewTodoAction(emptyTodo));
-        dispatchTodoAction(addTodoAction(todo));
+    const handleSubmitAddTodo = (todo: TodoService.ITodo) => {
+        const emptyTodo = TodoService.getEmptyTodo();
+        dispatchTodoAction(TodoState.updateNewTodoAction(emptyTodo));
+        const timestamp = TodoService.getUNIXTimestampInSeconds();
+        const id = uuid();
+        const pageNr = TodoState.selectTodoPage(todoState);
+        const todoEntity: TodoService.ITodoEntity = { id, timestamp, todo };  
+        dispatchTodoAction(TodoState.addTodoAction(id, timestamp, todo));
+        todoQueryHook.createTodo(todoEntity, pageNr);
     }
 
-    const handleValueChange = (todo: ITodo) => {
-        dispatchTodoAction(updateNewTodoAction(todo));
+    const handleValueChange = (todo: TodoService.ITodo) => {
+        dispatchTodoAction(TodoState.updateNewTodoAction(todo));
+    }
+
+    if (todoQueryHook.pending) {
+        return <Loader />
     }
 
     return (
@@ -27,6 +36,7 @@ export const AddTodo = (): ReactElement => {
             todo={todoState.newTodo}
             submitLabel="Add Task"
             onSubmit={handleSubmitAddTodo}
-            onValueChange={handleValueChange}/>
+            onValueChange={handleValueChange}>
+        </TodoForm>
     );
 }

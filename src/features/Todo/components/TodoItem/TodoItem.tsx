@@ -9,13 +9,15 @@ import { selectTitle } from "../../state";
 
 interface Props {
     todoEntity: ITodoEntity;
-    onToggleDone: (id: string) => void;
-    onRemoveTodoItem: (id: string) => void;
-    onEditTodoItem: (id: string, newTodo: ITodo) => void;
+    className?: string;
+    onToggleDone: (todo: ITodoEntity) => void;
+    onRemoveTodoItem: (todo: ITodoEntity) => void;
+    onEditTodoItem: (todo: ITodoEntity) => void;
 }
 
 export const TodoItem: React.FC<Props> = ({
     todoEntity,
+    className,
     onToggleDone,
     onRemoveTodoItem,
     onEditTodoItem
@@ -28,19 +30,35 @@ export const TodoItem: React.FC<Props> = ({
 
     const handleToggleDone:
     React.MouseEventHandler<HTMLButtonElement> = (event) => {
+        event.preventDefault();
         event.stopPropagation();
-        onToggleDone(todoEntity.id);
+        const doneStatus = todoEntity.todo.done
+        const updatedTodo: ITodoEntity = {
+            id: todoEntity.id,
+            timestamp: todoEntity.timestamp,
+            todo: { ...todoEntity.todo, done: !doneStatus }
+        }
+        onToggleDone(updatedTodo);
     }
 
     const handleSubmitEditTodo = (todo: ITodo) => {
-        onEditTodoItem(todoEntity.id, todo);
+        const updatedTodo: ITodoEntity = {
+            id: todoEntity.id,
+            timestamp: todoEntity.timestamp,
+            todo
+        }
+        onEditTodoItem(updatedTodo);
         setEditMode(false);
+    }
+
+    const getDerivedClassNames = () => {
+        return `${styles.todoItem} ${className ? className : ""}`
     }
 
     return (
         <article title={`Select to view '${selectTitle(todoEntity)}' details`}>
         {!editMode
-            ? <TodoItemViewMode className={styles.todoItem} 
+            ? <TodoItemViewMode className={getDerivedClassNames()} 
                 todoEntity={todoEntity}
                 onToggleEditMode={handleToggleEditMode}
                 onToggleDone={handleToggleDone}

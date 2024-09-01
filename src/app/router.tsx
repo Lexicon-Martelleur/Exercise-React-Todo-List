@@ -12,7 +12,7 @@ import * as TodoFeature from "../features";
 
 export const appRouter = createBrowserRouter(
 	createRoutesFromElements(
-		<Route path={Path.INDEX} element={<App><TodoFeature.TodoProvider /></App>}>
+		<Route path={Path.INDEX} element={<App><TodoFeature.TodotStateProvider /></App>}>
 			<Route index element={<TodoFeature.TodoListPage />} />
 			<Route path={Path.ADD_TODO} element={<TodoFeature.AddTodoPage />} />
 			<Route path={Path.ABOUT} element={<TodoFeature.AboutPage />} />

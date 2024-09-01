@@ -45,3 +45,7 @@ export function selectNrOfTodoItems (
 ): number {
     return todoState.todoPagination?.TotalItemCount ?? 0;
 }
+
+export function selectLatestTodo(todoState: ITodoState) {
+    return todoState.latestHandledTodo;
+}
