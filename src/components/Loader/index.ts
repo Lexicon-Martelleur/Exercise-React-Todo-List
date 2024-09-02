@@ -1,1 +1,2 @@
-export { Loader } from "./Loader";
+export * from "./Loader";
+export * from "./FullScreenLoader";

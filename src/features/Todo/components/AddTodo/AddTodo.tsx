@@ -6,7 +6,7 @@ import { useTodoContext } from "../../context";
 import * as TodoState from "../../state";
 import { useTodoQuery } from "../../hooks";
 import { TodoForm } from "../TodoForm";
-import { ErrorModal, Loader } from "../../../../components";
+import { ErrorModal, FullScreenLoader } from "../../../../components";
 
 export const AddTodo = (): ReactElement => {
     const [dispatchTodoAction, todoState] = useTodoContext();
@@ -27,16 +27,13 @@ export const AddTodo = (): ReactElement => {
         dispatchTodoAction(TodoState.updateNewTodoAction(todo));
     }
 
-    if (todoQueryHook.pending) {
-        return <Loader />
-    }
-
     const handleCloseError = () => {
         todoQueryHook.clearErrorState();
     }
 
     return (
         <>
+            {todoQueryHook.pending && <FullScreenLoader /> }
             {todoState.isError && <ErrorModal
                 title={"Error"}
                 message={todoState.errorMessage}

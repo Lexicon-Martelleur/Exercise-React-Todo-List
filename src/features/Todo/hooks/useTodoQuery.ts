@@ -45,9 +45,10 @@ export function useTodoQuery (
             } catch (err) {
                 dispatchTodoAction(TodoState.updateTodoPaginationAction(null));
                 handleError(err, `Failed fetching todos from from ${api}`);
+            } finally {
+                setPending(false);
             }
         })()
-        setPending(false);
     }, [todoApi, dispatchTodoAction, handleError])
 
     const createTodo = useCallback((
@@ -59,12 +60,13 @@ export function useTodoQuery (
             try {
                 await todoApi.createTodo(todo);
                 getTodos(page);
-            }
-            catch (err) {
+            } catch (err) {
                 getTodos(page);
-                handleError(err, `Failed create todo on ${api}`, todo, TodoService.todoOperation.CREATE); }
+                handleError(err, `Failed create todo on ${api}`, todo, TodoService.todoOperation.CREATE);
+            } finally {
+                setPending(false);
+            } 
         })()
-        setPending(false);
     }, [todoApi, handleError])
 
     const deleteTodo = useCallback((
@@ -76,12 +78,13 @@ export function useTodoQuery (
             try {
                 await todoApi.deleteTodo(Number(todo.id));
                 getTodos(page);
-            }
-            catch (err) { 
+            } catch (err) { 
                 getTodos(page);
-                handleError(err, `Failed delete todo on ${api}`, todo, TodoService.todoOperation.DELETE); }
-        })()
-        setPending(false)        
+                handleError(err, `Failed delete todo on ${api}`, todo, TodoService.todoOperation.DELETE);
+            } finally {
+                setPending(false);
+            }
+        })()        
     }, [todoApi, handleError])
 
     const putTodo = useCallback((todo: TodoService.ITodoEntity) => {
@@ -89,9 +92,10 @@ export function useTodoQuery (
         (async () => {
             try {
                 await todoApi.putTodo(todo);
-            }
-            catch (err) {
+            } catch (err) {
                 handleError(err, `Failed update todo on ${api}`, todo, TodoService.todoOperation.PUT);
+            } finally {
+                setPending(false);
             }
         })()
         setPending(false);
@@ -102,9 +106,11 @@ export function useTodoQuery (
         (async () => {
             try {
                 await todoApi.patchTodoDone(todo);
+            } catch (err) {
+                handleError(err, `Failed updated todo done on ${api}`, todo, TodoService.todoOperation.PATCH);
+            } finally {
+                setPending(false);
             }
-            catch (err) {
-                handleError(err, `Failed updated todo done on ${api}`, todo, TodoService.todoOperation.PATCH); }
         })()
         setPending(false);
     }, [todoApi, handleError])

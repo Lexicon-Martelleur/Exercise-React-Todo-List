@@ -1,4 +1,4 @@
-import { getTodoAPI } from "../config";
+import { getTodoAPI, getTodoAPIMaxTime } from "../config";
 import { APIError, APIErrorCode } from "./APIError";
 
 const API = getTodoAPI();
@@ -40,7 +40,8 @@ export function createAPIProxy<ApiTarget extends object>(
     });
 }
 
-function getTimoutSignal (timeout = 10000): [NodeJS.Timeout, AbortSignal] {
+function getTimoutSignal (): [NodeJS.Timeout, AbortSignal] {
+    const timeout = getTodoAPIMaxTime();
     const controller = new AbortController();
     const { signal } = controller;
     const reason = `The request was aborted due delay extended ${timeout}.`;
