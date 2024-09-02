@@ -35,7 +35,7 @@ export function isTodoEntity (obj: unknown): obj is ITodoEntity {
     );
 }
 
-export function  isTodo (obj: unknown): obj is ITodo {
+export function isTodo (obj: unknown): obj is ITodo {
     if (obj == null || typeof obj !== "object") {
         return false;
     }
