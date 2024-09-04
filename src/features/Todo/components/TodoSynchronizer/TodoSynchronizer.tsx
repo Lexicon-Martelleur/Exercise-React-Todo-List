@@ -7,6 +7,7 @@ import { useTodoContext } from "../../context";
 
 import styles from "./TodoSynchronizer.module.css";
 import { useTodoQuery } from "../../hooks";
+import { todoOperation } from "../../../../constants";
 
 export const TodoSynchronizer = (): ReactElement => {
     const [
@@ -23,13 +24,13 @@ export const TodoSynchronizer = (): ReactElement => {
 
         todos.forEach(todo => {
             switch (todo.failedOperation) {
-                case TodoService.todoOperation.CREATE:
+                case todoOperation.CREATE:
                     todoQueryHook.createTodo(todo, page); break;
-                case TodoService.todoOperation.DELETE:
+                case todoOperation.DELETE:
                     todoQueryHook.deleteTodo(todo, page); break;
-                case TodoService.todoOperation.PUT:
+                case todoOperation.PUT:
                     todoQueryHook.putTodo(todo); break;
-                case TodoService.todoOperation.PATCH:
+                case todoOperation.PATCH:
                     todoQueryHook.patchTodoDone(todo); break;
                 default: break; 
             }

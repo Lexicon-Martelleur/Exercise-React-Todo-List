@@ -1,34 +1,35 @@
-import * as TodoService from "../../../service";
+import { getLocalDateFromUNIXTimestampInSeconds } from "../../../service";
+import { ITodoEntity } from "../../../types";
 import { ITodoState } from "./types";
 
-export function selectID (todoEntity: TodoService.ITodoEntity): string {
+export function selectID (todoEntity: ITodoEntity): string {
     return todoEntity.id;
 }
 
-export function selectDescription (todoEntity: TodoService.ITodoEntity): string {
+export function selectDescription (todoEntity: ITodoEntity): string {
     return todoEntity.todo.description;
 }
 
-export function selectTitle (todoEntity: TodoService.ITodoEntity): string {
+export function selectTitle (todoEntity: ITodoEntity): string {
     return todoEntity.todo.title;
 }
 
-export function selectAuthor (todoEntity: TodoService.ITodoEntity): string {
+export function selectAuthor (todoEntity: ITodoEntity): string {
     return todoEntity.todo.author;
 }
 
-export function selectDone (todoEntity: TodoService.ITodoEntity): boolean {
+export function selectDone (todoEntity: ITodoEntity): boolean {
     return todoEntity.todo.done;
 }
 
-export function selectDate (todoEntity: TodoService.ITodoEntity): string {
-    const date = TodoService.getLocalDateFromUNIXTimestampInSeconds(todoEntity.timestamp)
+export function selectDate (todoEntity: ITodoEntity): string {
+    const date = getLocalDateFromUNIXTimestampInSeconds(todoEntity.timestamp)
     return date.toLocaleString();
 }
 
 export function selectRemoteTodos (
     todoState: ITodoState
-): TodoService.ITodoEntity[] {
+): ITodoEntity[] {
     return todoState.remoteTodos;
 }
 
@@ -38,7 +39,7 @@ export function selectLatestTodo(todoState: ITodoState) {
 
 export function selectUniqueTodosWithSynchronisationFlag (
     todoState: ITodoState
-): TodoService.ITodoEntity[] {
+): ITodoEntity[] {
     return todoState.remoteTodos
 }
 

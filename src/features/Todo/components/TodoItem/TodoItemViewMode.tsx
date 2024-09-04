@@ -1,6 +1,6 @@
 import { ReactElement, useRef } from "react";
 
-import { ITodoEntity } from "../../../../service";
+import { ITodoEntity } from "../../../../types";
 import { Icon } from "../../../../components";
 import { Icons } from "../../../../assets";
 import {

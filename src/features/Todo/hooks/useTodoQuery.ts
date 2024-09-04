@@ -4,6 +4,8 @@ import { todoApi } from "../../../data";
 import * as TodoState from "../state";
 import { getTodoAPI, isDevelopment } from "../../../config";
 import * as TodoService from "../../../service";
+import { ITodoEntity, TodoOperationType } from "../../../types";
+import { todoOperation } from "../../../constants";
 
 export type TodoAPI = ReturnType<typeof useTodoQuery>
 
@@ -22,8 +24,8 @@ export function useTodoQuery (
     const handleError = useCallback((
         err: unknown,
         errorMsg: string,
-        todo?: TodoService.ITodoEntity,
-        operation?: TodoService.TodoOperationType
+        todo?: ITodoEntity,
+        operation?: TodoOperationType
     ) => {
         isDevelopment() && console.log(err);
         dispatchTodoAction(TodoState.updateTodoErrorStateAction(true, errorMsg));
@@ -52,7 +54,7 @@ export function useTodoQuery (
     }, [todoApi, dispatchTodoAction, handleError])
 
     const createTodo = useCallback((
-        todo: TodoService.ITodoEntity,
+        todo: ITodoEntity,
         page: number
     ) => {
         setPending(true);
@@ -62,7 +64,7 @@ export function useTodoQuery (
                 getTodos(page);
             } catch (err) {
                 getTodos(page);
-                handleError(err, `Failed create todo on ${api}`, todo, TodoService.todoOperation.CREATE);
+                handleError(err, `Failed create todo on ${api}`, todo, todoOperation.CREATE);
             } finally {
                 setPending(false);
             } 
@@ -70,7 +72,7 @@ export function useTodoQuery (
     }, [todoApi, handleError])
 
     const deleteTodo = useCallback((
-        todo: TodoService.ITodoEntity,
+        todo: ITodoEntity,
         page: number
     ) => {
         setPending(true);
@@ -80,20 +82,20 @@ export function useTodoQuery (
                 getTodos(page);
             } catch (err) { 
                 getTodos(page);
-                handleError(err, `Failed delete todo on ${api}`, todo, TodoService.todoOperation.DELETE);
+                handleError(err, `Failed delete todo on ${api}`, todo, todoOperation.DELETE);
             } finally {
                 setPending(false);
             }
         })()        
     }, [todoApi, handleError])
 
-    const putTodo = useCallback((todo: TodoService.ITodoEntity) => {
+    const putTodo = useCallback((todo: ITodoEntity) => {
         setPending(true);
         (async () => {
             try {
                 await todoApi.putTodo(todo);
             } catch (err) {
-                handleError(err, `Failed update todo on ${api}`, todo, TodoService.todoOperation.PUT);
+                handleError(err, `Failed update todo on ${api}`, todo, todoOperation.PUT);
             } finally {
                 setPending(false);
             }
@@ -101,13 +103,13 @@ export function useTodoQuery (
         setPending(false);
     }, [todoApi, handleError])
 
-    const patchTodoDone = useCallback((todo: TodoService.ITodoEntity) => {
+    const patchTodoDone = useCallback((todo: ITodoEntity) => {
         setPending(true);
         (async () => {
             try {
                 await todoApi.patchTodoDone(todo);
             } catch (err) {
-                handleError(err, `Failed updated todo done on ${api}`, todo, TodoService.todoOperation.PATCH);
+                handleError(err, `Failed updated todo done on ${api}`, todo, todoOperation.PATCH);
             } finally {
                 setPending(false);
             }

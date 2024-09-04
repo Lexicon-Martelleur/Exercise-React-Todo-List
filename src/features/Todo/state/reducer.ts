@@ -1,4 +1,5 @@
-import { getUNIXTimestampInSeconds, ITodoEntity } from "../../../service";
+import { getUNIXTimestampInSeconds } from "../../../service";
+import { ITodoEntity } from "../../../types";
 import { TodoActionType as Type } from "./constants";
 import * as TodoState from "./types";
 

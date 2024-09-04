@@ -1,4 +1,4 @@
-import { IPaginationData, ITodo, ITodoEntity } from "../../../service";
+import { IPaginationData, ITodo, ITodoEntity } from "../../../types";
 import { TodoActionType as Type} from "./constants";
 import * as TodoState from "./types";
 

@@ -1,6 +1,6 @@
 import { ReactElement, useState } from "react";
 
-import { ITodo, ITodoEntity } from "../../../../service";
+import { ITodo, ITodoEntity } from "../../../../types";
 import { TodoItemViewMode } from "./TodoItemViewMode";
 import { TodoItemEditMode } from "./TodoItemEditMode";
 

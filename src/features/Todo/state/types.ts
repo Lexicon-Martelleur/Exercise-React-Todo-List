@@ -1,4 +1,4 @@
-import { IPaginationData, ITodo, ITodoEntity } from "../../../service";
+import { IPaginationData, ITodo, ITodoEntity } from "../../../types";
 import { TodoActionType } from "./constants";
 
 export type ITodoState = Readonly<{

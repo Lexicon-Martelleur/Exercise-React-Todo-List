@@ -1,7 +1,7 @@
-import { ITodo, ITodoEntity } from "./types";
+import { ITodo, ITodoEntity } from "../types";
 import { todoStorage } from "../data/todoStorage";
 import { isDevelopment } from "../config";
-import { todoOperation } from "./constants";
+import { todoOperation } from "../constants";
 
 export function getEmptyTodo (): ITodo {
     return {

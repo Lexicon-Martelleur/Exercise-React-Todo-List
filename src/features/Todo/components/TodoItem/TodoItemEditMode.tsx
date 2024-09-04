@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 
-import { ITodo, ITodoEntity } from "../../../../service";
+import { ITodo, ITodoEntity } from "../../../../types";
 import { Icon } from "../../../../components";
 import { Icons } from "../../../../assets";
 import { TodoForm } from "../TodoForm";

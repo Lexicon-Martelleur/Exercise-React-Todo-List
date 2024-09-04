@@ -1,4 +1,4 @@
-import { todoOperation } from "./constants";
+import { todoOperation } from "../constants";
 
 export type ITodo = Readonly<{
     title: string;

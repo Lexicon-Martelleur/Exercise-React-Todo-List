@@ -1,4 +1,4 @@
-import * as TodoService from "../service";
+import * as TodoService from "../types";
 
 class TodoStorage {
     private readonly _failedTodosKey = "failedStoredTodos";

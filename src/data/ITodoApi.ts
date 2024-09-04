@@ -1,4 +1,4 @@
-import { ITodoEntity, IPaginationData } from "../service";
+import { ITodoEntity, IPaginationData } from "../types";
 
 export interface ITodoAPI {
     getTodos: (

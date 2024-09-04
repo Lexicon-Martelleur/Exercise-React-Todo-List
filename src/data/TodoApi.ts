@@ -1,8 +1,13 @@
-import * as TodoService from "../service";
 import { getTodoAPI } from "../config";
 import { ITodoAPI } from "./ITodoApi";
 import { APIError } from "./APIError";
 import { createAPIProxy } from "./APIProxy";
+import {
+    IPaginationData,
+    isPaginationData,
+    isTodoEntity,
+    ITodoEntity
+} from "../types";
 
 class TodoAPI implements ITodoAPI {
     private readonly API = getTodoAPI();
@@ -15,13 +20,13 @@ class TodoAPI implements ITodoAPI {
     async getTodos (
         pageNr: number,
         signal?: AbortSignal
-    ): Promise<[TodoService.ITodoEntity[], TodoService.IPaginationData]> {
+    ): Promise<[ITodoEntity[], IPaginationData]> {
         const url = `${this.API}/todo?pageSize=${this.nrOfTodos}&pageNr=${pageNr}`
         const res = await fetch(url, {
             signal
         });
         if(!res.ok) { throw new APIError(res.statusText); }
-        const todos = await res.json() as TodoService.ITodoEntity[];
+        const todos = await res.json() as ITodoEntity[];
         const todoList = todos.map(item => {
             return {
                 ...item,
@@ -31,8 +36,8 @@ class TodoAPI implements ITodoAPI {
         
         
         const paginationData = JSON.parse(res.headers.get("X-Pagination") ?? "");
-        if (todoList.every(TodoService.isTodoEntity) &&
-        TodoService.isPaginationData(paginationData)) {
+        if (todoList.every(isTodoEntity) &&
+        isPaginationData(paginationData)) {
                 return [todoList, paginationData];
         } else {
             throw new APIError();
@@ -40,9 +45,9 @@ class TodoAPI implements ITodoAPI {
     }
 
     async createTodo (
-        todo: TodoService.ITodoEntity,
+        todo: ITodoEntity,
         signal?: AbortSignal
-    ): Promise<TodoService.ITodoEntity> {
+    ): Promise<ITodoEntity> {
         const res = await fetch(`${this.API}/todo`, {
             headers: this.defaultHeader,
             method: "POST",
@@ -53,21 +58,21 @@ class TodoAPI implements ITodoAPI {
             }),
         })
         if(!res.ok) { throw new APIError(res.statusText); }
-        const createdTodo = await res.json() as TodoService.ITodoEntity;
+        const createdTodo = await res.json() as ITodoEntity;
         const todoEntity = {
             ...createdTodo,
             id: `${createdTodo.id}`,
             timestamp: Number(createdTodo.timestamp),
         }
 
-        if (TodoService.isTodoEntity(todoEntity)) {
+        if (isTodoEntity(todoEntity)) {
             return todoEntity;
         } else {
             throw new APIError()
         }
     }
 
-    async deleteTodo (todoId: number, signal?: AbortSignal): Promise<TodoService.ITodoEntity> {
+    async deleteTodo (todoId: number, signal?: AbortSignal): Promise<ITodoEntity> {
         const res = await fetch(`${this.API}/todo/${todoId}`, {
             headers: this.defaultHeader,
             method: "DELETE",
@@ -82,9 +87,9 @@ class TodoAPI implements ITodoAPI {
     }
     
     async putTodo (
-        todo: TodoService.ITodoEntity,
+        todo: ITodoEntity,
         signal?: AbortSignal
-    ): Promise<TodoService.ITodoEntity> {
+    ): Promise<ITodoEntity> {
         const id = Number(todo.id);
         const res = await fetch(`${this.API}/todo/${id}`, {
             headers: this.defaultHeader,
@@ -97,13 +102,13 @@ class TodoAPI implements ITodoAPI {
             }),
         })
         if(!res.ok) { throw new APIError(res.statusText); }
-        const updatedTodo = await res.json() as TodoService.ITodoEntity;
+        const updatedTodo = await res.json() as ITodoEntity;
         const todoEntity = {
             ...updatedTodo,
             id: `${updatedTodo.id}`,
             timestamp: Number(updatedTodo.timestamp)
         }
-        if (TodoService.isTodoEntity(todoEntity)) {
+        if (isTodoEntity(todoEntity)) {
             return updatedTodo;
         } else {
             throw new APIError()
@@ -111,9 +116,9 @@ class TodoAPI implements ITodoAPI {
     }
 
     async patchTodoDone (
-        todo: TodoService.ITodoEntity,
+        todo: ITodoEntity,
         signal?: AbortSignal
-    ): Promise<TodoService.ITodoEntity> {
+    ): Promise<ITodoEntity> {
         const id = Number(todo.id);
         const res = await fetch(`${this.API}/todo/${id}`, {
             headers: this.defaultHeader,
@@ -128,13 +133,13 @@ class TodoAPI implements ITodoAPI {
             ]),
         })
         if(!res.ok) { throw new APIError(res.statusText); }
-        const updatedTodo: TodoService.ITodoEntity = await res.json();
+        const updatedTodo: ITodoEntity = await res.json();
         const todoEntity = {
             ...updatedTodo,
             id: `${updatedTodo.id}`,
             timestamp: Number(updatedTodo.timestamp)
         }
-        if (TodoService.isTodoEntity(todoEntity)) {
+        if (isTodoEntity(todoEntity)) {
             return updatedTodo;
         } else {
             throw new APIError()

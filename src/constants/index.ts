@@ -1,6 +1,2 @@
-export const Path = {
-    INDEX: "/",
-    UNKNOWN: "*",
-    ADD_TODO: "add-todo",
-    ABOUT: "about"
-};
+export * from "./path";
+export * from "./todo";

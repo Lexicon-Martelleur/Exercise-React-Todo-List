@@ -1,7 +1,9 @@
 import { ReactElement, ReactNode, useState } from "react";
 
 import { RequiredInput, SubmitButton } from "../../../../components";
-import { getEmptyTodo, ITodo, todoConstants } from "../../../../service";
+import { getEmptyTodo, } from "../../../../service";
+import { todoConstants } from "../../../../constants";
+import { ITodo } from "../../../../types";
 
 import styles from "./TodoForm.module.css";
 

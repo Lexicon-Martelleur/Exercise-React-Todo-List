@@ -9,6 +9,7 @@ import { TodoSynchronizer } from "../TodoSynchronizer";
 import { useTodoQuery } from "../../hooks";
 
 import styles from "./TodoList.module.css";
+import { ITodoEntity } from "../../../../types";
 
 const sortMode = {
     author: "Sort by author",
@@ -43,17 +44,17 @@ export const TodoList = (): ReactElement => {
         });
     }, [todoState])
 
-    const handleToggleDone = (todo: TodoService.ITodoEntity) => {
+    const handleToggleDone = (todo: ITodoEntity) => {
         dispatchTodoAction(TodoState.toggleTodoDoneAction(todo.id));
         todoQueryHook.patchTodoDone(todo);
     }
 
-    const handleRemoveTodo = (todo: TodoService.ITodoEntity) => {
+    const handleRemoveTodo = (todo: ITodoEntity) => {
         dispatchTodoAction(TodoState.removeTodoAction(todo.id));
         todoQueryHook.deleteTodo(todo, TodoState.selectTodoPage(todoState));
     }
 
-    const handleEditTodo = (todo: TodoService.ITodoEntity) => {
+    const handleEditTodo = (todo: ITodoEntity) => {
         dispatchTodoAction(TodoState.editTodoAction(todo.id, todo.todo));
         todoQueryHook.putTodo(todo);
     }
@@ -99,7 +100,7 @@ export const TodoList = (): ReactElement => {
 		todoQueryHook.getTodos(page);
     }
 
-    const isLatestEditedTodo = (todo: TodoService.ITodoEntity) => {
+    const isLatestEditedTodo = (todo: ITodoEntity) => {
         const latestTodoId = TodoState.selectLatestTodo(todoState)?.id
         if (latestTodoId == null) { return false; }
         return todo.id === latestTodoId;
