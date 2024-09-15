@@ -14,7 +14,7 @@ export function createAPIProxy<ApiTarget extends object>(
         get(target: ApiTarget, property: PropertyKey, receiver: unknown): unknown {
             const targetProperty = Reflect.get(target, property, receiver);
 
-            if (typeof targetProperty !== 'function') {
+            if (typeof targetProperty !== "function") {
                 return targetProperty;
             }
 

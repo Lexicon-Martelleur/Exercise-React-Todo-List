@@ -1,10 +1,11 @@
 import React, { ReactElement, ReactNode } from "react";
-
-import styles from "./BaseLayout.module.css";
 import { Link, NavLink } from "react-router-dom";
+
 import { Path } from "../../constants";
 import { Icon } from "../../components";
 import { Icons } from "../../assets";
+
+import styles from "./BaseLayout.module.css";
 
 interface Props {
     children?: ReactNode;

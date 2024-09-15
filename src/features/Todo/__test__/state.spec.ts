@@ -1,24 +1,25 @@
-import * as TodoService from "../../../service";
+import { getUNIXTimestampInSeconds } from "../../../service";
+import * as Types from "../../../types";
 import * as TodoState from "../state";
 
 describe("Todo State", () => {
-    const mockPrevTodo: TodoService.ITodo = {
+    const mockPrevTodo: Types.ITodo = {
         title: "prev title",
         author: "mock author",
         description: "prev description",
         done: false
     };
 
-    const mockNextTodo: TodoService.ITodo = {
+    const mockNextTodo: Types.ITodo = {
         title: "next title",
         author: "mock author",
         description: "next description",
         done: false
     };
     
-    const mockInitTodoEntity: TodoService.ITodoEntity = {
+    const mockInitTodoEntity: Types.ITodoEntity = {
         id: "1",
-        timestamp: TodoService.getUNIXTimestampInSeconds(),
+        timestamp: getUNIXTimestampInSeconds(),
         todo: {
             title: "first title",
             author: "mock author",
@@ -45,7 +46,7 @@ describe("Todo State", () => {
         });
 
         it("return state with added todo entity to the list of todos", () => {
-            const todoEntity: TodoService.ITodoEntity = {
+            const todoEntity: Types.ITodoEntity = {
                 id: "101",
                 timestamp: 1,
                 todo: mockNextTodo
@@ -73,12 +74,12 @@ describe("Todo State", () => {
         });
 
         it("return state with swaped todo items in the todo list", () => {
-            const todoEntityA: TodoService.ITodoEntity = {
+            const todoEntityA: Types.ITodoEntity = {
                 id: "101",
                 timestamp: 1,
                 todo: mockNextTodo
             }
-            const todoEntityB: TodoService.ITodoEntity = {
+            const todoEntityB: Types.ITodoEntity = {
                 id: "102",
                 timestamp: 1,
                 todo: mockNextTodo
@@ -99,7 +100,7 @@ describe("Todo State", () => {
 
         it("return state with edited specified todo", () => {
             const indexTodo = 0;
-            const editedTodo: TodoService.ITodo = {
+            const editedTodo: Types.ITodo = {
                 title: "edited title",
                 author: "edited author",
                 description: "edited description",
@@ -114,7 +115,7 @@ describe("Todo State", () => {
         });
 
         it("return state with updated pagination state", () => {
-            const newPaginationData: TodoService.IPaginationData = {
+            const newPaginationData: Types.IPaginationData = {
                 TotalItemCount: 100,
                 TotalPageCount: 10,
                 PageSize: 10,
@@ -140,7 +141,7 @@ describe("Todo State", () => {
     describe("addTodoAction", () => {
         it(`return an action of type add new todo
             with payload value same as input parameter`, () => {
-            const todoEntity: TodoService.ITodoEntity = {
+            const todoEntity: Types.ITodoEntity = {
                 id: "101",
                 timestamp: 1,
                 todo: mockNextTodo
@@ -199,7 +200,7 @@ describe("Todo State", () => {
         it(`return an action of type edit todo
             with payload value same as input parameter`, () => {
             const id = "2";
-            const editedTodo: TodoService.ITodo = {
+            const editedTodo: Types.ITodo = {
                 title: "edited title",
                 author: "edited author",
                 description: "edited description",
@@ -214,7 +215,7 @@ describe("Todo State", () => {
     describe("updateTodoPaginationAction", () => {
         it(`return an action of type update todo pagination
             with payload value same as input parameter`, () => {
-            const paginationData: TodoService.IPaginationData = {
+            const paginationData: Types.IPaginationData = {
                 TotalItemCount: 100,
                 TotalPageCount: 10,
                 PageSize: 10,

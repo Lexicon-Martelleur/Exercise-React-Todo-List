@@ -3,7 +3,7 @@
     width: 100%;
     border: none;
     cursor: pointer;
-    background-color:  var(--BG_WARNING);
+    background-color: var(--BG_WARNING);
     padding: 0.5rem;
     border: var(--BORDER_DARK_FAT);
 }

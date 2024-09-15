@@ -23,6 +23,7 @@ class TodoAPI implements ITodoAPI {
     ): Promise<[ITodoEntity[], IPaginationData]> {
         const url = `${this.API}/todo?pageSize=${this.nrOfTodos}&pageNr=${pageNr}`
         const res = await fetch(url, {
+            headers: this.defaultHeader,
             signal
         });
         if(!res.ok) { throw new APIError(res.statusText); }
